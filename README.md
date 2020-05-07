@@ -1,2 +1,2 @@
-# wordpress-muisti-theme
-Wordpress Typescript theme for Muisti
+# pedanet-react-theme
+React TypeScript Wordpress theme for Pedanet project
