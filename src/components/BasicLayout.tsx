@@ -91,7 +91,7 @@ class BasicLayout extends React.Component<Props, State> {
                     <input type="text" placeholder="Search.."></input>
                     <img className={socialClasses} src={socialNetworks} />
                 </div>  
-                <a>Social networking + language selecct + search bar</a>
+                <a>Social networking + language select + search bar</a>
                 <a>
                     <img className={mikkeliLogoClasses} src={mikkeliLogo} />
                 </a>

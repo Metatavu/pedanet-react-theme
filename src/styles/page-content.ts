@@ -242,6 +242,32 @@ export default createStyles({
       textTransform: "uppercase"
     }
   },
+  wrapper: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center"
+  },
+  pageContent: {
+    maxWidth: "1200px"
+  },
+  breadcrumb: {
+    width: "100%",
+    marginBottom: "3rem"
+  },
+  columns: {
+    display: "flex"
+  },
+  navigation: {
+    flex: 1, padding: "2rem"
+  },
+  contentarea: {
+    flex: 3
+  },
+  sidebar: {
+    flex: 1,
+    backgroundColor: "#edeef2",
+    padding: "2rem"
+  },
   htmlContainer: {
     display: "flex",
     flexDirection: "column",

@@ -28,7 +28,7 @@ interface State {
 /**
  * React component for basic application layout
  */
-class Header extends React.Component<Props, State> {
+class FrontPage extends React.Component<Props, State> {
 
   /**
    * Constructor
@@ -107,4 +107,4 @@ class Header extends React.Component<Props, State> {
 
 }
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(FrontPage);

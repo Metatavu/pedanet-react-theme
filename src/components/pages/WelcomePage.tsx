@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import Header from "../Header";
+import FrontPage from "../FrontPage";
 import { Post, Attachment } from "../../generated/client/src";
 import ApiUtils from "../../utils/ApiUtils";
 
@@ -88,7 +88,7 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang }>
-        <Header lang={ lang }></Header>
+        <FrontPage lang={ lang } />
       </BasicLayout>
     );
   }

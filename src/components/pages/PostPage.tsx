@@ -1,13 +1,12 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
-import { Page, Post } from "../../../src/generated/client/src";
+import { Page, Post, MenuLocationData } from "../../../src/generated/client/src";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
 import strings from "../../localization/strings";
-import { Link } from "react-router-dom";
 import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
@@ -34,6 +33,7 @@ interface State {
   isArticle: boolean
   heroBanner?: React.ReactElement
   heroContent?: React.ReactElement
+  nav?: MenuLocationData
 }
 
 /**
@@ -87,20 +87,36 @@ class PostPage extends React.Component<Props, State> {
   public render() {
     const { classes, lang } = this.props;
     const pageTitle = this.state.loading ? "" : this.setTitleSource();
-
     return (
       <BasicLayout lang={lang}>
-        { this.state.heroBanner &&
-          <div className={ classes.hero }>
-            <div className={ classes.heroContentContainer }>
-              <h1 className={ classes.heroTitle }>{ pageTitle }</h1>
-              { this.state.heroContent }
+        <div className={ classes.wrapper }>
+          <div className={ classes.pageContent }>
+            <div className={ classes.breadcrumb }>
+              <Breadcrumbs separator=">>">
+                <Link color="inherit" href="/" onClick={() => {}}>
+                  sivu 1
+                </Link>
+                <Link color="inherit" href="/" onClick={() => {}}>
+                  sivu 2
+                </Link>
+              </Breadcrumbs>
             </div>
-            { this.state.heroBanner }
+            <div className={ classes.columns }>
+              <div className={ classes.navigation }>
+                <p>Navigation here</p>
+              </div>
+              <div className={ classes.contentarea }>
+                { this.renderContent(pageTitle) }
+              </div>
+              <div className={ classes.sidebar }>
+                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non odio convallis, sagittis mauris at, feugiat libero. Nulla quis nunc ac dolor bibendum vestibulum at id dui. Vestibulum commodo nibh a nisl tincidunt tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam massa diam, pretium non pulvinar eu, imperdiet id enim. Aliquam quis placerat tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla tellus quam, gravida ac dui quis, tempor convallis risus. Vivamus tortor erat, ultricies nec laoreet sed, euismod sed ex.
+
+Ut vitae nulla faucibus, fermentum urna ut, lobortis diam. Phasellus mattis maximus mauris a porta. Duis condimentum vulputate massa in facilisis. Sed dapibus sapien velit, eu efficitur nisi feugiat vitae. Maecenas tincidunt cursus augue, vel volutpat mauris efficitur in. Vestibulum ullamcorper libero eu diam congue molestie. Vestibulum et turpis tellus. Aenean suscipit blandit diam quis laoreet.
+
+Integer volutpat efficitur cursus. Aliquam in fermentum est. Cras quis sollicitudin sem, finibus iaculis dolor. Ut ac diam ex. Morbi eu turpis ullamcorper, fermentum ligula id, fringilla turpis. Suspendisse euismod fermentum neque a volutpat. Ut fermentum nibh eget turpis sollicitudin, vel vulputate nulla posuere. Maecenas eu tortor ligula. Pellentesque ac maximus justo. Pellentesque quis convallis nibh, pellentesque facilisis libero. Aliquam id tellus dignissim, faucibus nibh ut, tempor massa. Quisque vel sem ut lectus varius luctus. Phasellus eget neque convallis, finibus mauris a, interdum tellus. </p>
+              </div>
+            </div>
           </div>
-        }
-        <div className={ this.state.heroBanner ? classes.contentWithHero : classes.content }>
-          { this.renderContent(pageTitle) }
         </div>
       </BasicLayout>
     );
@@ -146,17 +162,20 @@ class PostPage extends React.Component<Props, State> {
 
     const apiCalls = await Promise.all([
       api.getWpV2Pages({ lang: [ lang ], slug: [slug] }),
-      api.getWpV2Posts({ lang: [ lang ], slug: [slug] })
+      api.getWpV2Posts({ lang: [ lang ], slug: [slug] }),
+      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
+    const nav = apiCalls[2];
 
     this.setState({
       page: page,
       post: post,
       isArticle: !!post,
-      loading: false
+      loading: false,
+      nav: nav
     });
 
     this.hidePageLoader();
