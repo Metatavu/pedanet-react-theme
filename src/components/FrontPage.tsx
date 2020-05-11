@@ -75,16 +75,14 @@ class FrontPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
-    let mikkeliLogoClasses = classNames( classes.logo );
     let logoBarClasses = classNames( classes.logoBar );
-    let socialClasses = classNames( classes.social );
 
     return (
       <div>
         <a>
-          <img className={logoBarClasses} src={headerImage} />
+          <img className={ logoBarClasses } src={headerImage} />
         </a>
-        <div className={classes.buttonSection}>
+        <div className={ classes.buttonSection }>
           <button className={classes.menuButtonOne}>Varhaiskasvatus ja esiopetus</button>
           <button className={classes.menuButtonTwo}>Perusopetus</button>
           <button className={classes.menuButtonThree}>Lukio-opetus</button>

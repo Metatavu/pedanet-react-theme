@@ -4,7 +4,7 @@ import WelcomePage from "./pages/WelcomePage";
 import PostPage from "./pages/PostPage";
 import { CssBaseline, responsiveFontSizes } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import muistiTheme from "../styles/theme";
+import pedanetTheme from "../styles/theme";
 import * as qs from "query-string";
 import strings from "../localization/strings";
 
@@ -23,7 +23,7 @@ interface State {
 /**
  * Material UI's automated responsive font sizes
  */
-const theme = responsiveFontSizes(muistiTheme);
+const theme = responsiveFontSizes(pedanetTheme);
 
 /**
  * App component

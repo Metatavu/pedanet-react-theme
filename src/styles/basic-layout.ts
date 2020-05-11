@@ -89,12 +89,11 @@ export default createStyles({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-    margin: "50 0 50 0"
+    marginBottom: 50
   },
   logo: {
     width: "9%",
- 	  display: "flex",
-    marginLeft: "30%"
+ 	  display: "flex"
   },
   smallLogo: {
     height: 40

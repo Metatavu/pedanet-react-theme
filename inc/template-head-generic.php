@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://cdn.metatavu.io/fonts/tt_norms/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url') ?>/inc/loader.css">
 <link rel="icon" type="image/png" href="<?php bloginfo('template_url') ?>/inc/favicon.png" sizes="512x512" />
-<title>Muisti</title>
+<title>Pedanet Mikkeli</title>
 <script>
   window.THEME_PATH = "<?php bloginfo('template_url');?>";
 </script>

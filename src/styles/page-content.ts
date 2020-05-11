@@ -37,6 +37,28 @@ export default createStyles({
       }
     }
   },
+  logoBar: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: 200,
+    marginBottom: 25,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center",
+    backgroundSize: "cover"
+  },
+  titleContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "20%",
+    height: "100%",
+    backgroundColor: "green",
+    color: "white",
+    fontSize: "3rem"
+  },
   hero: {
     paddingTop: 130,
     height: "90vh",
@@ -112,11 +134,8 @@ export default createStyles({
   content: {
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.primary.dark,
-    marginTop: 100,
-    [theme.breakpoints.up("md")]: {
-      marginTop: 130,
-    },
     display: "flex",
+    marginTop: 0,
     flexDirection: "column"
   },
   contentWithHero: {
@@ -129,40 +148,40 @@ export default createStyles({
   title: {
     fontFamily: theme.typography.h1.fontFamily,
     fontWeight: "normal",
-    fontSize: "2.5rem",
+    fontSize: "1.5rem",
     lineHeight: 1,
     [theme.breakpoints.up(360)]: {
-      fontSize: "2.75rem"
+      fontSize: "1.75rem"
     },
     [theme.breakpoints.up(413)]: {
-      fontSize: "3rem"
+      fontSize: "2rem"
     },
     [theme.breakpoints.up("sm")]: {
-      fontSize: "4rem"
+      fontSize: "3rem"
     },
     [theme.breakpoints.up("md")]: {
-      fontSize: "4rem"
+      fontSize: "3rem"
     },
     // Media queries require single quotes
     // tslint:disable-next-line: quotemark
     '@media only screen and (max-width:1280px) and (min-width:960px) and (max-height:750px)': {
-      fontSize: "3.5rem"
+      fontSize: "1.5rem"
     },
     [theme.breakpoints.up("lg")]: {
-      fontSize: "4rem"
+      fontSize: "2rem"
     },
     [theme.breakpoints.up(1367)]: {
-      fontSize: "4.5rem"
+      fontSize: "2.5rem"
     },
     [theme.breakpoints.up(1600)]: {
-      fontSize: "5rem"
+      fontSize: "3rem"
     },
     [theme.breakpoints.up("xl")]: {
-      fontSize: "6rem",
-      lineHeight: "6.75rem",
+      fontSize: "4rem",
+      lineHeight: "4.75rem",
     },
     [theme.breakpoints.up(2000)]: {
-      fontSize: "7rem"
+      fontSize: "5rem"
     },
     "&.article": {
       textAlign: "left",
@@ -347,7 +366,6 @@ export default createStyles({
       },
       [theme.breakpoints.up("xl")]: {
         width: "75%",
-        marginTop: theme.spacing(5),
         marginBottom: theme.spacing(5),
       },
       "&.address-heading": {
@@ -362,7 +380,7 @@ export default createStyles({
       margin: theme.spacing(2),
       marginRight: 0,
       marginLeft: 0,
-      fontSize: "2.25rem",
+      fontSize: "1.5rem",
       fontFamily: theme.typography.h3.fontFamily,
       lineHeight: 1.2,
       fontWeight: "normal",
@@ -377,7 +395,7 @@ export default createStyles({
         marginRight: 0
       },
       [theme.breakpoints.up("md")]: {
-        fontSize: "2.25rem",
+        fontSize: "1.5rem",
         lineHeight: 1.2,
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),

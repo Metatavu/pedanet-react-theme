@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker stop muisti-wordpress-test-mysql
-docker rm muisti-wordpress-test-mysql
+docker stop pedanet-wordpress-test-mysql
+docker rm pedanet-wordpress-test-mysql

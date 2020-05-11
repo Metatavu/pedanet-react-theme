@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, List, ListSubheader, ListItem, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData } from "../../../src/generated/client/src";
@@ -11,6 +11,11 @@ import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
 import "../../styles/feed.css";
+import headerImage from "../../img/headerImage.png";
+import TreeMenu, { TreeMenuItem, TreeNodeInArray } from "react-simple-tree-menu";
+import ExpandMoreIcon from '@material-ui/icons/ArrowDropDown';
+import ChevronRightIcon from '@material-ui/icons/ArrowRight';
+import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 
 /**
  * Interface representing component properties
@@ -87,39 +92,111 @@ class PostPage extends React.Component<Props, State> {
   public render() {
     const { classes, lang } = this.props;
     const pageTitle = this.state.loading ? "" : this.setTitleSource();
+
+    const treeData = [
+      {
+        key: "1",
+        label: "Yhteiset käytännöt"
+      },
+      {
+        key: "2",
+        label: "Peruskoulut"
+      },
+      {
+        key: "3",
+        label: "Nettiperuskoulu aikuisille"
+      },
+      {
+        key: "4",
+        label: "Monikulttuurinen opetus"
+      },
+      {
+        key: "5",
+        label: "Painotettu opetus"
+      }
+    ];
+
     return (
       <BasicLayout lang={lang}>
+        <div className={ classes.logoBar } style={{ backgroundImage: `url(${headerImage})` }}>
+          <div className={ classes.titleContainer }>
+            { pageTitle }
+          </div>
+        </div>
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
-              <Breadcrumbs separator=">>">
+              <Breadcrumbs separator=">">
                 <Link color="inherit" href="/" onClick={() => {}}>
-                  sivu 1
+                  Etusivu
                 </Link>
-                <Link color="inherit" href="/" onClick={() => {}}>
-                  sivu 2
+                <Link color="inherit" href="/perusopetus/" onClick={() => {}}>
+                  Perusopetus
                 </Link>
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
-              <div className={ classes.navigation }>
-                <p>Navigation here</p>
+              <div className={ classes.sidebar }>
+                <Typography variant="h5">Perusopetus</Typography>
+                <TreeMenu data={ treeData }
+                  hasSearch={ false }
+                >
+                  {({ search, items }) => (
+                    <>
+                      <List>
+                        { items.map(item => this.renderTreeMenuItem(item)) }
+                      </List>
+                    </>
+                  )}
+                </TreeMenu>
               </div>
               <div className={ classes.contentarea }>
                 { this.renderContent(pageTitle) }
               </div>
               <div className={ classes.sidebar }>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non odio convallis, sagittis mauris at, feugiat libero. Nulla quis nunc ac dolor bibendum vestibulum at id dui. Vestibulum commodo nibh a nisl tincidunt tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam massa diam, pretium non pulvinar eu, imperdiet id enim. Aliquam quis placerat tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla tellus quam, gravida ac dui quis, tempor convallis risus. Vivamus tortor erat, ultricies nec laoreet sed, euismod sed ex.
-
-Ut vitae nulla faucibus, fermentum urna ut, lobortis diam. Phasellus mattis maximus mauris a porta. Duis condimentum vulputate massa in facilisis. Sed dapibus sapien velit, eu efficitur nisi feugiat vitae. Maecenas tincidunt cursus augue, vel volutpat mauris efficitur in. Vestibulum ullamcorper libero eu diam congue molestie. Vestibulum et turpis tellus. Aenean suscipit blandit diam quis laoreet.
-
-Integer volutpat efficitur cursus. Aliquam in fermentum est. Cras quis sollicitudin sem, finibus iaculis dolor. Ut ac diam ex. Morbi eu turpis ullamcorper, fermentum ligula id, fringilla turpis. Suspendisse euismod fermentum neque a volutpat. Ut fermentum nibh eget turpis sollicitudin, vel vulputate nulla posuere. Maecenas eu tortor ligula. Pellentesque ac maximus justo. Pellentesque quis convallis nibh, pellentesque facilisis libero. Aliquam id tellus dignissim, faucibus nibh ut, tempor massa. Quisque vel sem ut lectus varius luctus. Phasellus eget neque convallis, finibus mauris a, interdum tellus. </p>
+                <p>Aiheeseen liittyviä linkkejä</p>
               </div>
             </div>
           </div>
         </div>
       </BasicLayout>
     );
+  }
+
+  /**
+   * Renders tree menu item
+   *
+   * @param item tree menu item
+   */
+  private renderTreeMenuItem = (item: TreeMenuItem) => {
+    const { classes } = this.props;
+    const toggleIcon = (on: boolean) => on ? 
+      <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
+      <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
+    const { level, focused, hasNodes, toggleNode, isOpen, label } = item;
+
+    return (
+      <ListItem { ...item }
+        style={{ paddingLeft: level * 20 }}
+      >
+        <div style={{ display: 'inline-block' }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
+          { toggleIcon(isOpen) }
+        </div>
+        { label }
+      </ListItem>
+    );
+  }
+
+  /**
+   * Handler for on node click event
+   * @param hasNodes has nodes
+   * @param toggleNode handler method for toggle node
+   */
+  private onNodeClick = (hasNodes: boolean, toggleNode: (() => void) | undefined) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (hasNodes && toggleNode) {
+      toggleNode();
+    }
+    event.stopPropagation();
   }
 
   /**
@@ -198,7 +275,7 @@ Integer volutpat efficitur cursus. Aliquam in fermentum est. Cras quis sollicitu
       { !this.state.heroBanner &&
         <>
           { this.state.post ? <p className={ classes.date }>{ moment(this.state.post.date).format("dddd, DD. MMMM YYYY") }</p> : "" }
-          <h1 className={ classNames(classes.title, this.state.isArticle && "article") }>{ pageTitle }</h1>
+          <h2 className={ classNames(classes.title, this.state.isArticle && "article") }>{ pageTitle }</h2>
         </>
       }
       { !this.state.loading &&

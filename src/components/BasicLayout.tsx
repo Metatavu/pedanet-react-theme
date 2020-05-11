@@ -1,6 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
-import { AppBar, WithStyles, withStyles, Button, IconButton, Link, Hidden } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container } from "@material-ui/core";
 import bar from "../img/bar.png";
 import mikkeliLogo from "../img/mikkeliLogo.png";
 import socialNetworks from "../img/social.png";
@@ -77,33 +77,29 @@ class BasicLayout extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
-    let mikkeliLogoClasses = classNames( classes.logo );
-    let logoBarClasses = classNames( classes.logoBar );
-    let socialClasses = classNames( classes.social );
 
     return (
+      <div>
         <div>
-            <div>
-                <Link href={`/?lang=${this.props.lang}`}>
-                    <img className={logoBarClasses} src={bar} />
-                </Link>
-                <div className={ classes.searchSection }>
-                    <input type="text" placeholder="Search.."></input>
-                    <img className={socialClasses} src={socialNetworks} />
-                </div>  
-                <a>Social networking + language select + search bar</a>
-                <a>
-                    <img className={mikkeliLogoClasses} src={mikkeliLogo} />
-                </a>
-                <div className={classes.topNavDesktop}>
-                  {this.renderMenu()}
-                </div>
+          <img className={ classes.logoBar } src={bar} />
+          <div className={ classes.searchSection }>
+            <input type="text" placeholder="Search.."></input>
+            <img className={ classes.social } src={socialNetworks} />
+          </div>
+          <Container maxWidth="lg">
+            <a href="/?lang=fi">
+              <img className={ classes.logo } src={mikkeliLogo} />
+            </a>
+            <div className={ classes.topNavDesktop }>
+              {this.renderMenu()}
             </div>
-            <div>
-              {this.props.children}
-            </div>
+          </Container>
         </div>
-        
+        <div>
+          {this.props.children}
+        </div>
+      </div>
+
     );
   }
 
@@ -119,11 +115,11 @@ class BasicLayout extends React.Component<Props, State> {
     }
 
     return (
-      <div className={ classes.nav }>
+        <div className={classes.nav}>
         {
           mainMenu.items.map(this.renderMenuItem)
         }
-      </div>
+        </div>
     );
   }
 
@@ -135,10 +131,10 @@ class BasicLayout extends React.Component<Props, State> {
     return (
       <Link
         variant="h6"
-        key={ item.db_id }
-        href={ item.url }
-        className={ classes.navLink }
-        >
+        key={item.db_id}
+        href={item.url}
+        className={classes.navLink}
+      >
         {
           item.title
         }
