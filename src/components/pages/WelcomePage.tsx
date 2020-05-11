@@ -1,13 +1,14 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import FrontPage from "../FrontPage";
-import { Post, Attachment } from "../../generated/client/src";
+import { Post, MenuLocationData } from "../../generated/client/src";
 import ApiUtils from "../../utils/ApiUtils";
+import { WithStyles, withStyles } from "@material-ui/core";
+import styles from "../../styles/welcome-page";
 
 /**
  * Interface representing component properties
  */
-interface Props {
+interface Props extends WithStyles<typeof styles> {
   lang: string
 }
 
@@ -16,8 +17,12 @@ interface Props {
  */
 interface State {
   posts: Post[],
-  featuredMedias: { [ key: number ]: Attachment },
-  loading: boolean
+  loading: boolean,
+  mainMenu?: MenuLocationData
+  localeMenu?: MenuLocationData
+  scrollPosition: number
+  siteMenuVisible: boolean
+  siteSearchVisible: boolean
 }
 
 /**
@@ -34,8 +39,10 @@ class WelcomePage extends React.Component<Props, State> {
     super(props);
     this.state = {
       posts: [],
-      featuredMedias: { },
-      loading: false
+      loading: false,
+      scrollPosition: 0,
+      siteMenuVisible: false,
+      siteSearchVisible: false
     };
   }
 
@@ -43,52 +50,52 @@ class WelcomePage extends React.Component<Props, State> {
    * Component did mount life-cycle handler
    */
   public componentDidMount = async () => {
+    window.addEventListener("scroll", this.handleScroll);
     this.setState({
       loading: true
     });
 
     const api = ApiUtils.getApi();
 
-    const posts = await api.getWpV2Posts({lang: [ this.props.lang ]});
-
-    const featureMediaIds: number[] = posts
-      .filter((post) => {
-        return post.featured_media;
-      })
-      .map((post) => {
-        return post.featured_media;
-      })
-      .reduce((unique: any, item: any) => unique.includes(item) ? unique : [...unique, item], []);
-
-    const featureMedias = await Promise.all(featureMediaIds.map((featureMediaId) => {
-      return api.getWpV2MediaById({ id: featureMediaId.toString() });
-    }));
-
-    const featuredMediaMap: { [ key: number ]: Attachment } = { };
-
-    for (let i = 0; i < featureMedias.length; i++) {
-      const featureMedia = featureMedias[i];
-      featuredMediaMap[featureMedia.id!] = featureMedia;
-    }
+    const [posts, mainMenu, localeMenu] = await Promise.all(
+      [
+        api.getWpV2Posts({lang: [ this.props.lang ]}),
+        api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
+        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" })
+      ]
+    )
 
     this.setState({
       posts: posts,
-      featuredMedias: featuredMediaMap,
-      loading: false
+      loading: false,
+      mainMenu: mainMenu,
+      localeMenu: localeMenu,
     });
 
     this.hidePageLoader();
   }
 
   /**
+   * Component will unmount life-cycle handler
+   */
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  /**
    * Component render method
    */
   public render() {
-    const { lang } = this.props;
+    const { lang, classes } = this.props;
 
     return (
       <BasicLayout lang={ lang }>
-        <FrontPage lang={ lang } />
+        <div className={ classes.buttonSection }>
+          <button className={classes.menuButtonOne}>Varhaiskasvatus ja esiopetus</button>
+          <button className={classes.menuButtonTwo}>Perusopetus</button>
+          <button className={classes.menuButtonThree}>Lukio-opetus</button>
+          <button className={classes.menuButtonFour}>Kansalaisopisto</button>
+        </div>
       </BasicLayout>
     );
   }
@@ -105,6 +112,16 @@ class WelcomePage extends React.Component<Props, State> {
       }, 500);
     }
   }
+
+  /**
+   * Update scrolling position method
+   */
+  private handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    this.setState({
+      scrollPosition: currentScrollPos
+    });
+  }
 }
 
-export default WelcomePage;
+export default withStyles(styles)(WelcomePage);

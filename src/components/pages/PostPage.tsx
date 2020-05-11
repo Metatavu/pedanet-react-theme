@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, List, ListSubheader, ListItem, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, List, ListItem } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData } from "../../../src/generated/client/src";
@@ -10,12 +10,9 @@ import strings from "../../localization/strings";
 import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
-import "../../styles/feed.css";
-import headerImage from "../../img/headerImage.png";
-import TreeMenu, { TreeMenuItem, TreeNodeInArray } from "react-simple-tree-menu";
-import ExpandMoreIcon from '@material-ui/icons/ArrowDropDown';
-import ChevronRightIcon from '@material-ui/icons/ArrowRight';
+import TreeMenu, { TreeMenuItem } from "react-simple-tree-menu";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
+import TreeView from '../generic/TreeView';
 
 /**
  * Interface representing component properties
@@ -25,14 +22,11 @@ interface Props extends WithStyles<typeof styles> {
   lang: string
 }
 
-type PageTemplate = "basic" | "fullscreen" | "dangerous" | "smallgutter";
-
 /**
  * Interface representing component state
  */
 interface State {
   page?: Page
-  template: PageTemplate
   post?: Post
   loading: boolean
   isArticle: boolean
@@ -54,7 +48,6 @@ class PostPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      template: "basic",
       isArticle: false,
       loading: false
     };
@@ -68,18 +61,8 @@ class PostPage extends React.Component<Props, State> {
   }
 
   /**
-   * Component will mount life-cycle handler
+   * Component did update life-cycle handler
    */
-  public componentWillMount = () => {
-    this.setTemplate();
-  }
-
-  public componentWillUpdate = (prevProps: Props) => {
-    if (prevProps.slug !== this.props.slug) {
-      this.setTemplate();
-    }
-  }
-
   public componentDidUpdate = (prevProps: Props) => {
     if (prevProps.slug !== this.props.slug) {
       this.loadContent();
@@ -93,36 +76,8 @@ class PostPage extends React.Component<Props, State> {
     const { classes, lang } = this.props;
     const pageTitle = this.state.loading ? "" : this.setTitleSource();
 
-    const treeData = [
-      {
-        key: "1",
-        label: "Yhteiset käytännöt"
-      },
-      {
-        key: "2",
-        label: "Peruskoulut"
-      },
-      {
-        key: "3",
-        label: "Nettiperuskoulu aikuisille"
-      },
-      {
-        key: "4",
-        label: "Monikulttuurinen opetus"
-      },
-      {
-        key: "5",
-        label: "Painotettu opetus"
-      }
-    ];
-
     return (
-      <BasicLayout lang={lang}>
-        <div className={ classes.logoBar } style={{ backgroundImage: `url(${headerImage})` }}>
-          <div className={ classes.titleContainer }>
-            { pageTitle }
-          </div>
-        </div>
+      <BasicLayout lang={ lang } title={ pageTitle }>
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
@@ -138,17 +93,7 @@ class PostPage extends React.Component<Props, State> {
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
                 <Typography variant="h5">Perusopetus</Typography>
-                <TreeMenu data={ treeData }
-                  hasSearch={ false }
-                >
-                  {({ search, items }) => (
-                    <>
-                      <List>
-                        { items.map(item => this.renderTreeMenuItem(item)) }
-                      </List>
-                    </>
-                  )}
-                </TreeMenu>
+                <TreeView />
               </div>
               <div className={ classes.contentarea }>
                 { this.renderContent(pageTitle) }
@@ -164,62 +109,16 @@ class PostPage extends React.Component<Props, State> {
   }
 
   /**
-   * Renders tree menu item
-   *
-   * @param item tree menu item
-   */
-  private renderTreeMenuItem = (item: TreeMenuItem) => {
-    const { classes } = this.props;
-    const toggleIcon = (on: boolean) => on ? 
-      <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
-      <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
-    const { level, focused, hasNodes, toggleNode, isOpen, label } = item;
-
-    return (
-      <ListItem { ...item }
-        style={{ paddingLeft: level * 20 }}
-      >
-        <div style={{ display: 'inline-block' }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
-          { toggleIcon(isOpen) }
-        </div>
-        { label }
-      </ListItem>
-    );
-  }
-
-  /**
-   * Handler for on node click event
-   * @param hasNodes has nodes
-   * @param toggleNode handler method for toggle node
-   */
-  private onNodeClick = (hasNodes: boolean, toggleNode: (() => void) | undefined) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (hasNodes && toggleNode) {
-      toggleNode();
-    }
-    event.stopPropagation();
-  }
-
-  /**
    * Render content method
    */
   private renderContent = (pageTitle: string) => {
     const { classes } = this.props;
-    if (this.state.template === "fullscreen") {
-      return this.renderPostContent(pageTitle);
-    }
 
     return (
       <Container className={ classNames( classes.root, this.state.isArticle && "article") }>
-        { this.renderPostContent(pageTitle) }
+        { this.renderPostContent() }
       </Container>
     );
-
-  }
-
-  private setTemplate = () => {
-    this.setState({
-      template: this.getTemplate()
-    });
   }
 
   private loadContent = async () => {
@@ -261,23 +160,15 @@ class PostPage extends React.Component<Props, State> {
   /**
    * Render post content method
    */
-  private renderPostContent = (pageTitle: string) => {
+  private renderPostContent = () => {
     const { classes, lang } = this.props;
     moment.locale(lang);
     return (
       <div className={
         classNames(classes.htmlContainer,
-        this.state.isArticle && "article",
-        this.state.template === "fullscreen" ? "fullscreen" : "",
-        this.state.template === "smallgutter" ? "smallgutter" : "")
+        this.state.isArticle && "article")
         }
       >
-      { !this.state.heroBanner &&
-        <>
-          { this.state.post ? <p className={ classes.date }>{ moment(this.state.post.date).format("dddd, DD. MMMM YYYY") }</p> : "" }
-          <h2 className={ classNames(classes.title, this.state.isArticle && "article") }>{ pageTitle }</h2>
-        </>
-      }
       { !this.state.loading &&
         this.getPageOrPostContent()
       }
@@ -330,10 +221,6 @@ class PostPage extends React.Component<Props, State> {
       return undefinedContentError;
     }
 
-    if (this.state.template === "dangerous") {
-      return <div dangerouslySetInnerHTML={{__html:renderedContent}} />;
-    }
-
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
 
   }
@@ -377,26 +264,6 @@ class PostPage extends React.Component<Props, State> {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
 
-    // Find hero banner and set it to state
-    if (classNames.indexOf("hero") > -1) {
-      if (!this.state.heroBanner) {
-        this.setState({
-          heroBanner: convertNodeToElement(node, index, this.transformContent)
-        });
-      }
-      return null;
-    }
-
-    // Find hero content and set it to state
-    if (classNames.indexOf("hero-content") > -1) {
-      if (!this.state.heroContent) {
-        this.setState({
-          heroContent: convertNodeToElement(node, index, this.transformContent)
-        });
-      }
-      return null;
-    }
-
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
       const childNode = node.children && node.children.length ? node.children[0] : null;
@@ -412,16 +279,6 @@ class PostPage extends React.Component<Props, State> {
     }
 
     return convertNodeToElement(node, index, this.transformContent);
-  }
-
-  /**
-   * Returns current page template from body class
-   *
-   * @returns page template
-   */
-  private getTemplate = (): PageTemplate => {
-    const templateClass = (document.body.className || "").split(" ").find((className) => className.indexOf("template-") === 0);
-    return templateClass ? templateClass.substring(9) as PageTemplate : "basic";
   }
 }
 

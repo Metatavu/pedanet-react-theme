@@ -1,18 +1,18 @@
 import * as React from "react";
-import classNames from "classnames";
 import { WithStyles, withStyles, Link, Container } from "@material-ui/core";
 import bar from "../img/bar.png";
 import mikkeliLogo from "../img/mikkeliLogo.png";
 import socialNetworks from "../img/social.png";
 import { MenuLocationData, MenuItemData } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
-import styles from "../styles/header";
+import styles from "../styles/basic-layout";
 
 /**
  * Interface representing component properties
  */
 interface Props extends WithStyles<typeof styles> {
-  lang: string
+  lang: string,
+  title?: string
 }
 
 /**
@@ -23,8 +23,6 @@ interface State {
   mainMenu?: MenuLocationData
   localeMenu?: MenuLocationData
   scrollPosition: number
-  siteMenuVisible: boolean
-  siteSearchVisible: boolean
 }
 
 /**
@@ -41,11 +39,12 @@ class BasicLayout extends React.Component<Props, State> {
     this.state = {
       loading: false,
       scrollPosition: 0,
-      siteMenuVisible: false,
-      siteSearchVisible: false
     };
   }
 
+  /**
+   * Component did mount life-cycle handler
+   */
   public componentDidMount = async () => {
     window.addEventListener("scroll", this.handleScroll);
     this.setState({
@@ -68,6 +67,9 @@ class BasicLayout extends React.Component<Props, State> {
     });
   }
 
+  /**
+   * Component will unmount life-cycle handler
+   */
   public componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -77,29 +79,33 @@ class BasicLayout extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
-
+    
     return (
       <div>
         <div>
-          <img className={ classes.logoBar } src={bar} />
+          <img className={ classes.logoBar } src={ bar } />
           <div className={ classes.searchSection }>
-            <input type="text" placeholder="Search.."></input>
-            <img className={ classes.social } src={socialNetworks} />
+            <input type="text" placeholder="Search.." />
+            <img className={ classes.social } src={ socialNetworks } />
           </div>
           <Container maxWidth="lg">
             <a href="/?lang=fi">
-              <img className={ classes.logo } src={mikkeliLogo} />
+              <img className={ classes.logo } src={ mikkeliLogo } />
             </a>
             <div className={ classes.topNavDesktop }>
-              {this.renderMenu()}
+              { this.renderMenu() }
             </div>
           </Container>
         </div>
-        <div>
-          {this.props.children}
+        <div className={ `${classes.logoBar} ${classes.headerImage}` }>
+          { this.props.title &&
+            <div className={ classes.titleContainer }>
+              { this.props.title }
+            </div>
+          }
         </div>
+        { this.props.children }
       </div>
-
     );
   }
 
@@ -115,11 +121,11 @@ class BasicLayout extends React.Component<Props, State> {
     }
 
     return (
-        <div className={classes.nav}>
+      <div className={ classes.nav }>
         {
           mainMenu.items.map(this.renderMenuItem)
         }
-        </div>
+      </div>
     );
   }
 
@@ -131,25 +137,14 @@ class BasicLayout extends React.Component<Props, State> {
     return (
       <Link
         variant="h6"
-        key={item.db_id}
-        href={item.url}
-        className={classes.navLink}
+        key={ item.db_id }
+        href={ item.url }
+        className={ classes.navLink }
       >
         {
           item.title
         }
       </Link>
-    );
-  }
-
-  /**
-   * Site menu visibility method
-   */
-  private showSiteMenu = () => {
-    return (
-      this.setState({
-        siteMenuVisible: true
-      })
     );
   }
 
@@ -162,7 +157,6 @@ class BasicLayout extends React.Component<Props, State> {
       scrollPosition: currentScrollPos
     });
   }
-
 }
 
 export default withStyles(styles)(BasicLayout);

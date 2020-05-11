@@ -49,16 +49,6 @@ export default createStyles({
     backgroundPosition: "center center",
     backgroundSize: "cover"
   },
-  titleContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "20%",
-    height: "100%",
-    backgroundColor: "green",
-    color: "white",
-    fontSize: "3rem"
-  },
   hero: {
     paddingTop: 130,
     height: "90vh",
