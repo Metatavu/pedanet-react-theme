@@ -189,7 +189,7 @@ class PostPage extends React.Component<Props, State> {
    * @param locations menu item data array
    * @param path array of breadcrumbs
    */
-  private breadcrumbPath = (currentPageOrPostId: string, locations: MenuItemData[], path?: Breadcrumb[] ) => {
+  private breadcrumbPath = (currentPageOrPostId: string, locations: MenuItemData[], path?: Breadcrumb[]) => {
     if (locations.length > 0) {
       locations.forEach((location) => {
         if (currentPageOrPostId === location.object_id) {
