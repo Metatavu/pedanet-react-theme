@@ -3,7 +3,7 @@ import BasicLayout from "../BasicLayout";
 import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
-import { Page, Post, MenuLocationData } from "../../../src/generated/client/src";
+import { Page, Post, MenuLocationData, MenuItemData } from "../../../src/generated/client/src";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
 import strings from "../../localization/strings";
@@ -12,6 +12,7 @@ import * as classNames from "classnames";
 import * as moment from "moment";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 import TreeView from '../generic/TreeView';
+import RightSideBar from "../generic/RightSideBar";
 
 /**
  * Interface representing component properties
@@ -25,13 +26,22 @@ interface Props extends WithStyles<typeof styles> {
  * Interface representing component state
  */
 interface State {
-  page?: Page
-  post?: Post
-  loading: boolean
-  isArticle: boolean
-  heroBanner?: React.ReactElement
-  heroContent?: React.ReactElement
-  nav?: MenuLocationData
+  page?: Page;
+  post?: Post;
+  loading: boolean;
+  isArticle: boolean;
+  heroBanner?: React.ReactElement;
+  heroContent?: React.ReactElement;
+  nav?: MenuLocationData;
+  breadcrumb: Breadcrumb[];
+}
+
+/**
+ * Interface for breadcrumb items
+ */
+interface Breadcrumb {
+  label?: string;
+  link?: string;
 }
 
 /**
@@ -48,7 +58,8 @@ class PostPage extends React.Component<Props, State> {
     super(props);
     this.state = {
       isArticle: false,
-      loading: false
+      loading: false,
+      breadcrumb: []
     };
   }
 
@@ -72,7 +83,7 @@ class PostPage extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    const { classes, lang } = this.props;
+    const { classes, lang, slug } = this.props;
     const pageTitle = this.state.loading ? "" : this.setTitleSource();
 
     return (
@@ -84,27 +95,39 @@ class PostPage extends React.Component<Props, State> {
                 <Link color="inherit" href="/" onClick={() => {}}>
                   Etusivu
                 </Link>
-                <Link color="inherit" href="/perusopetus/" onClick={() => {}}>
-                  Perusopetus
-                </Link>
+                { this.state.breadcrumb && this.renderBreadcrumb() }
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
-                <Typography variant="h5">Perusopetus</Typography>
-                <TreeView />
+                <Typography variant="h5">{ pageTitle }</Typography>
+                <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
                 { this.renderContent(pageTitle) }
               </div>
               <div className={ classes.sidebar }>
-                <p>Aiheeseen liittyviä linkkejä</p>
+                <RightSideBar />
               </div>
             </div>
           </div>
         </div>
       </BasicLayout>
     );
+  }
+
+  /**
+   * Renders breadcrumb
+   */
+  private renderBreadcrumb = () => {
+    const { breadcrumb } = this.state;
+    return breadcrumb.map((crumb) => {
+      return (
+        <Link color="inherit" href={ crumb.link } onClick={() => {}}>
+          { crumb.label }
+        </Link>
+      );
+    });
   }
 
   /**
@@ -120,6 +143,9 @@ class PostPage extends React.Component<Props, State> {
     );
   }
 
+  /**
+   * Loads page or post content
+   */
   private loadContent = async () => {
     this.setState({
       loading: true
@@ -136,14 +162,17 @@ class PostPage extends React.Component<Props, State> {
     const api = ApiUtils.getApi();
 
     const apiCalls = await Promise.all([
-      api.getWpV2Pages({ lang: [ lang ], slug: [slug] }),
-      api.getWpV2Posts({ lang: [ lang ], slug: [slug] }),
+      api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
+      api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
       api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
     const nav = apiCalls[2];
+
+    const currentPageOrPostId = (page) ? page.id : ((post) ? post.id : undefined);
+    this.breadcrumbPath(String(currentPageOrPostId), nav.items || []);
 
     this.setState({
       page: page,
@@ -154,6 +183,31 @@ class PostPage extends React.Component<Props, State> {
     });
 
     this.hidePageLoader();
+  }
+
+  /**
+   * Collects breadcrumbs
+   * 
+   * @param currentPageOrPostId current page or post id
+   * @param locations menu item data array
+   * @param path array of breadcrumbs
+   */
+  private breadcrumbPath = (currentPageOrPostId: string, locations: MenuItemData[], path?: Breadcrumb[]) => {
+    if (locations.length > 0) {
+      locations.forEach((location) => {
+        if (currentPageOrPostId === location.object_id) {
+          this.setState({
+            breadcrumb: path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
+          });
+        } else if (location.child_items) {
+          this.breadcrumbPath(
+            currentPageOrPostId,
+            location.child_items,
+            path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
+          )
+        }
+      });
+    }
   }
 
   /**

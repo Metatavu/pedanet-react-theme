@@ -4,18 +4,26 @@ import ExpandMoreIcon from '@material-ui/icons/ArrowDropDown';
 import ChevronRightIcon from '@material-ui/icons/ArrowRight';
 import { withStyles, WithStyles, ListItem, List } from '@material-ui/core';
 import styles from '../../styles/tree-view';
+import ApiUtils from "../../../src/utils/ApiUtils";
+import { MenuItemData } from 'src/generated/client/src';
 
 /**
  * Component props
  */
 interface Props extends WithStyles<typeof styles> {
+  lang: string;
+  slug: string;
 }
 
 /**
  * Component state
  */
 interface State {
-  treeData?: TreeNodeInArray[]
+  treeData: LinkTreeStructure[];
+}
+
+interface LinkTreeStructure extends TreeNodeInArray {
+  link: string;
 }
 
 /**
@@ -30,37 +38,16 @@ class TreeView extends React.Component<Props, State> {
    */
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      treeData: []
+    };
   }
 
   /**
    * Component did mount life-cycle handler
    */
   public componentDidMount() {
-    this.setState({
-      treeData: [
-        {
-          key: "1",
-          label: "Yhteiset käytännöt"
-        },
-        {
-          key: "2",
-          label: "Peruskoulut"
-        },
-        {
-          key: "3",
-          label: "Nettiperuskoulu aikuisille"
-        },
-        {
-          key: "4",
-          label: "Monikulttuurinen opetus"
-        },
-        {
-          key: "5",
-          label: "Painotettu opetus"
-        }
-      ]
-    });
+    this.loadTree();
   }
 
   /**
@@ -82,24 +69,78 @@ class TreeView extends React.Component<Props, State> {
   }
 
   /**
+   * Loads the link tree structure
+   */
+  private loadTree = async () => {
+    const { lang, slug } = this.props;
+    const api = ApiUtils.getApi();
+    const [page, post, menus] = await Promise.all([
+      api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
+      api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
+      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
+    ]);
+    const currentPageOrPostId = (page) ? page[0].id : ((post) ? post[0].id : undefined);
+    if (currentPageOrPostId && menus.items) {
+      this.formLinkTreeStructure(String(currentPageOrPostId), menus.items);
+    }
+  }
+
+  /**
+   * Finds current parent link and forms link tree structure from it
+   * 
+   * @param parentLinkId parent link id
+   * @param menuStructure menu structure
+   */
+  private formLinkTreeStructure = (parentLinkId: string, menuStructure: MenuItemData[]) => {
+    menuStructure.forEach((menu) => {
+      if (menu.object_id === parentLinkId && menu.child_items) {
+        this.setState({
+          treeData: this.linkTreeFromMenuStructure(menu.child_items)
+        });
+      } else if (menu.child_items) {
+        this.formLinkTreeStructure(parentLinkId, menu.child_items);
+      }
+    });
+  }
+
+  /**
+   * Converts menu item data array to link tree structure
+   * 
+   * @param menuStructure menu structure
+   * 
+   * @returns link tree structure
+   */
+  private linkTreeFromMenuStructure = (menuStructure: MenuItemData[]): LinkTreeStructure[] => {
+    return menuStructure.map((menu, index) => {
+      return {
+        key: String(index),
+        label: menu.title || "",
+        link: menu.url || "",
+        nodes: menu.child_items ? this.linkTreeFromMenuStructure(menu.child_items) : undefined
+      }
+    });
+  }
+
+  /**
    * Renders tree menu item
    *
    * @param item tree menu item
    */
   private renderTreeMenuItem = (item: TreeMenuItem) => {
+    const { classes } = this.props;
     const toggleIcon = (on: boolean) => on ? 
       <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
       <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
-    const { level, focused, hasNodes, toggleNode, isOpen, label } = item;
+    const { level, focused, hasNodes, toggleNode, isOpen, label, link } = item;
 
     return (
       <ListItem { ...item }
         style={{ paddingLeft: level * 20 }}
       >
+        <a className={ classes.treeDataLink } href={ link }>{ label }</a>
         <div style={{ display: 'inline-block' }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
-          { toggleIcon(isOpen) }
+          { hasNodes && toggleIcon(isOpen) }
         </div>
-        { label }
       </ListItem>
     );
   }

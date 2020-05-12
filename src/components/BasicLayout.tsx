@@ -113,7 +113,7 @@ class BasicLayout extends React.Component<Props, State> {
    * Render menu method
    */
   private renderMenu = () => {
-    const mainMenu = this.state.mainMenu;
+    const { mainMenu } = this.state;
     const { classes } = this.props;
 
     if (!mainMenu || !mainMenu.items) {
