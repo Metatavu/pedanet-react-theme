@@ -9,7 +9,6 @@ import styles from '../../styles/tree-view';
  * Component props
  */
 interface Props extends WithStyles<typeof styles> {
-
 }
 
 /**

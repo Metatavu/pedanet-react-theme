@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, List, ListItem } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData } from "../../../src/generated/client/src";
@@ -10,7 +10,6 @@ import strings from "../../localization/strings";
 import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
-import TreeMenu, { TreeMenuItem } from "react-simple-tree-menu";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 import TreeView from '../generic/TreeView';
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import BasicLayout from "../BasicLayout";
 import { Post, MenuLocationData } from "../../generated/client/src";
 import ApiUtils from "../../utils/ApiUtils";
-import { WithStyles, withStyles } from "@material-ui/core";
+import { WithStyles, withStyles, Button } from "@material-ui/core";
 import styles from "../../styles/welcome-page";
 
 /**
@@ -91,10 +91,10 @@ class WelcomePage extends React.Component<Props, State> {
     return (
       <BasicLayout lang={ lang }>
         <div className={ classes.buttonSection }>
-          <button className={classes.menuButtonOne}>Varhaiskasvatus ja esiopetus</button>
-          <button className={classes.menuButtonTwo}>Perusopetus</button>
-          <button className={classes.menuButtonThree}>Lukio-opetus</button>
-          <button className={classes.menuButtonFour}>Kansalaisopisto</button>
+          <Button className={ classes.menuButtonOne }>Varhaiskasvatus ja esiopetus</Button>
+          <Button className={ classes.menuButtonTwo }>Perusopetus</Button>
+          <Button className={ classes.menuButtonThree }>Lukio-opetus</Button>
+          <Button className={ classes.menuButtonFour }>Kansalaisopisto</Button>
         </div>
       </BasicLayout>
     );

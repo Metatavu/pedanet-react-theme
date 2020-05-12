@@ -1,6 +1,6 @@
 import { createStyles } from "@material-ui/core";
 import theme from "./theme";
-import headerImage from "../img/headerImage.png";
+import headerImage from "../resources/img/headerImage.png";
 
 export default createStyles({
   logoBar: {

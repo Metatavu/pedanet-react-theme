@@ -1,8 +1,8 @@
 import * as React from "react";
 import { WithStyles, withStyles, Link, Container } from "@material-ui/core";
-import bar from "../img/bar.png";
-import mikkeliLogo from "../img/mikkeliLogo.png";
-import socialNetworks from "../img/social.png";
+import bar from "../resources/img/bar.png";
+import mikkeliLogo from "../resources/img/mikkeliLogo.png";
+import socialNetworks from "../resources/img/social.png";
 import { MenuLocationData, MenuItemData } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
