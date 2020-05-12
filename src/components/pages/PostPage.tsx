@@ -36,6 +36,9 @@ interface State {
   breadcrumb: Breadcrumb[];
 }
 
+/**
+ * Interface for breadcrumb items
+ */
 interface Breadcrumb {
   label?: string;
   link?: string;
