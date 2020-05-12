@@ -197,7 +197,11 @@ class PostPage extends React.Component<Props, State> {
             breadcrumb: path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
           });
         } else if (location.child_items) {
-          this.breadcrumbPath(currentPageOrPostId, location.child_items, path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }])
+          this.breadcrumbPath(
+            currentPageOrPostId,
+            location.child_items,
+            path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
+          )
         }
       });
     }
