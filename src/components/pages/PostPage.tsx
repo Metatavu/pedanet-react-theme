@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData, MenuItemData } from "../../../src/generated/client/src";
@@ -100,11 +100,10 @@ class PostPage extends React.Component<Props, State> {
             </div>
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
-                <Typography variant="h5">{ pageTitle }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
-                { this.renderContent(pageTitle) }
+                { this.renderContent() }
               </div>
               <div className={ classes.sidebar }>
                 <RightSideBar />
@@ -133,7 +132,7 @@ class PostPage extends React.Component<Props, State> {
   /**
    * Render content method
    */
-  private renderContent = (pageTitle: string) => {
+  private renderContent = () => {
     const { classes } = this.props;
 
     return (
@@ -322,9 +321,9 @@ class PostPage extends React.Component<Props, State> {
       const childNode = node.children && node.children.length ? node.children[0] : null;
       if (childNode) {
         return (
-          <a href={this.getLinkHref(childNode)} style={{ textDecoration: "none" }}>
+          <a href={ this.getLinkHref(childNode) } style={{ textDecoration: "none" }}>
             <Button className={ classes.button } color="primary" variant="outlined" endIcon={ <ArrowIcon /> }>
-              {this.getElementTextContent(childNode)}
+              { this.getElementTextContent(childNode) }
             </Button>
           </a>
         );
