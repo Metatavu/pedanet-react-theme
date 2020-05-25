@@ -5,6 +5,7 @@ export * from './Category';
 export * from './Comment';
 export * from './CommentAuthorAvatarUrls';
 export * from './CommentContent';
+export * from './CustomTaxonomy';
 export * from './Error';
 export * from './ErrorData';
 export * from './InlineObject';

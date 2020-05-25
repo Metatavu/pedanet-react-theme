@@ -3,7 +3,7 @@ import BasicLayout from "../BasicLayout";
 import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
-import { Page, Post, MenuLocationData, MenuItemData } from "../../../src/generated/client/src";
+import { Page, Post, MenuLocationData, MenuItemData, PostTitle, CustomTaxonomy } from "../../../src/generated/client/src";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
 import strings from "../../localization/strings";
@@ -20,6 +20,7 @@ import RightSideBar from "../generic/RightSideBar";
 interface Props extends WithStyles<typeof styles> {
   slug: string
   lang: string
+  mainPageSlug: string
 }
 
 /**
@@ -34,6 +35,7 @@ interface State {
   heroContent?: React.ReactElement;
   nav?: MenuLocationData;
   breadcrumb: Breadcrumb[];
+  pageTitle?: PostTitle;
 }
 
 /**
@@ -84,10 +86,9 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug } = this.props;
-    const pageTitle = this.state.loading ? "" : this.setTitleSource();
 
     return (
-      <BasicLayout lang={ lang } title={ pageTitle }>
+      <BasicLayout lang={ lang } title={ this.setTitleSource() }>
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
@@ -163,12 +164,15 @@ class PostPage extends React.Component<Props, State> {
     const apiCalls = await Promise.all([
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
+      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
+      api.getWpV2Pages({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
+      api.getWpV2Posts({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
     const nav = apiCalls[2];
+    const pageTitle = apiCalls[3][0].title || apiCalls[4][0].title;
 
     const currentPageOrPostId = (page) ? page.id : ((post) ? post.id : undefined);
     this.breadcrumbPath(String(currentPageOrPostId), nav.items || []);
@@ -178,7 +182,8 @@ class PostPage extends React.Component<Props, State> {
       post: post,
       isArticle: !!post,
       loading: false,
-      nav: nav
+      nav: nav,
+      pageTitle: pageTitle
     });
 
     this.hidePageLoader();
@@ -294,15 +299,16 @@ class PostPage extends React.Component<Props, State> {
    * Set html source for page content
    */
   private setTitleSource = () => {
+    const { pageTitle, loading } = this.state;
     const noContentError = `${ strings.whoops }`;
     const undefinedContentError = `${ strings.error }`;
 
-    if (this.state.page && this.state.page.title) {
-      return this.state.page.title.rendered || undefinedContentError;
-    } else if (this.state.post && this.state.post.title) {
-      return this.state.post.title.rendered || undefinedContentError;
-    } else {
+    if (pageTitle) {
+      return pageTitle.rendered || undefinedContentError;
+    } else if (!loading) {
       return noContentError;
+    } else {
+      return "";
     }
   }
 

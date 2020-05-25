@@ -56,8 +56,9 @@ class App extends React.Component<Props, State> {
               path="/:slug"
               render={ (props) => (
                 <PostPage
-                  lang={language}
-                  slug={ props.location.pathname as string }
+                  lang={ language }
+                  slug={ this.pathToSlug(props.location.pathname) }
+                  mainPageSlug={ this.pathToTitle(props.location.pathname) }
                 />
               )}
             />
@@ -65,6 +66,36 @@ class App extends React.Component<Props, State> {
         </BrowserRouter>
       </ThemeProvider>
     );
+  }
+
+  /**
+   * Takes in a path and returns the last location
+   * 
+   * @param path path as string
+   */
+  private pathToSlug = (path?: string) => {
+    if (path) {
+      const lastPart = path.match(/\/[^/]+\/?$/g);
+      if (lastPart) {
+        const slashesStripped = lastPart[0].replace(/\//g, "");
+        return slashesStripped;
+      }
+    }
+    return "";
+  }
+
+  /**
+   * Takes in path and returns the first location
+   */
+  private pathToTitle = (path?: string) => {
+    if (path) {
+      const firstPart = path.match(/^\/[^/]+\//g);
+      if (firstPart) {
+        const slashesStripped = firstPart[0].replace(/\//g, "");
+        return slashesStripped;
+      }
+    }
+    return "";
   }
 }
 

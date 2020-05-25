@@ -15,70 +15,70 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Category
+ * @interface CustomTaxonomy
  */
-export interface Category {
+export interface CustomTaxonomy {
     /**
      * Unique identifier for the term.
      * @type {number}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     id?: number;
     /**
      * Number of published posts for the term.
      * @type {number}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     count?: number;
     /**
      * HTML description of the term.
      * @type {string}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     description?: string;
     /**
      * URL of the term.
      * @type {string}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     link?: string;
     /**
      * HTML title for the term.
      * @type {string}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     name?: string;
     /**
      * An alphanumeric identifier for the term unique to its type.
      * @type {string}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     slug?: string;
     /**
      * Type attribution for the term.
      * @type {string}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
-    taxonomy?: CategoryTaxonomyEnum;
+    taxonomy?: CustomTaxonomyTaxonomyEnum;
     /**
      * The parent term ID.
      * @type {number}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     parent?: number;
     /**
      * Meta fields.
      * @type {object}
-     * @memberof Category
+     * @memberof CustomTaxonomy
      */
     meta?: object;
 }
 
-export function CategoryFromJSON(json: any): Category {
-    return CategoryFromJSONTyped(json, false);
+export function CustomTaxonomyFromJSON(json: any): CustomTaxonomy {
+    return CustomTaxonomyFromJSONTyped(json, false);
 }
 
-export function CategoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): Category {
+export function CustomTaxonomyFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomTaxonomy {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -96,7 +96,7 @@ export function CategoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function CategoryToJSON(value?: Category | null): any {
+export function CustomTaxonomyToJSON(value?: CustomTaxonomy | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -121,7 +121,7 @@ export function CategoryToJSON(value?: Category | null): any {
 * @export
 * @enum {string}
 */
-export enum CategoryTaxonomyEnum {
+export enum CustomTaxonomyTaxonomyEnum {
     Category = 'category',
     PostTag = 'post_tag',
     NavMenu = 'nav_menu',
