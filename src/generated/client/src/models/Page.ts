@@ -186,7 +186,7 @@ export interface Page {
      * @type {Array<number>}
      * @memberof Page
      */
-    schools?: Array<number>;
+    taxonomy_schools?: Array<number>;
 }
 
 export function PageFromJSON(json: any): Page {
@@ -223,7 +223,7 @@ export function PageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Page
         'menu_order': !exists(json, 'menu_order') ? undefined : json['menu_order'],
         'meta': !exists(json, 'meta') ? undefined : json['meta'],
         'template': !exists(json, 'template') ? undefined : json['template'],
-        'schools': !exists(json, 'schools') ? undefined : json['schools'],
+        'taxonomy_schools': !exists(json, 'taxonomy/schools') ? undefined : json['taxonomy/schools'],
     };
 }
 
@@ -260,7 +260,7 @@ export function PageToJSON(value?: Page | null): any {
         'menu_order': value.menu_order,
         'meta': value.meta,
         'template': value.template,
-        'schools': value.schools,
+        'taxonomy/schools': value.taxonomy_schools,
     };
 }
 

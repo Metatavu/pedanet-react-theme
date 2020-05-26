@@ -95,7 +95,7 @@ class TreeView extends React.Component<Props, State> {
       pages: pages,
       page: page.length > 0 ? page[0] : undefined,
       post: post.length > 0 ? post[0] : undefined,
-      school: schools.find(item => `${ item.id }` === (page.length > 0 && page[0].schools && page[0].schools.length > 0 ? page[0].schools.join("") : "")),
+      school: schools.find(item => `${ item.id }` === (page.length > 0 && page[0].taxonomy_schools && page[0].taxonomy_schools.length > 0 ? page[0].taxonomy_schools.join("") : "")),
       currentPageOrPostId: String((page) ? page[0].id : ((post) ? post[0].id : undefined))
     });
     if (menus.items) {
@@ -120,7 +120,7 @@ class TreeView extends React.Component<Props, State> {
         const page = pages.find((item) => `${ item.id }` === menu.object_id);
         if (page) {
           const parent = pages.find((item) => item.id === page.parent);
-          if (parent && parent.schools && parent.schools.length === 0 && page.schools && page.schools.length > 0 && page.schools[0] === school.id) {
+          if (parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0 && page.taxonomy_schools && page.taxonomy_schools.length > 0 && page.taxonomy_schools[0] === school.id) {
             isSchoolPage = true;
             if (menu.child_items) {
               this.formLinkTreeStructure(menu.child_items, menu, []);

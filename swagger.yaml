@@ -5135,7 +5135,7 @@ components:
         template:
           description: The theme file to use to display the object.
           type: string
-        schools:
+        taxonomy/schools:
           description: Object school.
           type: array
           items:
