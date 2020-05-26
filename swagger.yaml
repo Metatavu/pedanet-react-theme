@@ -4540,7 +4540,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
       operationId: GetWpV2Themes
-  "/wp/v2/{name}":
+  "/wp/v2/taxonomy/{name}":
     get:
       parameters:
         - name: name

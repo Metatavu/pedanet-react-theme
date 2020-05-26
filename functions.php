@@ -37,6 +37,7 @@
       'show_ui' => true,
       'show_admin_column' => true,
       'show_in_rest' => true,
+      'rest_base' => 'taxonomy/schools',
       'update_count_callback' => '_update_post_term_count',
       'query_var' => true,
       'rewrite' => array( 'slug' => 'school' ),
@@ -56,4 +57,12 @@
     //wp_set_object_terms($id, "Koulu1", "schools");
   }
   add_action('save_post', 'add_school_for_page');
+
+  remove_role("Koulu1");
+  add_role("Koulu1", "Koulu1", array(
+    'read' => true,
+    'edit_pages' => true,
+    'edit_published_pages' => true,
+    'publish_pages' => true
+  ));
 ?>
