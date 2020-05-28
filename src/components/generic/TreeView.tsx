@@ -122,14 +122,14 @@ class TreeView extends React.Component<Props, State> {
           const parent = pages.find((item) => item.id === page.parent);
           if (parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0 && page.taxonomy_schools && page.taxonomy_schools.length > 0 && page.taxonomy_schools[0] === school.id) {
             isSchoolPage = true;
-            if (menu.child_items) {
-              this.formLinkTreeStructure(menu.child_items, menu, []);
-            } else {
+            if (menu.object_id === currentPageOrPostId) {
               this.setState({
                 title: menu.title,
-                treeData: [],
+                treeData: this.linkTreeFromMenuStructure([menu]),
                 initialOpenNodes: []
               });
+            } else {
+              this.formLinkTreeStructure(menu.child_items || [], menu, [`${menu.object_id}`]);
             }
           }
         }
@@ -138,7 +138,7 @@ class TreeView extends React.Component<Props, State> {
         if (menu.object_id === currentPageOrPostId || original.object_id === currentPageOrPostId) {
           this.setState({
             title: original.title,
-            treeData: this.linkTreeFromMenuStructure(original.child_items || []),
+            treeData: this.linkTreeFromMenuStructure([original]),
             initialOpenNodes: opened
           });
         } else if (menu.child_items) {
@@ -150,12 +150,26 @@ class TreeView extends React.Component<Props, State> {
 
   /**
    * Converts menu item data array to link tree structure
-   * 
+   *
    * @param menuStructure menu structure
-   * 
+   *
    * @returns link tree structure
    */
   private linkTreeFromMenuStructure = (menuStructure: MenuItemData[]): LinkTreeStructure[] => {
+    const { school, pages } = this.state;
+    if (!school && pages) {
+      menuStructure = menuStructure.filter((menu) => {
+        const page = pages.find((item) => `${ item.id }` === menu.object_id);
+        if (page) {
+          const parent = pages.find((item) => item.id === page.parent);
+          if (parent) {
+            return parent.taxonomy_schools && parent.taxonomy_schools.length === 0;
+          }
+          return true;
+        }
+        return true;
+      });
+    }
     return menuStructure.map((menu) => {
       return {
         key: menu.object_id || "",
