@@ -1,11 +1,11 @@
-import * as React from 'react';
-import styles from '../../styles/tree-view';
-import ApiUtils from '../../../src/utils/ApiUtils';
-import ChevronRightIcon from '@material-ui/icons/ArrowRight';
-import ExpandMoreIcon from '@material-ui/icons/ArrowDropDown';
-import TreeMenu, { TreeNodeInArray, TreeMenuItem } from 'react-simple-tree-menu';
-import { MenuItemData, Page, CustomTaxonomy, Post } from 'src/generated/client/src';
-import { withStyles, WithStyles, ListItem, List, Typography } from '@material-ui/core';
+import * as React from "react";
+import styles from "../../styles/tree-view";
+import ApiUtils from "../../../src/utils/ApiUtils";
+import ChevronRightIcon from "@material-ui/icons/ArrowRight";
+import ExpandMoreIcon from "@material-ui/icons/ArrowDropDown";
+import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
+import { MenuItemData, Page, CustomTaxonomy, Post } from "src/generated/client/src";
+import { withStyles, WithStyles, ListItem, List, Typography } from "@material-ui/core";
 
 /**
  * Component props
@@ -22,11 +22,10 @@ interface State {
   treeData: LinkTreeStructure[];
   title?: string;
   initialOpenNodes?: string[];
-  pages?: Page[],
-  page?: Page,
-  post?: Post,
-  school?: CustomTaxonomy,
-  currentPageOrPostId?: string
+  pages?: Page[];
+  page?: Page;
+  post?: Post;
+  school?: CustomTaxonomy;
 }
 
 interface LinkTreeStructure extends TreeNodeInArray {
@@ -40,8 +39,8 @@ class TreeView extends React.Component<Props, State> {
 
   /**
    * Component constructor
-   * 
-   * @param props 
+   *
+   * @param props
    */
   constructor(props: Props) {
     super(props);
@@ -69,13 +68,13 @@ class TreeView extends React.Component<Props, State> {
           <TreeMenu data={ treeData } initialOpenNodes={ initialOpenNodes } hasSearch={ false }>
             {({ search, items }) => (
               <List>
-                { items.map((item: any) => { return this.renderTreeMenuItem(item) }) }
+                { items.map((item: any) => this.renderTreeMenuItem(item)) }
               </List>
             )}
           </TreeMenu>
         }
       </>
-    )
+    );
   }
 
   /**
@@ -84,99 +83,103 @@ class TreeView extends React.Component<Props, State> {
   private loadTree = async () => {
     const { lang, slug } = this.props;
     const api = ApiUtils.getApi();
-    const [pages, page, post, menus, schools] = await Promise.all([
-      api.getWpV2Pages({}),
+    const [pages, page, post, schools] = await Promise.all([
+      api.getWpV2Pages({per_page: 100}),
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
       api.getWpV2CustomTaxonomy({ name: "schools" })
     ]);
     this.setState({
       pages: pages,
       page: page.length > 0 ? page[0] : undefined,
       post: post.length > 0 ? post[0] : undefined,
-      school: schools.find(item => `${ item.id }` === (page.length > 0 && page[0].taxonomy_schools && page[0].taxonomy_schools.length > 0 ? page[0].taxonomy_schools.join("") : "")),
-      currentPageOrPostId: String((page) ? page[0].id : ((post) ? post[0].id : undefined))
+      school: schools.find((item: any) => `${ item.id }` === (page.length > 0 && page[0].taxonomy_schools && page[0].taxonomy_schools.length > 0 ? page[0].taxonomy_schools.join("") : "")),
     });
-    if (menus.items) {
-      menus.items.forEach((item) => {
-        this.formLinkTreeStructure(item.child_items || [], item, []);
-      });
+    this.buildTree(pages);
+  }
+
+  /**
+   * Builds link tree structure
+   *
+   * @param pages page array
+   */
+  private buildTree = (pages: Page[]) => {
+    const { page, school } = this.state;
+    const linkTreeStructure: LinkTreeStructure[] = [];
+    let mainPages = pages.filter((item) => item.parent === 0);
+    if (school) {
+      let mainPage = pages.find((item) => item.taxonomy_schools && item.taxonomy_schools.find((x) => x === school.id ));
+      if (mainPage) {
+        let parent = pages.find((item) => item.id === mainPage!.parent);
+        while (parent && parent.taxonomy_schools && parent.taxonomy_schools.find((x) => x === school.id )) {
+          mainPage = parent;
+          parent = pages.find((item) => item.id === mainPage!.parent);
+        }
+        mainPages = [mainPage!];
+      }
     }
-  }
-
-  /**
-   * Finds current parent link and forms link tree structure from it
-   * 
-   * @param menuStructure menu structure
-   * @param original original menu structure
-   * @param opened keeps track of the opened nodes
-   */
-  private formLinkTreeStructure = (menuStructure: MenuItemData[], original: MenuItemData, opened: string[]) => {
-    const { currentPageOrPostId, pages, school } = this.state;
-    let isSchoolPage: boolean;
-    menuStructure.forEach((menu) => {
-      if (pages && school) {
-        const page = pages.find((item) => `${ item.id }` === menu.object_id);
-        if (page) {
-          const parent = pages.find((item) => item.id === page.parent);
-          if (parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0 && page.taxonomy_schools && page.taxonomy_schools.length > 0 && page.taxonomy_schools[0] === school.id) {
-            isSchoolPage = true;
-            if (menu.object_id === currentPageOrPostId) {
-              this.setState({
-                title: menu.title,
-                treeData: this.linkTreeFromMenuStructure([menu]),
-                initialOpenNodes: []
-              });
-            } else {
-              this.formLinkTreeStructure(menu.child_items || [], menu, [`${menu.object_id}`]);
-            }
-          }
+    mainPages.forEach((mainPage) => {
+      const childPages = pages.filter((item) => item.parent === mainPage.id);
+      linkTreeStructure.push(
+        {
+          key: `${ mainPage.id }`,
+          label: mainPage.title ? mainPage.title.rendered || "" : "",
+          link: mainPage.link || "",
+          nodes: this.showChildren(childPages, mainPage) ? this.mapTreeChildren(childPages, pages, [`${ mainPage.id }`]) : undefined
         }
+      );
+      if (page && page.id === mainPage.id) {
+        this.setState({
+          initialOpenNodes: [""]
+        });
       }
-      if (!isSchoolPage) {
-        if (menu.object_id === currentPageOrPostId || original.object_id === currentPageOrPostId) {
-          this.setState({
-            title: original.title,
-            treeData: this.linkTreeFromMenuStructure([original]),
-            initialOpenNodes: opened
-          });
-        } else if (menu.child_items) {
-          this.formLinkTreeStructure(menu.child_items, original, [...opened, `${ opened.length > 0 ? opened[opened.length - 1] + "/" : ""}${ menu.object_id }`]);
-        }
-      }
+    });
+    this.setState({
+      treeData: linkTreeStructure
     });
   }
 
   /**
-   * Converts menu item data array to link tree structure
+   * Checks if children exist and whether they should be displayed
    *
-   * @param menuStructure menu structure
-   *
-   * @returns link tree structure
+   * @param children child page array
    */
-  private linkTreeFromMenuStructure = (menuStructure: MenuItemData[]): LinkTreeStructure[] => {
-    const { school, pages } = this.state;
-    if (!school && pages) {
-      menuStructure = menuStructure.filter((menu) => {
-        const page = pages.find((item) => `${ item.id }` === menu.object_id);
-        if (page) {
-          const parent = pages.find((item) => item.id === page.parent);
-          if (parent) {
-            return parent.taxonomy_schools && parent.taxonomy_schools.length === 0;
-          }
-          return true;
+  private showChildren = (children: Page[], page: Page) => {
+    if (children && children.length > 0) {
+      const { school, pages } = this.state;
+      if (pages) {
+        const parent = pages.find((item) => item.id === page.parent);
+        if (!school && page.taxonomy_schools && page.taxonomy_schools.length > 0 && parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0) {
+          return false;
         }
         return true;
-      });
-    }
-    return menuStructure.map((menu) => {
-      return {
-        key: menu.object_id || "",
-        label: menu.title || "",
-        link: menu.url || "",
-        nodes: menu.child_items ? this.linkTreeFromMenuStructure(menu.child_items) : undefined
       }
+    }
+    return false;
+  }
+
+  /**
+   * Maps tree children as link tree structure arrays and returns them
+   *
+   * @param children child page array
+   * @param pages page array
+   * @param opened gathers initially opened nodes
+   */
+  private mapTreeChildren = (children: Page[], pages: Page[], opened: string[]): LinkTreeStructure[] => {
+    const { page } = this.state;
+    return children.map((child) => {
+      if (page && page.id === child.id) {
+        this.setState({
+          initialOpenNodes: opened
+        });
+      }
+      const childPages = pages.filter((item) => item.parent === child.id);
+      return {
+        key: `${ child.id }`,
+        label: child.title ? child.title.rendered || "" : "",
+        link: child.link || "",
+        nodes: this.showChildren(childPages, child) ? this.mapTreeChildren(childPages, pages, [...opened, `${ opened.length > 0 ? opened[opened.length - 1] + "/" : ""}${ child.id }`]) : undefined
+      };
     });
   }
 
@@ -188,13 +191,13 @@ class TreeView extends React.Component<Props, State> {
   private renderTreeMenuItem = (item: TreeMenuItem) => {
     const { classes } = this.props;
     const toggleIcon = (on: boolean) => on ? 
-      <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> : 
+      <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
       <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
     const { level, focused, hasNodes, toggleNode, isOpen, label, link } = item;
     return (
       <ListItem { ...item } style={{ paddingLeft: level * 20 }}>
         <a className={ classes.treeDataLink } href={ link }>{ label }</a>
-        <div style={{ display: 'inline-block' }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
+        <div style={{ display: "inline-block" }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
           { hasNodes && toggleIcon(isOpen) }
         </div>
       </ListItem>

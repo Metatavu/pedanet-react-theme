@@ -62,17 +62,4 @@
     }
   }
   add_action('save_post', 'add_school_for_page');
-
-  remove_role("Koulu1");
-  add_role("Koulu1", "Koulu1", array(
-    'edit_pages' => true,
-    'edit_others_pages' => false,
-    'read_pages' => true,
-    'edit_pages' => true,
-    'publish_pages' => true,
-    'read' => true,
-    'edit_published_pages' => true,
-    'delete_pages' => true,
-    'delete_published_pages' => true
-  ));
 ?>
