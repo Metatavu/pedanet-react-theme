@@ -32,7 +32,7 @@
       'menu_name' => __( 'Schools' ),
     ); 
     register_taxonomy('schools','page',array(
-      'hierarchical' => false,
+      'hierarchical' => true,
       'labels' => $labels,
       'show_ui' => true,
       'show_admin_column' => true,
@@ -51,18 +51,15 @@
   /**
    * Adds school identifier to page
    * 
-   * Still in-progress, needs role checking to determine when to add term and which term
+   * @param id post id
    */
   function add_school_for_page($id) {
-    //wp_set_object_terms($id, "Koulu1", "schools");
+    $terms = get_terms('schools');
+    foreach ($terms as $term) {
+      if (wp_get_current_user()->roles[0] === $term->name) {
+        wp_set_object_terms($id, wp_get_current_user()->roles[0], "schools");
+      }
+    }
   }
   add_action('save_post', 'add_school_for_page');
-
-  remove_role("Koulu1");
-  add_role("Koulu1", "Koulu1", array(
-    'read' => true,
-    'edit_pages' => true,
-    'edit_published_pages' => true,
-    'publish_pages' => true
-  ));
 ?>

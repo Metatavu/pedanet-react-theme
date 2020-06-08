@@ -1,9 +1,9 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
-import { Page, Post, MenuLocationData, MenuItemData, PostTitle, CustomTaxonomy } from "../../../src/generated/client/src";
+import { Page, Post, MenuLocationData, PostTitle } from "../../../src/generated/client/src";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
 import strings from "../../localization/strings";
@@ -11,7 +11,7 @@ import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
-import TreeView from '../generic/TreeView';
+import TreeView from "../generic/TreeView";
 import RightSideBar from "../generic/RightSideBar";
 
 /**
@@ -36,6 +36,7 @@ interface State {
   nav?: MenuLocationData;
   breadcrumb: Breadcrumb[];
   pageTitle?: PostTitle;
+  title: string;
 }
 
 /**
@@ -61,7 +62,8 @@ class PostPage extends React.Component<Props, State> {
     this.state = {
       isArticle: false,
       loading: false,
-      breadcrumb: []
+      breadcrumb: [],
+      title: ""
     };
   }
 
@@ -86,6 +88,7 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug } = this.props;
+    const { title } = this.state;
 
     return (
       <BasicLayout lang={ lang } title={ this.setTitleSource() }>
@@ -101,6 +104,7 @@ class PostPage extends React.Component<Props, State> {
             </div>
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
+                <Typography variant="h5">{ title }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
@@ -167,15 +171,14 @@ class PostPage extends React.Component<Props, State> {
       api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
       api.getWpV2Pages({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
+      api.getWpV2Pages({ per_page: 100 })
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
     const nav = apiCalls[2];
     const pageTitle = apiCalls[3][0].title || apiCalls[4][0].title;
-
-    const currentPageOrPostId = (page) ? page.id : ((post) ? post.id : undefined);
-    this.breadcrumbPath(String(currentPageOrPostId), nav.items || []);
+    const pages = apiCalls[5];
 
     this.setState({
       page: page,
@@ -186,32 +189,40 @@ class PostPage extends React.Component<Props, State> {
       pageTitle: pageTitle
     });
 
+    this.breadcrumbPath(pages);
     this.hidePageLoader();
   }
 
   /**
-   * Collects breadcrumbs
-   * 
-   * @param currentPageOrPostId current page or post id
-   * @param locations menu item data array
-   * @param path array of breadcrumbs
+   * Initializes building a breadcrumb
+   *
+   * @param pages page array
    */
-  private breadcrumbPath = (currentPageOrPostId: string, locations: MenuItemData[], path?: Breadcrumb[]) => {
-    if (locations.length > 0) {
-      locations.forEach((location) => {
-        if (currentPageOrPostId === location.object_id) {
-          this.setState({
-            breadcrumb: path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
-          });
-        } else if (location.child_items) {
-          this.breadcrumbPath(
-            currentPageOrPostId,
-            location.child_items,
-            path ? [...path, { label: location.title, link: location.url }] : [{ label: location.title, link: location.url }]
-          )
-        }
-      });
-    }
+  private breadcrumbPath = (pages: Page[]) => {
+    const mainPages = pages.filter(item => item.parent === 0);
+    this.buildPath(mainPages, pages);
+  }
+
+  /**
+   * Recursively builds breadcrumb
+   * 
+   * @param children child pages array
+   * @param pages all pages array
+   * @param path collected breadcumbs
+   */
+  private buildPath = (children: Page[], pages: Page[], path?: Breadcrumb[]) => {
+    const { page } = this.state;
+    children.forEach(childPage => {
+      const childPages = pages.filter(item => item.parent === childPage.id);     
+      if (page && (page.id === childPage.id) && childPage.title) {
+        this.setState({
+          title: childPage.title.rendered || "",
+          breadcrumb: path ? [...path, { label: childPage.title.rendered || "", link: childPage.link || "" }] : [{ label: childPage.title.rendered || "", link: childPage.link || "" }]
+        });
+      } else if (childPages && childPage.title) {
+        this.buildPath(childPages, pages, path ? [...path, { label: childPage.title.rendered || "", link: childPage.link || "" }] : [{ label: childPage.title.rendered || "", link: childPage.link || "" }]);
+      }
+    });
   }
 
   /**
