@@ -199,7 +199,7 @@ class PostPage extends React.Component<Props, State> {
    * @param pages page array
    */
   private breadcrumbPath = (pages: Page[]) => {
-    const mainPages = pages.filter((item) => item.parent === 0);
+    const mainPages = pages.filter(item => item.parent === 0);
     this.buildPath(mainPages, pages);
   }
 
