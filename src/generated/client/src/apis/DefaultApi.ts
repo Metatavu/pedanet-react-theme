@@ -280,6 +280,8 @@ export interface GetWpV2MediaByIdRequest {
 
 export interface GetWpV2PagesRequest {
     context?: GetWpV2PagesContextEnum;
+    categories?: Array<number>;
+    taxonomy_academy?: Array<number>;
     page?: number;
     per_page?: number;
     search?: string;
@@ -2080,6 +2082,14 @@ export class DefaultApi extends runtime.BaseAPI {
 
         if (requestParameters.context !== undefined) {
             queryParameters['context'] = requestParameters.context;
+        }
+
+        if (requestParameters.categories) {
+            queryParameters['categories'] = requestParameters.categories;
+        }
+
+        if (requestParameters.taxonomy_academy) {
+            queryParameters['taxonomy_academy'] = requestParameters.taxonomy_academy;
         }
 
         if (requestParameters.page !== undefined) {

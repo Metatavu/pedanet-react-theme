@@ -176,17 +176,23 @@ export interface Page {
      */
     meta?: object;
     /**
+     * Page categories
+     * @type {Array<number>}
+     * @memberof Page
+     */
+    categories?: Array<number>;
+    /**
      * The theme file to use to display the object.
      * @type {string}
      * @memberof Page
      */
     template?: string;
     /**
-     * Object school.
+     * Object academy.
      * @type {Array<number>}
      * @memberof Page
      */
-    taxonomy_schools?: Array<number>;
+    taxonomy_academy?: Array<number>;
 }
 
 export function PageFromJSON(json: any): Page {
@@ -222,8 +228,9 @@ export function PageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Page
         'ping_status': !exists(json, 'ping_status') ? undefined : json['ping_status'],
         'menu_order': !exists(json, 'menu_order') ? undefined : json['menu_order'],
         'meta': !exists(json, 'meta') ? undefined : json['meta'],
+        'categories': !exists(json, 'categories') ? undefined : json['categories'],
         'template': !exists(json, 'template') ? undefined : json['template'],
-        'taxonomy_schools': !exists(json, 'taxonomy/schools') ? undefined : json['taxonomy/schools'],
+        'taxonomy_academy': !exists(json, 'taxonomy/academy') ? undefined : json['taxonomy/academy'],
     };
 }
 
@@ -259,8 +266,9 @@ export function PageToJSON(value?: Page | null): any {
         'ping_status': value.ping_status,
         'menu_order': value.menu_order,
         'meta': value.meta,
+        'categories': value.categories,
         'template': value.template,
-        'taxonomy/schools': value.taxonomy_schools,
+        'taxonomy/academy': value.taxonomy_academy,
     };
 }
 

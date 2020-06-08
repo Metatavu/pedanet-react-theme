@@ -4,7 +4,7 @@ import ApiUtils from "../../../src/utils/ApiUtils";
 import ChevronRightIcon from "@material-ui/icons/ArrowRight";
 import ExpandMoreIcon from "@material-ui/icons/ArrowDropDown";
 import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
-import { MenuItemData, Page, CustomTaxonomy, Post } from "src/generated/client/src";
+import { Page, CustomTaxonomy, Post } from "src/generated/client/src";
 import { withStyles, WithStyles, ListItem, List, Typography } from "@material-ui/core";
 
 /**
@@ -23,9 +23,10 @@ interface State {
   title?: string;
   initialOpenNodes?: string[];
   pages?: Page[];
+  schoolBlogPages?: Page[],
   page?: Page;
   post?: Post;
-  school?: CustomTaxonomy;
+  academy?: CustomTaxonomy;
 }
 
 interface LinkTreeStructure extends TreeNodeInArray {
@@ -83,79 +84,72 @@ class TreeView extends React.Component<Props, State> {
   private loadTree = async () => {
     const { lang, slug } = this.props;
     const api = ApiUtils.getApi();
-    const [pages, page, post, schools] = await Promise.all([
-      api.getWpV2Pages({per_page: 100}),
+    const [pages, page, post, academies, blogCategory] = await Promise.all([
+      api.getWpV2Pages({ per_page: 100 }),
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getWpV2CustomTaxonomy({ name: "schools" })
+      api.getWpV2CustomTaxonomy({ name: "academy" }),
+      api.getWpV2Categories({ slug: [ "blogi" ] })
+    ]);
+    const academy = academies.find(item => `${ item.id }` === (page.length > 0 && page[0].taxonomy_academy && page[0].taxonomy_academy.length > 0 ? page[0].taxonomy_academy.join("") : ""));
+    const [blogPages, schoolBlogPages] = await Promise.all([
+      api.getWpV2Pages({ categories: [ blogCategory.length > 0 ? blogCategory[0].id || -1 : -1 ] }),
+      api.getWpV2Pages({ categories: [ blogCategory.length > 0 ? blogCategory[0].id || -1 : -1 ], taxonomy_academy: [ academy ? academy.id || -1 : -1 ] })
     ]);
     this.setState({
-      pages: pages,
+      pages: pages.filter(item => !blogPages.find(blog => blog.id === item.id)),
+      schoolBlogPages: schoolBlogPages,
       page: page.length > 0 ? page[0] : undefined,
       post: post.length > 0 ? post[0] : undefined,
-      school: schools.find((item: any) => `${ item.id }` === (page.length > 0 && page[0].taxonomy_schools && page[0].taxonomy_schools.length > 0 ? page[0].taxonomy_schools.join("") : "")),
+      academy: academy
     });
-    this.buildTree(pages);
+    this.buildTree();
   }
 
   /**
    * Builds link tree structure
-   *
-   * @param pages page array
    */
-  private buildTree = (pages: Page[]) => {
-    const { page, school } = this.state;
+  private buildTree = () => {
+    const { page, academy } = this.state;
     const linkTreeStructure: LinkTreeStructure[] = [];
-    let mainPages = pages.filter((item) => item.parent === 0);
-    if (school) {
-      let mainPage = pages.find((item) => item.taxonomy_schools && item.taxonomy_schools.find((x) => x === school.id ));
-      if (mainPage) {
-        let parent = pages.find((item) => item.id === mainPage!.parent);
-        while (parent && parent.taxonomy_schools && parent.taxonomy_schools.find((x) => x === school.id )) {
-          mainPage = parent;
-          parent = pages.find((item) => item.id === mainPage!.parent);
+    let { pages } = this.state;
+    if (pages) {
+      let mainPages = pages.filter(item => item.parent === 0);
+      if (academy) {
+        let mainPage = pages.find(item => item.taxonomy_academy && item.taxonomy_academy.find(x => x === academy.id));
+        if (mainPage) {
+          const { schoolBlogPages } = this.state;
+          let parent = pages.find((item) => item.id === mainPage!.parent);
+          while (parent && parent.taxonomy_academy && parent.taxonomy_academy.find(x => x === academy.id )) {
+            mainPage = parent;
+            parent = pages.find((item) => item.id === mainPage!.parent);
+          }
+          if (schoolBlogPages) {
+              pages = [...pages, ...schoolBlogPages.map(schoolBlogPage => { return {...schoolBlogPage, parent: mainPage!.id} })];
+          }
+          mainPages = [mainPage!];
         }
-        mainPages = [mainPage!];
       }
+      mainPages.forEach((mainPage) => {
+        const childPages = pages!.filter(item => item.parent === mainPage.id);
+        linkTreeStructure.push(
+          {
+            key: `${ mainPage.id }`,
+            label: mainPage.title ? mainPage.title.rendered || "" : "",
+            link: mainPage.link || "",
+            nodes: this.showChildren(childPages, mainPage) ? this.mapTreeChildren(childPages, pages!, [`${ mainPage.id }`]) : undefined
+          }
+        );
+        if (page && page.id === mainPage.id) {
+          this.setState({
+            initialOpenNodes: [""]
+          });
+        }
+      });
+      this.setState({
+        treeData: linkTreeStructure
+      });
     }
-    mainPages.forEach((mainPage) => {
-      const childPages = pages.filter((item) => item.parent === mainPage.id);
-      linkTreeStructure.push(
-        {
-          key: `${ mainPage.id }`,
-          label: mainPage.title ? mainPage.title.rendered || "" : "",
-          link: mainPage.link || "",
-          nodes: this.showChildren(childPages, mainPage) ? this.mapTreeChildren(childPages, pages, [`${ mainPage.id }`]) : undefined
-        }
-      );
-      if (page && page.id === mainPage.id) {
-        this.setState({
-          initialOpenNodes: [""]
-        });
-      }
-    });
-    this.setState({
-      treeData: linkTreeStructure
-    });
-  }
-
-  /**
-   * Checks if children exist and whether they should be displayed
-   *
-   * @param children child page array
-   */
-  private showChildren = (children: Page[], page: Page) => {
-    if (children && children.length > 0) {
-      const { school, pages } = this.state;
-      if (pages) {
-        const parent = pages.find((item) => item.id === page.parent);
-        if (!school && page.taxonomy_schools && page.taxonomy_schools.length > 0 && parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0) {
-          return false;
-        }
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -184,13 +178,32 @@ class TreeView extends React.Component<Props, State> {
   }
 
   /**
+   * Checks if children exist and whether they should be displayed
+   *
+   * @param children child page array
+   */
+  private showChildren = (children: Page[], page: Page) => {
+    if (children && children.length > 0) {
+      const { academy, pages } = this.state;
+      if (pages) {
+        const parent = pages.find((item) => item.id === page.parent);
+        if (!academy && page.taxonomy_academy && page.taxonomy_academy.length > 0 && parent && parent.taxonomy_academy && parent.taxonomy_academy.length === 0) {
+          return false;
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Renders tree menu item
    *
    * @param item tree menu item
    */
   private renderTreeMenuItem = (item: TreeMenuItem) => {
     const { classes } = this.props;
-    const toggleIcon = (on: boolean) => on ? 
+    const toggleIcon = (on: boolean) => on ?
       <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
       <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
     const { level, focused, hasNodes, toggleNode, isOpen, label, link } = item;
