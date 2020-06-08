@@ -212,8 +212,8 @@ class PostPage extends React.Component<Props, State> {
    */
   private buildPath = (children: Page[], pages: Page[], path?: Breadcrumb[]) => {
     const { page } = this.state;
-    children.forEach((childPage) => {
-      const childPages = pages.filter((item) => item.parent === childPage.id);     
+    children.forEach(childPage => {
+      const childPages = pages.filter(item => item.parent === childPage.id);     
       if (page && (page.id === childPage.id) && childPage.title) {
         this.setState({
           title: childPage.title.rendered || "",
