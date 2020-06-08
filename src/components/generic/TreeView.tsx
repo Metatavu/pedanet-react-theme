@@ -113,7 +113,7 @@ class TreeView extends React.Component<Props, State> {
         let parent = pages.find(item => item.id === mainPage!.parent);
         while (parent && parent.taxonomy_schools && parent.taxonomy_schools.find((x) => x === school.id )) {
           mainPage = parent;
-          parent = pages.find((item) => item.id === mainPage!.parent);
+          parent = pages.find(item => item.id === mainPage!.parent);
         }
         mainPages = [mainPage!];
       }
