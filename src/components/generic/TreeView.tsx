@@ -84,7 +84,7 @@ class TreeView extends React.Component<Props, State> {
     const { lang, slug } = this.props;
     const api = ApiUtils.getApi();
     const [pages, page, post, schools] = await Promise.all([
-      api.getWpV2Pages({per_page: 100}),
+      api.getWpV2Pages({ per_page: 100 }),
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2CustomTaxonomy({ name: "schools" })
