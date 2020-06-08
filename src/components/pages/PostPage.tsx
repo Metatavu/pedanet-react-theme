@@ -171,7 +171,7 @@ class PostPage extends React.Component<Props, State> {
       api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
       api.getWpV2Pages({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
-      api.getWpV2Pages({per_page: 100})
+      api.getWpV2Pages({ per_page: 100 })
     ]);
 
     const page = apiCalls[0][0];
