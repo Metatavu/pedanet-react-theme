@@ -199,7 +199,7 @@ class PostPage extends React.Component<Props, State> {
    * @param pages page array
    */
   private breadcrumbPath = (pages: Page[]) => {
-    const mainPages = pages.filter((item) => item.parent === 0);
+    const mainPages = pages.filter(item => item.parent === 0);
     this.buildPath(mainPages, pages);
   }
 
@@ -212,8 +212,8 @@ class PostPage extends React.Component<Props, State> {
    */
   private buildPath = (children: Page[], pages: Page[], path?: Breadcrumb[]) => {
     const { page } = this.state;
-    children.forEach((childPage) => {
-      const childPages = pages.filter((item) => item.parent === childPage.id);     
+    children.forEach(childPage => {
+      const childPages = pages.filter(item => item.parent === childPage.id);     
       if (page && (page.id === childPage.id) && childPage.title) {
         this.setState({
           title: childPage.title.rendered || "",

@@ -119,10 +119,10 @@ class TreeView extends React.Component<Props, State> {
         let mainPage = pages.find(item => item.taxonomy_academy && item.taxonomy_academy.find(x => x === academy.id));
         if (mainPage) {
           const { schoolBlogPages } = this.state;
-          let parent = pages.find((item) => item.id === mainPage!.parent);
+          let parent = pages.find(item => item.id === mainPage!.parent);
           while (parent && parent.taxonomy_academy && parent.taxonomy_academy.find(x => x === academy.id )) {
             mainPage = parent;
-            parent = pages.find((item) => item.id === mainPage!.parent);
+            parent = pages.find(item => item.id === mainPage!.parent);
           }
           if (schoolBlogPages) {
               pages = [...pages, ...schoolBlogPages.map(schoolBlogPage => { return {...schoolBlogPage, parent: mainPage!.id} })];
@@ -130,7 +130,7 @@ class TreeView extends React.Component<Props, State> {
           mainPages = [mainPage!];
         }
       }
-      mainPages.forEach((mainPage) => {
+      mainPages.forEach(mainPage => {
         const childPages = pages!.filter(item => item.parent === mainPage.id);
         linkTreeStructure.push(
           {
@@ -186,7 +186,7 @@ class TreeView extends React.Component<Props, State> {
     if (children && children.length > 0) {
       const { academy, pages } = this.state;
       if (pages) {
-        const parent = pages.find((item) => item.id === page.parent);
+        const parent = pages.find(item => item.id === page.parent);
         if (!academy && page.taxonomy_academy && page.taxonomy_academy.length > 0 && parent && parent.taxonomy_academy && parent.taxonomy_academy.length === 0) {
           return false;
         }
