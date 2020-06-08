@@ -118,8 +118,8 @@ class TreeView extends React.Component<Props, State> {
         mainPages = [mainPage!];
       }
     }
-    mainPages.forEach((mainPage) => {
-      const childPages = pages.filter((item) => item.parent === mainPage.id);
+    mainPages.forEach(mainPage => {
+      const childPages = pages.filter(item => item.parent === mainPage.id);
       linkTreeStructure.push(
         {
           key: `${ mainPage.id }`,
