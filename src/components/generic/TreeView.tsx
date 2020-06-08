@@ -106,11 +106,11 @@ class TreeView extends React.Component<Props, State> {
   private buildTree = (pages: Page[]) => {
     const { page, school } = this.state;
     const linkTreeStructure: LinkTreeStructure[] = [];
-    let mainPages = pages.filter((item) => item.parent === 0);
+    let mainPages = pages.filter(item => item.parent === 0);
     if (school) {
-      let mainPage = pages.find((item) => item.taxonomy_schools && item.taxonomy_schools.find((x) => x === school.id ));
+      let mainPage = pages.find(item => item.taxonomy_schools && item.taxonomy_schools.find((x) => x === school.id ));
       if (mainPage) {
-        let parent = pages.find((item) => item.id === mainPage!.parent);
+        let parent = pages.find(item => item.id === mainPage!.parent);
         while (parent && parent.taxonomy_schools && parent.taxonomy_schools.find((x) => x === school.id )) {
           mainPage = parent;
           parent = pages.find((item) => item.id === mainPage!.parent);
