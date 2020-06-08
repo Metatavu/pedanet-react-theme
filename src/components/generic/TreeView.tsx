@@ -148,7 +148,7 @@ class TreeView extends React.Component<Props, State> {
     if (children && children.length > 0) {
       const { school, pages } = this.state;
       if (pages) {
-        const parent = pages.find((item) => item.id === page.parent);
+        const parent = pages.find(item => item.id === page.parent);
         if (!school && page.taxonomy_schools && page.taxonomy_schools.length > 0 && parent && parent.taxonomy_schools && parent.taxonomy_schools.length === 0) {
           return false;
         }
