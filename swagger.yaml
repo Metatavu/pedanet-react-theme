@@ -973,6 +973,20 @@ paths:
               - embed
               - edit
             default: view
+        - name: categories
+          in: query
+          description: Limit result set to all items that have the specified term assigned in the categories taxonomy.
+          schema:
+            type: integer
+            items:
+              type: integer
+        - name: taxonomy_academy
+          in: query
+          description: Page categories
+          schema:
+            type: integer
+            items:
+              type: integer
         - name: page
           in: query
           description: Current page of the collection.
@@ -5132,11 +5146,16 @@ components:
           description: Meta fields.
           type: object
           properties: {}
+        categories:
+          description: Page categories
+          type: integer
+          items:
+            type: integer
         template:
           description: The theme file to use to display the object.
           type: string
-        taxonomy/schools:
-          description: Object school.
+        taxonomy/academy:
+          description: Object academy.
           type: array
           items:
             type: integer
