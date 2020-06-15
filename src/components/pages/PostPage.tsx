@@ -37,6 +37,15 @@ interface State {
   breadcrumb: Breadcrumb[];
   pageTitle?: PostTitle;
   title: string;
+  relatedLinks: RelatedLink[];
+}
+
+/**
+ * Interface for related link
+ */
+export interface RelatedLink {
+  name: string,
+  link: string
 }
 
 /**
@@ -63,7 +72,8 @@ class PostPage extends React.Component<Props, State> {
       isArticle: false,
       loading: false,
       breadcrumb: [],
-      title: ""
+      title: "",
+      relatedLinks: []
     };
   }
 
@@ -88,7 +98,7 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug } = this.props;
-    const { title } = this.state;
+    const { title, relatedLinks } = this.state;
 
     return (
       <BasicLayout lang={ lang } title={ this.setTitleSource() }>
@@ -111,7 +121,9 @@ class PostPage extends React.Component<Props, State> {
                 { this.renderContent() }
               </div>
               <div className={ classes.sidebar }>
-                <RightSideBar />
+                { relatedLinks.length > 0 &&
+                  <RightSideBar links={ relatedLinks } />
+                }
               </div>
             </div>
           </div>
@@ -288,7 +300,7 @@ class PostPage extends React.Component<Props, State> {
     if (!renderedContent) {
       return undefinedContentError;
     }
-
+    
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
 
   }
@@ -332,6 +344,24 @@ class PostPage extends React.Component<Props, State> {
   private transformContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
+
+    // Find blocks containing related links and gather them for right side panel
+    if (classNames.indexOf("related-links") > -1) {
+      if (node.children && node.children.length > 0 && node.children[0].data) {
+        const { relatedLinks } = this.state;
+        const split = node.children[0].data.split(",");
+        const relatedLink = split.length < 2 ? undefined : {
+          name: split[0],
+          link: split[1]
+        };
+        if (relatedLink && !relatedLinks.find(object => object.name === relatedLink.name)) {
+          this.setState({
+            relatedLinks: [...relatedLinks, relatedLink]
+          });
+        }
+        return null;
+      }
+    }
 
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
