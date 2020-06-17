@@ -31,19 +31,7 @@
       'choose_from_most_used' => __( 'Valitse eniten käytetyistä oppilaitoksista' ),
       'menu_name' => __( 'Oppilaitokset' )
     ); 
-    register_taxonomy('academy','page',array(
-      'hierarchical' => true,
-      'labels' => $labels,
-      'show_ui' => true,
-      'show_admin_column' => true,
-      'show_in_rest' => true,
-      'rest_base' => 'taxonomy/academy',
-      'update_count_callback' => '_update_post_term_count',
-      'query_var' => true,
-      'rewrite' => array( 'slug' => 'academy' ),
-      'public' => true
-    ));
-    register_taxonomy('academy','post',array(
+    register_taxonomy('academy',array('page', 'post'),array(
       'hierarchical' => true,
       'labels' => $labels,
       'show_ui' => true,
