@@ -43,6 +43,18 @@
       'rewrite' => array( 'slug' => 'academy' ),
       'public' => true
     ));
+    register_taxonomy('academy','post',array(
+      'hierarchical' => true,
+      'labels' => $labels,
+      'show_ui' => true,
+      'show_admin_column' => true,
+      'show_in_rest' => true,
+      'rest_base' => 'taxonomy/academy',
+      'update_count_callback' => '_update_post_term_count',
+      'query_var' => true,
+      'rewrite' => array( 'slug' => 'academy' ),
+      'public' => true
+    ));
   }
   add_action( 'init', 'register_custom_taxonomy', 0 );
 
@@ -61,4 +73,13 @@
     }
   }
   add_action('save_post', 'add_terms_for_post');
+
+  function links_block_output( $output, $attributes ) {
+    ob_start();
+
+    echo '<div class="related-links">' . $attributes['name'] . ',' . $attributes['link'] . '</div>';
+
+    return ob_get_clean();
+  }
+  add_filter( 'lazyblock/related-links/frontend_callback', 'links_block_output', 10, 2 );
 ?>

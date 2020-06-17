@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { withStyles, WithStyles } from '@material-ui/core';
 import styles from '../../styles/right-side-bar';
+import { RelatedLink } from '../pages/PostPage';
 
 /**
  * Component props
  */
 interface Props extends WithStyles<typeof styles> {
+  links: RelatedLink[];
 }
 
 /**
@@ -39,8 +41,23 @@ class RightSideBar extends React.Component<Props, State> {
    * Component render
    */
   public render() {
+    const { links } = this.props;
     return (
-      <p>Aiheeseen liittyviä linkkejä</p>
+      <>
+        <p>Aiheeseen liittyviä linkkejä</p>
+        {
+          links.map(linkObject => {
+            if (!linkObject.link.match(/^https:\/\/|^http:\/\//g)) {
+              linkObject.link = `https://${linkObject.link}`;
+            }
+            return (
+              <div>
+                <a target="_blank" href={ linkObject.link }>{ linkObject.name }</a>
+              </div>
+            )
+          })
+        }
+      </>
     )
   }
 }
