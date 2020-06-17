@@ -68,18 +68,8 @@
     foreach ($terms as $term) {
       if (in_array(strtolower($term->name), wp_get_current_user()->roles)) {
         wp_set_object_terms($id, array($term->name), 'academy');
-        wp_set_object_terms($id, array('Blogi'), 'category');
       }
     }
   }
   add_action('save_post', 'add_terms_for_post');
-
-  function links_block_output( $output, $attributes ) {
-    ob_start();
-
-    echo '<div class="related-links">' . $attributes['name'] . ',' . $attributes['link'] . '</div>';
-
-    return ob_get_clean();
-  }
-  add_filter( 'lazyblock/related-links/frontend_callback', 'links_block_output', 10, 2 );
 ?>
