@@ -54,7 +54,7 @@
   function add_terms_for_post($id) {
     $terms = get_terms('academy');
     foreach ($terms as $term) {
-      if (in_array(strtolower($term->name), wp_get_current_user()->roles)) {
+      if (in_array($term->name, wp_get_current_user()->roles)) {
         wp_set_object_terms($id, array($term->name), 'academy');
       }
     }
