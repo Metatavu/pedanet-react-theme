@@ -4,8 +4,8 @@ import ApiUtils from "../../../src/utils/ApiUtils";
 import ChevronRightIcon from "@material-ui/icons/ArrowRight";
 import ExpandMoreIcon from "@material-ui/icons/ArrowDropDown";
 import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
-import { Page, CustomTaxonomy, Post, MenuItemData } from "src/generated/client/src";
-import { withStyles, WithStyles, ListItem, List, Typography } from "@material-ui/core";
+import { Page } from "src/generated/client/src";
+import { withStyles, WithStyles, ListItem, List, CircularProgress } from "@material-ui/core";
 
 /**
  * Component props
@@ -20,18 +20,15 @@ interface Props extends WithStyles<typeof styles> {
  */
 interface State {
   treeData: LinkTreeStructure[];
-  title?: string;
   initialOpenNodes?: string[];
-  pages?: Page[];
-  schoolBlogPages?: Page[],
   page?: Page;
-  post?: Post;
-  academy?: CustomTaxonomy;
-  academyPage?: MenuItemData[];
+  onAcademyPage: boolean;
+  loadingChildren: boolean;
 }
 
 interface LinkTreeStructure extends TreeNodeInArray {
   link: string;
+  academyPage: boolean;
 }
 
 /**
@@ -47,7 +44,9 @@ class TreeView extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      treeData: []
+      treeData: [],
+      onAcademyPage: false,
+      loadingChildren: false
     };
   }
 
@@ -62,11 +61,10 @@ class TreeView extends React.Component<Props, State> {
    * Component render
    */
   public render() {
-    const { treeData, title, initialOpenNodes } = this.state;
+    const { treeData, initialOpenNodes } = this.state;
     return (
       <>
-        <Typography variant="h5">{ title }</Typography>
-        { initialOpenNodes &&
+        { initialOpenNodes !== undefined &&
           <TreeMenu data={ treeData } initialOpenNodes={ initialOpenNodes } hasSearch={ false }>
             {({ search, items }) => (
               <List>
@@ -74,6 +72,9 @@ class TreeView extends React.Component<Props, State> {
               </List>
             )}
           </TreeMenu>
+        }
+        { initialOpenNodes === undefined &&
+          <CircularProgress />
         }
       </>
     );
@@ -85,129 +86,140 @@ class TreeView extends React.Component<Props, State> {
   private loadTree = async () => {
     const { lang, slug } = this.props;
     const api = ApiUtils.getApi();
-    const [pages, page, post, academies, blogCategory, menus] = await Promise.all([
-      api.getWpV2Pages({ per_page: 100 }),
-      api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
-      api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getWpV2CustomTaxonomy({ name: "academy" }),
-      api.getWpV2Categories({ slug: [ "blogi" ] }),
-      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
+    const [pageArray] = await Promise.all([
+      api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] })
     ]);
-    const academy = academies.find(item => `${ item.id }` === (page.length > 0 && page[0].taxonomy_academy && page[0].taxonomy_academy.length > 0 ? page[0].taxonomy_academy.join("") : ""));
-    const [blogPages, schoolBlogPages] = await Promise.all([
-      api.getWpV2Pages({ categories: [ blogCategory.length > 0 ? blogCategory[0].id || -1 : -1 ], per_page: 100 }),
-      api.getWpV2Pages({ categories: [ blogCategory.length > 0 ? blogCategory[0].id || -1 : -1 ], taxonomy_academy: [ academy ? academy.id || -1 : -1 ], per_page: 100 })
-    ]);
+    const page = pageArray.length > 0 ? pageArray[0] : undefined;
     this.setState({
-      pages: pages.filter(item => !blogPages.find(blog => blog.id === item.id)),
-      schoolBlogPages: schoolBlogPages,
-      page: page.length > 0 ? page[0] : undefined,
-      post: post.length > 0 ? post[0] : undefined,
-      academy: academy
+      page: page,
+      onAcademyPage: page && page.taxonomy_academy && page.taxonomy_academy.length > 0 ? true : false
     });
-    if (academy && menus.items) {
-      this.findAcademyPage(menus.items);
-      this.setState({
-        treeData: this.buildTree(this.state.academyPage || [], [])
-      });
-    } else if (menus.items) {
-      this.setState({
-        treeData: this.buildTree(menus.items, [])
-      });
+    this.buildTree();
+  }
+
+  /**
+   * Builds tree to current page
+   */
+  private buildTree = async () => {
+    const { page } = this.state;
+    const api = ApiUtils.getApi();
+    if (!page || page.parent === undefined) {
+      return;
     }
-  }
-
-  /**
-   * Finds current academy page and returns it
-   *
-   * @param menus menu structure
-   */
-  private findAcademyPage = (menus: MenuItemData[]) => {
-    const { academy, pages } = this.state;
-    if (academy && pages) {
-      menus.forEach(menu => {
-        const current = pages.find(page => `${ page.id }` === menu.object_id);
-        if (current) {
-          const parent = pages.find(page => page.id === current.parent);
-          if (((parent && parent.taxonomy_academy && parent.taxonomy_academy.length === 0) || (parent && !parent.taxonomy_academy)) && current.taxonomy_academy && current.taxonomy_academy.find(id => id === academy.id)) {
-            this.setState({
-              academyPage: [menu]
-            });
-          }
-        }
-        if (menu.child_items) {
-          this.findAcademyPage(menu.child_items);
-        }
+    let current: Page = page;
+    let treeData: LinkTreeStructure[] = [];
+    let initialOpenNodes: string[] = [];
+    while (current.parent !== undefined) {
+      const parentId = current.parent;
+      const [parent, layer] = await Promise.all([
+        parentId ? api.getWpV2PagesById({ id: `${ parentId }` }) : undefined,
+        this.addTreeLayer(`${ parentId }`)
+      ]);
+      initialOpenNodes = initialOpenNodes.map(node => {
+        return `${ current.id }/${ node }`;
       });
-    }
-  }
-
-  /**
-   * Creates array from menu structure
-   *
-   * @param menus menu structure
-   */
-  private menuStructureToArray = (menus: MenuItemData[]): MenuItemData[] => {
-    const array: MenuItemData[] = [];
-    menus.forEach(menu => {
-      array.push(menu);
-      if (menu.child_items) {
-        const child_array = this.menuStructureToArray(menu.child_items);
-        child_array.forEach(child => {
-          array.push(child);
-        });
-      }
-    });
-    return array;
-  }
-
-  /**
-   * Builds link tree structure
-   *
-   * @param menuItems menu item data array
-   */
-  private buildTree = (menuItems: MenuItemData[], opened: string[]): any => {
-    const { schoolBlogPages, page } = this.state;
-    const linkTreeStructure: LinkTreeStructure[] = [];
-    menuItems.forEach(item => {
-      if ((schoolBlogPages && !schoolBlogPages.find(blog => blog.id === item.object_id)) || !schoolBlogPages) {
-        linkTreeStructure.push(
+      initialOpenNodes = page.id !== current.id ? [`${ current.id }`, ...initialOpenNodes] : [];
+      if (
+        current.taxonomy_academy &&
+        current.taxonomy_academy.length > 0 &&
+        parent &&
+        parent.taxonomy_academy &&
+        parent.taxonomy_academy.length === 0
+      ) {
+        treeData = [
           {
-            key: `${ item.object_id }`,
-            label: item.title || "",
-            link: item.url || "",
-            nodes: this.showChildren(item) ? this.buildTree(item.child_items ? item.child_items : [], [...opened, `${ opened.length > 0 ? opened[opened.length - 1] + "/" : ""}${ item.object_id }`]) : undefined
+            key: `${ current.id }`,
+            label: `${ current.title ? current.title.rendered : "" }`,
+            link: `${ current.link }`,
+            academyPage: current.taxonomy_academy && current.taxonomy_academy.length > 0 ? true : false,
+            nodes: treeData
           }
-        );
+        ];
+        break;
       }
-      if (page && `${ page.id }` === item.object_id) {
-        this.setState({
-          initialOpenNodes: opened
-        });
+      layer.reverse();
+      treeData = layer.map(node => {
+        if (node.key === `${ current.id }`) {
+          return {
+            ...node,
+            nodes: treeData
+          };
+        }
+        return node;
+      });
+      if (current.parent === 0 || !parent) {
+        break;
       }
+      current = parent;
+    }
+    this.setState({
+      treeData: treeData,
+      initialOpenNodes: initialOpenNodes
     });
-    return linkTreeStructure;
+    this.fetchTreeChildren();
   }
 
   /**
-   * Checks if children exist and whether they should be displayed
-   *
-   * @param menu menu item data
+   * Fetches child nodes for entire tree
    */
-  private showChildren = (menu: MenuItemData) => {
-    const { pages, academy } = this.state;
-    if (pages && !academy) {
-      const page = pages.find(item => `${ item.id }` === menu.object_id);
-      if (page && page.taxonomy_academy && page.taxonomy_academy.length > 0) {
-        const parent = pages.find(item => item.id === page.parent);
-        if (parent && parent.taxonomy_academy && parent.taxonomy_academy.length === 0) {
-          return false;
-        }
-        return true;
+  private fetchTreeChildren = async () => {
+    const api = ApiUtils.getApi();
+    const { treeData, onAcademyPage } = this.state;
+    const fetchChildren = async (parent: LinkTreeStructure): Promise<LinkTreeStructure[]> => {
+      const children = await api.getWpV2Pages({ parent: [`${ parent.key }`], per_page: 100 });
+      if (!children || (!onAcademyPage && parent.academyPage)) {
+        return [];
       }
-      return true;
-    }
-    return true;
+      const promises = children.map( async node => {
+        const structure = {
+          key: `${ node.id }`,
+          label: `${ node.title ? node.title.rendered : "" }`,
+          link: `${ node.link }`,
+          academyPage: node.taxonomy_academy && node.taxonomy_academy.length > 0 ? true : false,
+          nodes: []
+        }
+        return structure;
+      });
+      return await Promise.all(promises);
+    };
+    const handleLayer = async (layer: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
+      const promises = layer.map( async node => {
+        if (node.nodes && node.nodes.length > 0) {
+          return {
+            ...node,
+            nodes: await handleLayer(node.nodes as LinkTreeStructure[])
+          };
+        }
+        return {
+          ...node,
+          nodes: await fetchChildren(node)
+        };
+      });
+      return await Promise.all(promises);
+    };
+    const updatedTreeData = await handleLayer(treeData);
+    this.setState({
+      treeData: updatedTreeData
+    });
+  }
+
+  /**
+   * Fetches node children and returns them
+   *
+   * @param parentId id of the parent page
+   */
+  private addTreeLayer = async (parentId: string) => {
+    const api = ApiUtils.getApi();
+    const pages = await api.getWpV2Pages({ parent: [`${ parentId }`], per_page: 100 });
+    return pages.map(page => {
+      return {
+        key: `${ page.id }`,
+        label: `${ page.title ? page.title.rendered : "" }`,
+        link: `${ page.link }`,
+        academyPage: page.taxonomy_academy && page.taxonomy_academy.length > 0 ? true : false,
+        nodes: []
+      };
+    });
   }
 
   /**
@@ -220,11 +232,11 @@ class TreeView extends React.Component<Props, State> {
     const toggleIcon = (on: boolean) => on ?
       <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
       <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
-    const { level, focused, hasNodes, toggleNode, isOpen, label, link } = item;
+    const { level, focused, hasNodes, toggleNode, isOpen, label, link, key } = item;
     return (
       <ListItem { ...item } style={{ paddingLeft: level * 20 }}>
         <a className={ classes.treeDataLink } href={ link }>{ label }</a>
-        <div style={{ display: "inline-block" }} onClick={ this.onNodeClick(hasNodes, toggleNode) }>
+        <div style={{ display: "inline-block" }} onClick={ this.onNodeClick(key, hasNodes, toggleNode) }>
           { hasNodes && toggleIcon(isOpen) }
         </div>
       </ListItem>
@@ -232,13 +244,61 @@ class TreeView extends React.Component<Props, State> {
   }
 
   /**
+   * Gets tree layers
+   *
+   * @param key parent key
+   */
+  private getGrandchildren = async (key: string) => {
+    const { treeData, onAcademyPage } = this.state;
+    const splitKey = key.split("/");
+    const id = splitKey[splitKey.length - 1];
+    this.setState({
+      loadingChildren: true
+    });
+    const mapTree = async (tree: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
+      const promises = tree.map( async node => {
+        if (node.key === id) {
+          return {
+            ...node,
+            nodes: await mapChildren(node.nodes as LinkTreeStructure[])
+          };
+        }
+        return {
+          ...node,
+          nodes: node.nodes && node.nodes.length > 0 ? await mapTree(node.nodes as LinkTreeStructure[]) : []
+        };
+      });
+      return await Promise.all(promises);
+    };
+    const mapChildren = async (children: LinkTreeStructure[]) => {
+      const promises = children.map( async child => {
+        if (child.academyPage !== onAcademyPage) {
+          return child;
+        }
+        const layer = await this.addTreeLayer(child.key);
+        return {
+          ...child,
+          nodes: layer
+        };
+      });
+      return await Promise.all(promises);
+    };
+    const updatedTree = await mapTree(treeData);
+    this.setState({
+      loadingChildren: false,
+      treeData: updatedTree
+    });
+  }
+
+  /**
    * Handler for on node click event
    * @param hasNodes has nodes
    * @param toggleNode handler method for toggle node
    */
-  private onNodeClick = (hasNodes: boolean, toggleNode: (() => void) | undefined) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  private onNodeClick = (key: string, hasNodes: boolean, toggleNode: (() => void) | undefined) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (hasNodes && toggleNode) {
       toggleNode();
+      this.getGrandchildren(key);
     }
     event.stopPropagation();
   }
