@@ -114,7 +114,7 @@ class PostPage extends React.Component<Props, State> {
               </div>
               <div className={ classes.sidebar }>
                 <div className={classes.sidebar}></div>
-                <RightSideBar rightSideBarContent = { this.state.test }/>
+                <RightSideBar rightSideBarContent={ this.renderSidePanelContent() }/>
               </div>
             </div>
           </div>
@@ -248,6 +248,19 @@ class PostPage extends React.Component<Props, State> {
   }
 
   /**
+   * Render side bar content method
+   */
+  private renderSidePanelContent = () => {
+    return (
+      <div>
+        { !this.state.loading &&
+          this.getSidePanelContent()
+        }
+      </div>
+    );
+  }
+
+  /**
    * get html element classes
    *
    * @param node DomElement
@@ -292,7 +305,26 @@ class PostPage extends React.Component<Props, State> {
       return undefinedContentError;
     }
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
+  }
 
+  /**
+   * Set html source for side panel content
+   */
+  private getSidePanelContent = () => {
+    const {page, post} = this.state;
+
+    const noContentError = <h2 className="error-text">{ strings.pageNotFound }</h2>;
+    const undefinedContentError = <h2 className="error-text">{ strings.somethingWentWrong }</h2>;
+    if (!page && !post) {
+      return noContentError;
+    }
+
+    const renderedContent = page && page.content ? page.content.rendered : post && post.content ? post.content.rendered : undefined;
+    if (!renderedContent) {
+      return undefinedContentError;
+    }
+
+    return ReactHtmlParser(renderedContent, { transform: this.transformSidePanelContent });
   }
 
   /**
@@ -335,7 +367,7 @@ class PostPage extends React.Component<Props, State> {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
     const {page, post } = this.state;
-    
+
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
       const childNode = node.children && node.children.length ? node.children[0] : null;
@@ -353,31 +385,52 @@ class PostPage extends React.Component<Props, State> {
     /**
      * Get right sidebar content to variable
      * Right sidebar has added custom class in wordpress custom block
-     */ 
-    if (classNames.indexOf("rightsidebar") > -1) {
-      
+     */
+    if (classNames.indexOf("meta-side-panel") > -1) {
+
       const childNode = node.children && node.children.length ? node.children[0] : null;
       const renderedContent = page && page.content ? page.content.rendered : post && post.content ? post.content.rendered : undefined;
-        if (renderedContent) {  
-          console.log(this.state.test)
-          console.log(renderedContent)
-          console.log(childNode)
-          this.setState({
-            test : "Näkyykö?"
-          })
-          console.log(this.state.test)
-          return (
-            <div>
-              Heiii!!
-            </div>
-          );  
-        }
-
+      if (renderedContent) {
+        return (
+          <></>
+        );
+      }
     }
-
     return convertNodeToElement(node, index, this.transformContent);
   }
-  
+
+  /**
+   * transform html source content before it is rendered
+   *
+   * @param node DomElement
+   * @param index DomElement index
+   */
+  private transformSidePanelContent = (node: DomElement, index: number) => {
+    const { classes } = this.props;
+    const classNames = this.getElementClasses(node);
+    const {page, post } = this.state;
+    console.log(node);
+
+    /**
+     * Get right sidebar content to variable
+     * Right sidebar has added custom class in wordpress custom block
+     */
+    if (classNames.indexOf("meta-side-panel") > -1) {
+      console.log("Is side panel element");
+      const childNode = node.children && node.children.length ? node.children[0] : null;
+      const elements = (node.children || []).map(child => {
+        if (child.name === "div") {
+          return <div>{ this.getElementTextContent(child) }</div>;
+        } else {
+          return <></>;
+        }
+      });
+
+      return <>{ elements }</>;
+    }
+
+    return convertNodeToElement(node, index, this.transformSidePanelContent);
+  }
 }
 
 export default withStyles(styles)(PostPage);

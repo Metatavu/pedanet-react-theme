@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { withStyles, WithStyles } from '@material-ui/core';
-import styles from '../../styles/right-side-bar';
+import * as React from "react";
+import { withStyles, WithStyles } from "@material-ui/core";
+import styles from "../../styles/right-side-bar";
 import { Page, Post } from "../../../src/generated/client/src";
 import PostPage from "../pages/PostPage";
 
@@ -8,7 +8,7 @@ import PostPage from "../pages/PostPage";
  * Component props
  */
 interface Props extends WithStyles<typeof styles> {
-  rightSideBarContent?: string
+  rightSideBarContent?: JSX.Element;
 }
 
 /**
@@ -24,8 +24,8 @@ class RightSideBar extends React.Component<Props, State> {
 
   /**
    * Component constructor
-   * 
-   * @param props 
+   *
+   * @param props
    */
   constructor(props: Props) {
     super(props);
@@ -43,9 +43,9 @@ class RightSideBar extends React.Component<Props, State> {
    */
   public render() {
     return (
-      <>
+      <div>
         { this.props.rightSideBarContent }
-      </>
+      </div>
     )
   }
 }
