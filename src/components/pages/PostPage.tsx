@@ -197,6 +197,7 @@ class PostPage extends React.Component<Props, State> {
       let breadcrumb: Breadcrumb[] = [];
       let pageTitle: PostTitle | undefined;
       let treeMenuTitle: string = "";
+      
       const buildPath = async (current: Page) => {
         const title = current.title ? `${ current.title.rendered }` : "";
         const link = `${ current.link }`;
