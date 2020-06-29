@@ -37,6 +37,7 @@ interface State {
   breadcrumb: Breadcrumb[];
   pageTitle?: PostTitle;
   title: string;
+  test?: string;
 }
 
 /**
@@ -64,6 +65,7 @@ class PostPage extends React.Component<Props, State> {
       loading: false,
       breadcrumb: [],
       title: "",
+      test:"pöö"
     };
   }
 
@@ -111,7 +113,8 @@ class PostPage extends React.Component<Props, State> {
                 { this.renderContent() }
               </div>
               <div className={ classes.sidebar }>
-                <RightSideBar />
+                <div className={classes.sidebar}></div>
+                <RightSideBar rightSideBarContent = { this.state.test }/>
               </div>
             </div>
           </div>
@@ -288,7 +291,6 @@ class PostPage extends React.Component<Props, State> {
     if (!renderedContent) {
       return undefinedContentError;
     }
-    
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
 
   }
@@ -332,7 +334,8 @@ class PostPage extends React.Component<Props, State> {
   private transformContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
-
+    const {page, post } = this.state;
+    
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
       const childNode = node.children && node.children.length ? node.children[0] : null;
@@ -347,8 +350,34 @@ class PostPage extends React.Component<Props, State> {
       }
     }
 
+    /**
+     * Get right sidebar content to variable
+     * Right sidebar has added custom class in wordpress custom block
+     */ 
+    if (classNames.indexOf("rightsidebar") > -1) {
+      
+      const childNode = node.children && node.children.length ? node.children[0] : null;
+      const renderedContent = page && page.content ? page.content.rendered : post && post.content ? post.content.rendered : undefined;
+        if (renderedContent) {  
+          console.log(this.state.test)
+          console.log(renderedContent)
+          console.log(childNode)
+          this.setState({
+            test : "Näkyykö?"
+          })
+          console.log(this.state.test)
+          return (
+            <div>
+              Heiii!!
+            </div>
+          );  
+        }
+
+    }
+
     return convertNodeToElement(node, index, this.transformContent);
   }
+  
 }
 
 export default withStyles(styles)(PostPage);

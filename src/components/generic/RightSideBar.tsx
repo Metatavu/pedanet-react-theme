@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { withStyles, WithStyles } from '@material-ui/core';
 import styles from '../../styles/right-side-bar';
+import { Page, Post } from "../../../src/generated/client/src";
+import PostPage from "../pages/PostPage";
 
 /**
  * Component props
  */
 interface Props extends WithStyles<typeof styles> {
+  rightSideBarContent?: string
 }
 
 /**
@@ -41,7 +44,7 @@ class RightSideBar extends React.Component<Props, State> {
   public render() {
     return (
       <>
-        <p>Aiheeseen liittyviä linkkejä</p>
+        { this.props.rightSideBarContent }
       </>
     )
   }
