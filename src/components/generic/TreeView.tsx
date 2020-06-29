@@ -269,6 +269,7 @@ class TreeView extends React.Component<Props, State> {
             nodes: await mapChildren(node.nodes as LinkTreeStructure[])
           };
         }
+        
         return {
           ...node,
           nodes: node.nodes && node.nodes.length > 0 ? await mapTree(node.nodes as LinkTreeStructure[]) : []
