@@ -205,6 +205,7 @@ class PostPage extends React.Component<Props, State> {
         if (current.parent !== undefined && current.parent !== 0) {
           const parentId = current.parent;
           const parent = await api.getWpV2PagesById({ id: `${ parentId }` });
+          
           if (
             parent.taxonomy_academy !== undefined &&
             parent.taxonomy_academy.length === 0 &&
