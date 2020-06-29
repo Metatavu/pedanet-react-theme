@@ -289,7 +289,9 @@ class TreeView extends React.Component<Props, State> {
       });
       return await Promise.all(promises);
     };
+    
     const updatedTree = await mapTree(treeData);
+    
     this.setState({
       loadingChildren: false,
       treeData: updatedTree
