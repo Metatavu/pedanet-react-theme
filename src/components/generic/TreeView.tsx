@@ -170,6 +170,7 @@ class TreeView extends React.Component<Props, State> {
       if (!children || (!onAcademyPage && parent.academyPage)) {
         return [];
       }
+      
       const promises = children.map(node => {
         const structure = {
           key: `${ node.id }`,
