@@ -256,9 +256,11 @@ class TreeView extends React.Component<Props, State> {
     const { treeData, onAcademyPage } = this.state;
     const splitKey = key.split("/");
     const id = splitKey[splitKey.length - 1];
+    
     this.setState({
       loadingChildren: true
     });
+    
     const mapTree = async (tree: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
       const promises = tree.map( async node => {
         if (node.key === id) {
