@@ -221,7 +221,9 @@ class PostPage extends React.Component<Props, State> {
           pageTitle = current.title;
         }
       };
+      
       await buildPath(page);
+      
       this.setState({
         breadcrumb: breadcrumb,
         treeMenuTitle: treeMenuTitle,
