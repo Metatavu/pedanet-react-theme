@@ -262,7 +262,7 @@ class TreeView extends React.Component<Props, State> {
     });
     
     const mapTree = async (tree: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
-      const promises = tree.map( async node => {
+      const promises = tree.map(async node => {
         if (node.key === id) {
           return {
             ...node,
