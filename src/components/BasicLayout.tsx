@@ -12,7 +12,7 @@ import styles from "../styles/basic-layout";
  */
 interface Props extends WithStyles<typeof styles> {
   lang: string,
-  title?: string
+  title?: string | JSX.Element
 }
 
 /**

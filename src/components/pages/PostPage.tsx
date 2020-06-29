@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, CircularProgress } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData, PostTitle } from "../../../src/generated/client/src";
@@ -36,7 +36,7 @@ interface State {
   nav?: MenuLocationData;
   breadcrumb: Breadcrumb[];
   pageTitle?: PostTitle;
-  title: string;
+  treeMenuTitle?: string;
 }
 
 /**
@@ -63,7 +63,6 @@ class PostPage extends React.Component<Props, State> {
       isArticle: false,
       loading: false,
       breadcrumb: [],
-      title: "",
     };
   }
 
@@ -88,15 +87,15 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug } = this.props;
-    const { title } = this.state;
+    const { treeMenuTitle, pageTitle } = this.state;
 
     return (
-      <BasicLayout lang={ lang } title={ this.setTitleSource() }>
+      <BasicLayout lang={ lang } title={ this.setTitleSource() || <CircularProgress /> }>
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
               <Breadcrumbs separator=">">
-                <Link color="inherit" href="/" onClick={() => {}}>
+                <Link color="inherit" href="/">
                   Etusivu
                 </Link>
                 { this.state.breadcrumb && this.renderBreadcrumb() }
@@ -104,7 +103,7 @@ class PostPage extends React.Component<Props, State> {
             </div>
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
-                <Typography variant="h5">{ title }</Typography>
+                <Typography variant="h5">{ treeMenuTitle || this.setTitleSource() }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
@@ -168,28 +167,21 @@ class PostPage extends React.Component<Props, State> {
     const apiCalls = await Promise.all([
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
       api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
-      api.getWpV2Pages({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
-      api.getWpV2Posts({ lang: [ lang ], slug: [ this.props.mainPageSlug ] }),
-      api.getWpV2Pages({ per_page: 100 })
+      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
     const nav = apiCalls[2];
-    const pageTitle = apiCalls[3][0].title || apiCalls[4][0].title;
-    const pages = apiCalls[5];
 
     this.setState({
       page: page,
       post: post,
       isArticle: !!post,
-      loading: false,
       nav: nav,
-      pageTitle: pageTitle
     });
 
-    this.breadcrumbPath(pages);
+    this.breadcrumbPath();
     this.hidePageLoader();
   }
 
@@ -198,31 +190,47 @@ class PostPage extends React.Component<Props, State> {
    *
    * @param pages page array
    */
-  private breadcrumbPath = (pages: Page[]) => {
-    const mainPages = pages.filter(item => item.parent === 0);
-    this.buildPath(mainPages, pages);
-  }
-
-  /**
-   * Recursively builds breadcrumb
-   * 
-   * @param children child pages array
-   * @param pages all pages array
-   * @param path collected breadcumbs
-   */
-  private buildPath = (children: Page[], pages: Page[], path?: Breadcrumb[]) => {
+  private breadcrumbPath = async () => {
     const { page } = this.state;
-    children.forEach(childPage => {
-      const childPages = pages.filter(item => item.parent === childPage.id);     
-      if (page && (page.id === childPage.id) && childPage.title) {
-        this.setState({
-          title: childPage.title.rendered || "",
-          breadcrumb: path ? [...path, { label: childPage.title.rendered || "", link: childPage.link || "" }] : [{ label: childPage.title.rendered || "", link: childPage.link || "" }]
-        });
-      } else if (childPages && childPage.title) {
-        this.buildPath(childPages, pages, path ? [...path, { label: childPage.title.rendered || "", link: childPage.link || "" }] : [{ label: childPage.title.rendered || "", link: childPage.link || "" }]);
-      }
-    });
+    if (page) {
+      const api = ApiUtils.getApi();
+      let breadcrumb: Breadcrumb[] = [];
+      let pageTitle: PostTitle | undefined;
+      let treeMenuTitle: string = "";
+      
+      const buildPath = async (current: Page) => {
+        const title = current.title ? `${ current.title.rendered }` : "";
+        const link = `${ current.link }`;
+        breadcrumb = [{ label: title, link: link }, ...breadcrumb];
+        if (current.parent !== undefined && current.parent !== 0) {
+          const parentId = current.parent;
+          const parent = await api.getWpV2PagesById({ id: `${ parentId }` });
+          
+          if (
+            parent.taxonomy_academy !== undefined &&
+            parent.taxonomy_academy.length === 0 &&
+            current.taxonomy_academy !== undefined &&
+            current.taxonomy_academy.length > 0
+          ) {
+            breadcrumb = [{ label: title, link: link }];
+            treeMenuTitle = title;
+          }
+          
+          await buildPath(parent);
+        } else {
+          pageTitle = current.title;
+        }
+      };
+      
+      await buildPath(page);
+      
+      this.setState({
+        breadcrumb: breadcrumb,
+        treeMenuTitle: treeMenuTitle,
+        pageTitle: pageTitle,
+        loading: false
+      });
+    }
   }
 
   /**
@@ -239,6 +247,9 @@ class PostPage extends React.Component<Props, State> {
       >
       { !this.state.loading &&
         this.getPageOrPostContent()
+      }
+      { this.state.loading &&
+        <CircularProgress />
       }
     </div>
     );
@@ -319,7 +330,7 @@ class PostPage extends React.Component<Props, State> {
     } else if (!loading) {
       return noContentError;
     } else {
-      return "";
+      return undefined;
     }
   }
 
