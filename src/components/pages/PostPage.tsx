@@ -215,6 +215,7 @@ class PostPage extends React.Component<Props, State> {
             breadcrumb = [{ label: title, link: link }];
             treeMenuTitle = title;
           }
+          
           await buildPath(parent);
         } else {
           pageTitle = current.title;
