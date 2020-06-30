@@ -110,7 +110,8 @@ class PostPage extends React.Component<Props, State> {
                 { this.renderContent() }
               </div>
               <div className={ classes.sidebar }>
-                <RightSideBar />
+                <div className={ classes.sidebar }></div>
+                <RightSideBar rightSideBarContent={ this.renderSidePanelContent() }/>
               </div>
             </div>
           </div>
@@ -197,7 +198,7 @@ class PostPage extends React.Component<Props, State> {
       let breadcrumb: Breadcrumb[] = [];
       let pageTitle: PostTitle | undefined;
       let treeMenuTitle: string = "";
-      
+
       const buildPath = async (current: Page) => {
         const title = current.title ? `${ current.title.rendered }` : "";
         const link = `${ current.link }`;
@@ -205,7 +206,7 @@ class PostPage extends React.Component<Props, State> {
         if (current.parent !== undefined && current.parent !== 0) {
           const parentId = current.parent;
           const parent = await api.getWpV2PagesById({ id: `${ parentId }` });
-          
+
           if (
             parent.taxonomy_academy !== undefined &&
             parent.taxonomy_academy.length === 0 &&
@@ -215,15 +216,15 @@ class PostPage extends React.Component<Props, State> {
             breadcrumb = [{ label: title, link: link }];
             treeMenuTitle = title;
           }
-          
+
           await buildPath(parent);
         } else {
           pageTitle = current.title;
         }
       };
-      
+
       await buildPath(page);
-      
+
       this.setState({
         breadcrumb: breadcrumb,
         treeMenuTitle: treeMenuTitle,
@@ -252,6 +253,19 @@ class PostPage extends React.Component<Props, State> {
         <CircularProgress />
       }
     </div>
+    );
+  }
+
+  /**
+   * Render side bar content method
+   */
+  private renderSidePanelContent = () => {
+    return (
+      <div>
+        { !this.state.loading &&
+          this.getSidePanelContent()
+        }
+      </div>
     );
   }
 
@@ -299,9 +313,27 @@ class PostPage extends React.Component<Props, State> {
     if (!renderedContent) {
       return undefinedContentError;
     }
-    
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
+  }
 
+  /**
+   * Set html source for side panel content
+   */
+  private getSidePanelContent = () => {
+    const { page, post } = this.state;
+
+    const noContentError = <h2 className="error-text">{ strings.pageNotFound }</h2>;
+    const undefinedContentError = <h2 className="error-text">{ strings.somethingWentWrong }</h2>;
+    if (!page && !post) {
+      return noContentError;
+    }
+
+    const renderedContent = page && page.content ? page.content.rendered : post && post.content ? post.content.rendered : undefined;
+    if (!renderedContent) {
+      return undefinedContentError;
+    }
+
+    return ReactHtmlParser(renderedContent, { transform: this.transformSidePanelContent });
   }
 
   /**
@@ -343,6 +375,7 @@ class PostPage extends React.Component<Props, State> {
   private transformContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
+    const { page, post } = this.state;
 
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
@@ -358,7 +391,38 @@ class PostPage extends React.Component<Props, State> {
       }
     }
 
+    /**
+     * Get right sidebar content to variable
+     * Right sidebar has added custom class in wordpress custom block
+     */
+    if (classNames.indexOf("meta-side-panel") > -1) {
+      return null;
+    }
+
     return convertNodeToElement(node, index, this.transformContent);
+  }
+
+  /**
+   * transform html source content before it is rendered
+   *
+   * @param node DomElement
+   * @param index DomElement index
+   */
+  private transformSidePanelContent = (node: DomElement, index: number) => {
+    const classNames = this.getElementClasses(node);
+
+    if (classNames.indexOf("meta-side-panel-layout") > -1) {
+      return convertNodeToElement(node, index, this.transformSidePanelContent);
+    }
+    /**
+     * Get right sidebar content to variable
+     * Right sidebar has added custom class in wordpress custom block
+     */
+    if (classNames.indexOf("meta-side-panel") > -1) {
+      return convertNodeToElement(node, index, this.transformContent);
+    }
+
+    return null;
   }
 }
 
