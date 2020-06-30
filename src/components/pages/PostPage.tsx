@@ -387,15 +387,9 @@ class PostPage extends React.Component<Props, State> {
      * Right sidebar has added custom class in wordpress custom block
      */
     if (classNames.indexOf("meta-side-panel") > -1) {
-
-      const childNode = node.children && node.children.length ? node.children[0] : null;
-      const renderedContent = page && page.content ? page.content.rendered : post && post.content ? post.content.rendered : undefined;
-      if (renderedContent) {
-        return (
-          <></>
-        );
-      }
+      return null;
     }
+
     return convertNodeToElement(node, index, this.transformContent);
   }
 
@@ -408,28 +402,19 @@ class PostPage extends React.Component<Props, State> {
   private transformSidePanelContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
-    const {page, post } = this.state;
-    console.log(node);
 
+    if (classNames.indexOf("meta-side-panel-layout") > -1) {
+      return convertNodeToElement(node, index, this.transformSidePanelContent);
+    }
     /**
      * Get right sidebar content to variable
      * Right sidebar has added custom class in wordpress custom block
      */
     if (classNames.indexOf("meta-side-panel") > -1) {
-      console.log("Is side panel element");
-      const childNode = node.children && node.children.length ? node.children[0] : null;
-      const elements = (node.children || []).map(child => {
-        if (child.name === "div") {
-          return <div>{ this.getElementTextContent(child) }</div>;
-        } else {
-          return <></>;
-        }
-      });
-
-      return <>{ elements }</>;
+      return convertNodeToElement(node, index, this.transformContent);
     }
 
-    return convertNodeToElement(node, index, this.transformSidePanelContent);
+    return null;
   }
 }
 
