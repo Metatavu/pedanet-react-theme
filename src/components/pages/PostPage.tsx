@@ -320,7 +320,7 @@ class PostPage extends React.Component<Props, State> {
    * Set html source for side panel content
    */
   private getSidePanelContent = () => {
-    const {page, post} = this.state;
+    const { page, post } = this.state;
 
     const noContentError = <h2 className="error-text">{ strings.pageNotFound }</h2>;
     const undefinedContentError = <h2 className="error-text">{ strings.somethingWentWrong }</h2>;
