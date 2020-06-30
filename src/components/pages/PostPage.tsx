@@ -375,7 +375,7 @@ class PostPage extends React.Component<Props, State> {
   private transformContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
-    const {page, post } = this.state;
+    const { page, post } = this.state;
 
     // Find any buttons and replace them with Material UI button
     if (classNames.indexOf("wp-block-button") > -1) {
