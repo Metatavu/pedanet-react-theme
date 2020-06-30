@@ -110,7 +110,6 @@ class PostPage extends React.Component<Props, State> {
                 { this.renderContent() }
               </div>
               <div className={ classes.sidebar }>
-                <div className={ classes.sidebar }></div>
                 <RightSideBar rightSideBarContent={ this.renderSidePanelContent() }/>
               </div>
             </div>
