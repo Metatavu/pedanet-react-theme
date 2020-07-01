@@ -238,7 +238,7 @@ class TreeView extends React.Component<Props, State> {
       <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
     const { level, focused, hasNodes, toggleNode, isOpen, label, link, key } = item;
     return (
-      <ListItem { ...item } style={{ paddingLeft: level * 20 }}>
+      <ListItem { ...item } className={ classes.listItem } style={{ paddingLeft: level * 20 }}>
         <a className={ classes.treeDataLink } href={ link }>{ label }</a>
         <div style={{ display: "inline-block" }} onClick={ this.onNodeClick(key, hasNodes, toggleNode) }>
           { hasNodes && toggleIcon(isOpen) }

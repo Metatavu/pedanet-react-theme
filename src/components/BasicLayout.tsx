@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Typography } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import socialNetworks from "../resources/img/social.png";
@@ -79,15 +79,11 @@ class BasicLayout extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
-    
+
     return (
-      <div>
-        <div>
+      <div className={ classes.root }>
+        <div className={ classes.top }>
           <img className={ classes.logoBar } src={ bar } />
-          <div className={ classes.searchSection }>
-            <input type="text" placeholder="Search.." />
-            <img className={ classes.social } src={ socialNetworks } />
-          </div>
           <Container maxWidth="lg">
             <a href="/?lang=fi">
               <img className={ classes.logo } src={ mikkeliLogo } />
@@ -100,7 +96,7 @@ class BasicLayout extends React.Component<Props, State> {
         <div className={ `${classes.logoBar} ${classes.headerImage}` }>
           { this.props.title &&
             <div className={ classes.titleContainer }>
-              { this.props.title }
+              <Typography variant="h1">{ this.props.title }</Typography>
             </div>
           }
         </div>

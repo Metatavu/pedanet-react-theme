@@ -103,7 +103,7 @@ class PostPage extends React.Component<Props, State> {
             </div>
             <div className={ classes.columns }>
               <div className={ classes.sidebar }>
-                <Typography variant="h5">{ treeMenuTitle || this.setTitleSource() }</Typography>
+                <Typography variant="h3" className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>

@@ -3,6 +3,14 @@ import theme from "./theme";
 import headerImage from "../resources/img/headerImage.png";
 
 export default createStyles({
+
+  root: {
+    display: "grid",
+    height: "100vh",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "auto auto 1fr"
+  },
+  top: {},
   logoBar: {
     display: "flex",
     flexDirection: "row",

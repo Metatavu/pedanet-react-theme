@@ -15,40 +15,43 @@ export default createMuiTheme({
       paper: "#F5EFEA"
     },
     text: {
-      primary: "#000000",
+      primary: "#373a3c",
       secondary: "#26201E",
       disabled: "#ddd",
       hint: "#eee"
     }
   },
   typography: {
-    fontFamily: "tt_norms_proregular",
+    // Tell Material-UI what's the font-size on the html element is.
+    htmlFontSize: 10,
+    fontFamily: "'Titillium Web', sans-serif",
     h1: {
-      fontFamily: "tt_norms_promedium",
-      fontWeight: "normal"
+      fontFamily: "'Cairo', sans-serif",
+      fontWeight: 900,
+      fontSize: "6rem"
     },
     h2: {
-      fontFamily: "tt_norms_promedium",
-      fontWeight: "normal"
+      fontFamily: "'Cairo', sans-serif",
+      fontWeight: 700
     },
     h3: {
-      fontFamily: "tt_norms_promedium",
-      fontWeight: "normal"
+      fontFamily: "'Cairo', sans-serif",
+      fontWeight: 600
     },
     h4: {
-      fontFamily: "tt_norms_promedium",
-      fontWeight: "normal"
+      fontFamily: "'Cairo', sans-serif",
+      fontWeight: 400
     },
     h5: {
-      fontFamily: "tt_norms_promedium",
-      fontWeight: "normal"
+      fontFamily: "'Cairo', sans-serif",
+      fontWeight: 400
     },
     body1: {
-      fontFamily: "tt_norms_proregular",
+      fontFamily: "Titillium Web, sans-serif",
       fontWeight: "normal"
     },
     body2: {
-      fontFamily: "tt_norms_proregular",
+      fontFamily: "Titillium Web, sans-serif",
       fontWeight: "normal"
     },
     subtitle1: {
