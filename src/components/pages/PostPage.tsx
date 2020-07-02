@@ -89,7 +89,7 @@ class PostPage extends React.Component<Props, State> {
     const { classes, lang, slug } = this.props;
     const { treeMenuTitle, pageTitle } = this.state;
     const rightSidebarContent = this.renderSideBarContent();
-    console.log(rightSidebarContent)
+
     return (
       <BasicLayout lang={ lang } title={ this.setTitleSource() || <CircularProgress /> }>
         <div className={ classes.wrapper }>
@@ -103,18 +103,14 @@ class PostPage extends React.Component<Props, State> {
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
-              <div className={ classes.sidebar }>
+              <div className={ classes.leftsidebar }>
                 <Typography variant="h3" className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
                 { this.renderContent() }
               </div>
-              <div className={ rightSidebarContent ? classes.sidebar : "" }>
-                { rightSidebarContent &&
-                  <RightSideBar rightSideBarContent={ rightSidebarContent }/>
-                }
-              </div>
+              <RightSideBar rightSideBarContent={ rightSidebarContent }/>
             </div>
           </div>
         </div>
@@ -263,11 +259,11 @@ class PostPage extends React.Component<Props, State> {
    */
   private renderSideBarContent = () => {
     return (
-      <div>
+      <>
         { !this.state.loading &&
           this.getSideBarContent()
         }
-      </div>
+      </>
     );
   }
 

@@ -40,10 +40,11 @@ class RightSideBar extends React.Component<Props, State> {
    * Component render
    */
   public render() {
+    const { classes } = this.props;
     return (
-      <>
+      <div className={ classes.root }>
         { this.props.rightSideBarContent }
-      </>
+      </div>
     );
   }
 }

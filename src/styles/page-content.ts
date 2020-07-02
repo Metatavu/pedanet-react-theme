@@ -40,9 +40,9 @@ export default createStyles({
   contentarea: {
     flex: 3
   },
-  sidebar: {
+  leftsidebar: {
     flex: 1,
-    backgroundColor: "#edeef2",
+    backgroundColor: "#fff",
     padding: "2rem",
     "& a": {
       fontFamily: "'Titillium Web', sans-serif",
