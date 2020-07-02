@@ -88,7 +88,8 @@ class PostPage extends React.Component<Props, State> {
   public render() {
     const { classes, lang, slug } = this.props;
     const { treeMenuTitle, pageTitle } = this.state;
-
+    const rightSidebarContent = this.renderSideBarContent();
+    console.log(rightSidebarContent)
     return (
       <BasicLayout lang={ lang } title={ this.setTitleSource() || <CircularProgress /> }>
         <div className={ classes.wrapper }>
@@ -109,8 +110,10 @@ class PostPage extends React.Component<Props, State> {
               <div className={ classes.contentarea }>
                 { this.renderContent() }
               </div>
-              <div className={ classes.sidebar }>
-                <RightSideBar rightSideBarContent={ this.renderSidePanelContent() }/>
+              <div className={ rightSidebarContent ? classes.sidebar : "" }>
+                { rightSidebarContent &&
+                  <RightSideBar rightSideBarContent={ rightSidebarContent }/>
+                }
               </div>
             </div>
           </div>
@@ -258,11 +261,11 @@ class PostPage extends React.Component<Props, State> {
   /**
    * Render side bar content method
    */
-  private renderSidePanelContent = () => {
+  private renderSideBarContent = () => {
     return (
       <div>
         { !this.state.loading &&
-          this.getSidePanelContent()
+          this.getSideBarContent()
         }
       </div>
     );
@@ -318,7 +321,7 @@ class PostPage extends React.Component<Props, State> {
   /**
    * Set html source for side panel content
    */
-  private getSidePanelContent = () => {
+  private getSideBarContent = () => {
     const { page, post } = this.state;
 
     const noContentError = <h2 className="error-text">{ strings.pageNotFound }</h2>;

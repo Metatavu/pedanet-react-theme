@@ -65,7 +65,7 @@ export default createStyles({
     color: "#71767d",
   },
   htmlContainer: {
-    // We no longer use this for basic wordpress content styling, instead lets put them to style.css
+    // We no longer use this for basic wordpress content styling, instead let's put them to the style.css
     // Use in dire situations only
   }
 });
