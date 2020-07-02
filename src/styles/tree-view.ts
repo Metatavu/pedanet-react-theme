@@ -1,6 +1,4 @@
 import { createStyles } from "@material-ui/core";
-import theme from "./theme";
-import rightSideBar from "./right-side-bar";
 
 export default createStyles({
   treeWrapper: {
