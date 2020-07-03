@@ -1,8 +1,6 @@
 import * as React from "react";
 import { withStyles, WithStyles } from "@material-ui/core";
 import styles from "../../styles/right-side-bar";
-import { Page, Post } from "../../../src/generated/client/src";
-import PostPage from "../pages/PostPage";
 
 /**
  * Component props
@@ -42,11 +40,12 @@ class RightSideBar extends React.Component<Props, State> {
    * Component render
    */
   public render() {
+    const { classes } = this.props;
     return (
-      <div>
+      <div className={ classes.root }>
         { this.props.rightSideBarContent }
       </div>
-    )
+    );
   }
 }
 
