@@ -312,6 +312,7 @@ class PostPage extends React.Component<Props, State> {
     if (!renderedContent) {
       return undefinedContentError;
     }
+
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
   }
 
