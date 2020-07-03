@@ -1,8 +1,8 @@
 import * as React from "react";
 import styles from "../../styles/tree-view";
 import ApiUtils from "../../../src/utils/ApiUtils";
-import ChevronRightIcon from "@material-ui/icons/ArrowRight";
-import ExpandMoreIcon from "@material-ui/icons/ArrowDropDown";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
 import { Page } from "src/generated/client/src";
 import { withStyles, WithStyles, ListItem, List, CircularProgress } from "@material-ui/core";
@@ -61,9 +61,10 @@ class TreeView extends React.Component<Props, State> {
    * Component render
    */
   public render() {
+    const { classes } = this.props;
     const { treeData, initialOpenNodes } = this.state;
     return (
-      <>
+      <div className={ classes.treeWrapper }>
         { initialOpenNodes !== undefined &&
           <TreeMenu data={ treeData } initialOpenNodes={ initialOpenNodes } hasSearch={ false }>
             {({ search, items }) => (
@@ -76,7 +77,7 @@ class TreeView extends React.Component<Props, State> {
         { initialOpenNodes === undefined &&
           <CircularProgress />
         }
-      </>
+      </div>
     );
   }
 
@@ -170,7 +171,7 @@ class TreeView extends React.Component<Props, State> {
       if (!children || (!onAcademyPage && parent.academyPage)) {
         return [];
       }
-      
+
       const promises = children.map(node => {
         const structure = {
           key: `${ node.id }`,
@@ -183,7 +184,7 @@ class TreeView extends React.Component<Props, State> {
       });
       return await Promise.all(promises);
     };
-    
+
     const handleLayer = async (layer: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
       const promises = layer.map( async node => {
         if (node.nodes && node.nodes.length > 0) {
@@ -199,9 +200,9 @@ class TreeView extends React.Component<Props, State> {
       });
       return await Promise.all(promises);
     };
-    
+
     const updatedTreeData = await handleLayer(treeData);
-    
+
     this.setState({
       treeData: updatedTreeData
     });
@@ -234,13 +235,13 @@ class TreeView extends React.Component<Props, State> {
   private renderTreeMenuItem = (item: TreeMenuItem) => {
     const { classes } = this.props;
     const toggleIcon = (on: boolean) => on ?
-      <ExpandMoreIcon htmlColor={ focused ? "#fff" : "#888" } /> :
-      <ChevronRightIcon htmlColor={ focused ? "#fff" : "#888" }  />;
+      <ExpandLessIcon htmlColor={ focused ? "#000" : "#888" } /> :
+      <ExpandMoreIcon htmlColor={ focused ? "#000" : "#888" }  />;
     const { level, focused, hasNodes, toggleNode, isOpen, label, link, key } = item;
     return (
-      <ListItem { ...item } style={{ paddingLeft: level * 20 }}>
+      <ListItem { ...item } className={ classes.listItem } style={{ paddingLeft: level * 20 }}>
         <a className={ classes.treeDataLink } href={ link }>{ label }</a>
-        <div style={{ display: "inline-block" }} onClick={ this.onNodeClick(key, hasNodes, toggleNode) }>
+        <div className={ classes.iconWrapper } onClick={ this.onNodeClick(key, hasNodes, toggleNode) }>
           { hasNodes && toggleIcon(isOpen) }
         </div>
       </ListItem>
@@ -256,11 +257,11 @@ class TreeView extends React.Component<Props, State> {
     const { treeData, onAcademyPage } = this.state;
     const splitKey = key.split("/");
     const id = splitKey[splitKey.length - 1];
-    
+
     this.setState({
       loadingChildren: true
     });
-    
+
     const mapTree = async (tree: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
       const promises = tree.map(async node => {
         if (node.key === id) {
@@ -269,7 +270,7 @@ class TreeView extends React.Component<Props, State> {
             nodes: await mapChildren(node.nodes as LinkTreeStructure[])
           };
         }
-        
+
         return {
           ...node,
           nodes: node.nodes && node.nodes.length > 0 ? await mapTree(node.nodes as LinkTreeStructure[]) : []
@@ -277,7 +278,7 @@ class TreeView extends React.Component<Props, State> {
       });
       return await Promise.all(promises);
     };
-    
+
     const mapChildren = async (children: LinkTreeStructure[]) => {
       const promises = children.map(async child => {
         if (child.academyPage !== onAcademyPage) {
@@ -291,9 +292,9 @@ class TreeView extends React.Component<Props, State> {
       });
       return await Promise.all(promises);
     };
-    
+
     const updatedTree = await mapTree(treeData);
-    
+
     this.setState({
       loadingChildren: false,
       treeData: updatedTree

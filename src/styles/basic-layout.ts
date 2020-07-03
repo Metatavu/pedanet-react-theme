@@ -3,6 +3,14 @@ import theme from "./theme";
 import headerImage from "../resources/img/headerImage.png";
 
 export default createStyles({
+
+  root: {
+    display: "grid",
+    height: "100vh",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "auto auto 1fr"
+  },
+  top: {},
   logoBar: {
     display: "flex",
     flexDirection: "row",
@@ -13,7 +21,8 @@ export default createStyles({
   headerImage: {
     backgroundImage: `url(${headerImage})`,
     backgroundRepeat: "no-repeat",
-    height: "298px"
+    height: "298px",
+    backgroundSize: "cover"
   },
   nav: {
     display: "flex",
@@ -30,13 +39,17 @@ export default createStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 20,
     whiteSpace: "nowrap",
     height: 80,
     textDecoration: "none",
-    fontFamily: theme.typography.h3.fontFamily,
-    color: theme.palette.primary.main,
+    fontFamily: theme.typography.body1.fontFamily,
     cursor: "pointer",
+    fontWeight: 700,
+    fontSize: 16,
+    lineHeight: "21px",
+    letterSpacing: 0,
+    color: "#234c8e",
+    textTransform: "uppercase",
     [theme.breakpoints.down("md")]: {
       fontSize: "1.15rem"
     },

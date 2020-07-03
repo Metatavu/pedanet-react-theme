@@ -5,10 +5,9 @@ export default createStyles({
   /**
    * Page styles
    */
-  root: {},
-  logoBar: {},
-  hero: {},
-  heroContentContainer: {},
+  root: {
+
+  },
   content: {
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.primary.dark,
@@ -16,8 +15,6 @@ export default createStyles({
     marginTop: 0,
     flexDirection: "column"
   },
-  title: {},
-  heroTitle: {},
   button: {},
   wrapper: {
     width: "100%",
@@ -25,14 +22,17 @@ export default createStyles({
     justifyContent: "center"
   },
   pageContent: {
-    maxWidth: "1200px"
+    maxWidth: "1200px",
+    width: "100%"
   },
   breadcrumb: {
     width: "100%",
     marginBottom: "3rem"
   },
   columns: {
-    display: "flex"
+    display: "flex",
+    height: "calc(100% - 55px)",
+    overflowY: "auto"
   },
   navigation: {
     flex: 1, padding: "2rem"
@@ -40,10 +40,32 @@ export default createStyles({
   contentarea: {
     flex: 3
   },
-  sidebar: {
+  leftsidebar: {
     flex: 1,
-    backgroundColor: "#edeef2",
-    padding: "2rem"
+    backgroundColor: "#fff",
+    padding: "2rem",
+    "& a": {
+      fontFamily: "'Titillium Web', sans-serif",
+      fontWeight: 700,
+      fontSize: 16,
+      letterSpacing: 0,
+      color: "#064e8d"
+    },
+    "& h2:first-child, h3:first-child, h4:first-child, h5:first-child, p:first-child": {
+      marginTop: 0
+    },
   },
-  htmlContainer: {}
+  treeMenuTitle: {
+    fontFamily: "Cairo",
+    fontSize: 14,
+    fontWeight: 900,
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
+    marginBottom: 8,
+    color: "#71767d",
+  },
+  htmlContainer: {
+    // We no longer use this for basic wordpress content styling, instead let's put them to the style.css
+    // Use in dire situations only
+  }
 });
