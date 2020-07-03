@@ -13,16 +13,27 @@ export default createStyles({
     display: "flex",
     justifyContent: "center",
     textAlign: "center",
-    height: "100%"
+    height: "80%",
   },
   column: {
     display: "inline-block",
     width: "14%",
-    height: "65%",
+    height: "100%",
     padding: "1%",
     margin: "1%",
     textTransform: "none",
-    backgroundColor: "gray"
+    "&:nth-child(1)": {
+      backgroundColor: "#386dc2"
+    },
+    "&:nth-child(2)": {
+      backgroundColor: "#ffdf3d"
+    },
+    "&:nth-child(3)": {
+      backgroundColor: "#59a345"
+    },
+    "&:nth-child(4)": {
+      backgroundColor: "#de782a"
+    }
   },
   logoBar: {
     display: "flex",
