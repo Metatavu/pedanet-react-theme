@@ -189,6 +189,7 @@ class WelcomePage extends React.Component<Props, State> {
     if (!node.children) {
       return undefined;
     }
+    
     const columnsDividedToTwo = node.children.filter(child => child.attribs && child.attribs.class === "wp-block-column");
     let columnsDividedTwiceToTwo: DomElement[] = [];
     columnsDividedToTwo.forEach(item => {
