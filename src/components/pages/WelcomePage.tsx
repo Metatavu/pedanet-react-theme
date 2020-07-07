@@ -61,7 +61,7 @@ class WelcomePage extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [posts, mainMenu, localeMenu, frontPageColumnPost] = await Promise.all(
+    const [ posts, mainMenu, localeMenu, frontPageColumnPost ] = await Promise.all(
       [
         api.getWpV2Posts({lang: [ this.props.lang ]}),
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
