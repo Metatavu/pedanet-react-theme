@@ -155,6 +155,7 @@ class WelcomePage extends React.Component<Props, State> {
     if (!renderedContent) {
       return;
     }
+    
     ReactHtmlParser(renderedContent, { transform: this.transformContent });
   }
 
