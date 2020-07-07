@@ -218,6 +218,8 @@ class WelcomePage extends React.Component<Props, State> {
    * get html element classes
    *
    * @param node DomElement
+   *
+   * @returns string[]
    */
   private getElementClasses = (node: DomElement): string[] => {
     const classString = node.attribs ? node.attribs.class : "";
