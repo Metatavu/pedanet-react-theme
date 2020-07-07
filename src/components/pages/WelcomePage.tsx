@@ -123,9 +123,11 @@ class WelcomePage extends React.Component<Props, State> {
   private columnsRendered = () => {
     const { classes } = this.props;
     const { columns } = this.state;
+    
     if (!columns) {
       return;
     }
+    
     return columns.map((column: any) => {
       return (
         <div className={ classes.column }>
