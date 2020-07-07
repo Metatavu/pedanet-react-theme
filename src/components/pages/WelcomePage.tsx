@@ -183,6 +183,7 @@ class WelcomePage extends React.Component<Props, State> {
    * Parses columns from wp-columns
    * 
    * @param node DomElement
+   * @param index current node index
    */
   private wpColumnParsing = (node: DomElement, index: number) => {
     if (!node.children) {
