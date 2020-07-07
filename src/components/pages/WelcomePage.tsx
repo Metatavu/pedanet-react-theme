@@ -160,7 +160,7 @@ class WelcomePage extends React.Component<Props, State> {
   }
 
   /**
-   * transform html source content before it is rendered
+   * Transform html source content before it is rendered
    *
    * @param node DomElement
    * @param index DomElement index
