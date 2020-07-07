@@ -4,6 +4,8 @@ import { Post, MenuLocationData } from "../../generated/client/src";
 import ApiUtils from "../../utils/ApiUtils";
 import { WithStyles, withStyles, Button } from "@material-ui/core";
 import styles from "../../styles/welcome-page";
+import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
+import { DomElement } from "domhandler";
 
 /**
  * Interface representing component properties
@@ -16,13 +18,15 @@ interface Props extends WithStyles<typeof styles> {
  * Interface representing component state
  */
 interface State {
-  posts: Post[],
-  loading: boolean,
-  mainMenu?: MenuLocationData
-  localeMenu?: MenuLocationData
-  scrollPosition: number
-  siteMenuVisible: boolean
-  siteSearchVisible: boolean
+  posts: Post[];
+  loading: boolean;
+  mainMenu?: MenuLocationData;
+  localeMenu?: MenuLocationData;
+  frontPageColumnPost?: Post;
+  scrollPosition: number;
+  siteMenuVisible: boolean;
+  siteSearchVisible: boolean;
+  columns?: any;
 }
 
 /**
@@ -57,21 +61,24 @@ class WelcomePage extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [posts, mainMenu, localeMenu] = await Promise.all(
+    const [ posts, mainMenu, localeMenu, frontPageColumnPost ] = await Promise.all(
       [
         api.getWpV2Posts({lang: [ this.props.lang ]}),
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" })
+        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
+        api.getWpV2Posts({lang: [ this.props.lang ], slug: [ "etusivun-kolumnit" ]})
       ]
-    )
+    );
 
     this.setState({
       posts: posts,
       loading: false,
       mainMenu: mainMenu,
       localeMenu: localeMenu,
+      frontPageColumnPost: frontPageColumnPost.length > 0 ? frontPageColumnPost[0] : undefined
     });
 
+    this.getColumnsContent();
     this.hidePageLoader();
   }
 
@@ -90,14 +97,137 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang }>
-        <div className={ classes.buttonSection }>
-          <Button className={ classes.menuButtonOne }>Varhaiskasvatus ja esiopetus</Button>
-          <Button className={ classes.menuButtonTwo }>Perusopetus</Button>
-          <Button className={ classes.menuButtonThree }>Lukio-opetus</Button>
-          <Button className={ classes.menuButtonFour }>Kansalaisopisto</Button>
+        <div className={ classes.columnSection }>
+          { this.renderColumns() }
         </div>
       </BasicLayout>
     );
+  }
+
+  /**
+   * Renders colums
+   */
+  private renderColumns = () => {
+    return (
+      <>
+        { !this.state.loading &&
+          this.columnsRendered()
+        }
+      </>
+    );
+  }
+
+  /**
+   * Returns columns
+   */
+  private columnsRendered = () => {
+    const { classes } = this.props;
+    const { columns } = this.state;
+    
+    if (!columns) {
+      return;
+    }
+    
+    return columns.map((column: any) => {
+      return (
+        <div className={ classes.column }>
+          {
+            column.map((child: any) => {
+              return child;
+            })
+          }
+        </div>
+      );
+    });
+  }
+
+  /**
+   * Set html source for columns content
+   */
+  private getColumnsContent = () => {
+    const { frontPageColumnPost } = this.state;
+
+    if (!frontPageColumnPost) {
+      return;
+    }
+
+    const renderedContent = frontPageColumnPost.content ? frontPageColumnPost.content.rendered : undefined;
+    if (!renderedContent) {
+      return;
+    }
+    
+    ReactHtmlParser(renderedContent, { transform: this.transformContent });
+  }
+
+  /**
+   * Transform html source content before it is rendered
+   *
+   * @param node DomElement
+   * @param index DomElement index
+   */
+  private transformContent = (node: DomElement, index: number) => {
+    const classNames = this.getElementClasses(node);
+
+    if (classNames.indexOf("kolumnit") > -1) {
+      if (!this.state.columns) {
+        this.setState({
+          columns: this.wpColumnParsing(node, index)
+        });
+      }
+    }
+
+    return convertNodeToElement(node, index, this.transformContent);
+  }
+
+  /**
+   * Parses columns from wp-columns
+   * 
+   * @param node DomElement
+   * @param index current node index
+   */
+  private wpColumnParsing = (node: DomElement, index: number) => {
+    if (!node.children) {
+      return undefined;
+    }
+    
+    const columnsDividedToTwo = node.children.filter(child => child.attribs && child.attribs.class === "wp-block-column");
+    let columnsDividedTwiceToTwo: DomElement[] = [];
+    columnsDividedToTwo.forEach(item => {
+      if (item.children) {
+        columnsDividedTwiceToTwo = [ ...columnsDividedTwiceToTwo, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-columns") ];
+      }
+    });
+
+    let columnsDividedToFour: DomElement[] = [];
+    columnsDividedTwiceToTwo.forEach(item => {
+      if (item.children) {
+        columnsDividedToFour = [ ...columnsDividedToFour, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-column") ];
+      }
+    });
+    
+    const nodes = columnsDividedToFour.map(item => {
+      const converted = convertNodeToElement(item, index, this.transformContent);
+      const children = converted.props.children;
+      return [...children];
+    });
+
+    return nodes;
+  }
+
+  /**
+   * get html element classes
+   *
+   * @param node DomElement
+   *
+   * @returns string[]
+   */
+  private getElementClasses = (node: DomElement): string[] => {
+    const classString = node.attribs ? node.attribs.class : "";
+    if (node.attribs && node.attribs.class) {
+      return classString.split(" ");
+    }
+
+    return [];
   }
 
   /**
