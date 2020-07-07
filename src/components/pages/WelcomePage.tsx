@@ -197,12 +197,14 @@ class WelcomePage extends React.Component<Props, State> {
         columnsDividedTwiceToTwo = [ ...columnsDividedTwiceToTwo, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-columns") ];
       }
     });
+
     let columnsDividedToFour: DomElement[] = [];
     columnsDividedTwiceToTwo.forEach(item => {
       if (item.children) {
         columnsDividedToFour = [ ...columnsDividedToFour, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-column") ];
       }
     });
+    
     const nodes = columnsDividedToFour.map(item => {
       const converted = convertNodeToElement(item, index, this.transformContent);
       const children = converted.props.children;
