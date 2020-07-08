@@ -26,7 +26,7 @@ interface State {
   scrollPosition: number;
   siteMenuVisible: boolean;
   siteSearchVisible: boolean;
-  columns?: any;
+  columns?: React.ReactElement<any>[];
 }
 
 /**
@@ -127,12 +127,12 @@ class WelcomePage extends React.Component<Props, State> {
     if (!columns) {
       return;
     }
-    
-    return columns.map((column: any) => {
+
+    return columns.map((column) => {
       return (
-        <div className={ classes.column }>
+        <div className={ `${ classes.column } ${ column.props.className }` }>
           {
-            column.map((child: any) => {
+            column.props.children.map((child: any) => {
               return child;
             })
           }
@@ -181,7 +181,7 @@ class WelcomePage extends React.Component<Props, State> {
 
   /**
    * Parses columns from wp-columns
-   * 
+   *
    * @param node DomElement
    * @param index current node index
    */
@@ -190,25 +190,23 @@ class WelcomePage extends React.Component<Props, State> {
       return undefined;
     }
     
-    const columnsDividedToTwo = node.children.filter(child => child.attribs && child.attribs.class === "wp-block-column");
+    const columnsDividedToTwo = node.children.filter(child => child.attribs && child.attribs.class.match("wp-block-column"));
     let columnsDividedTwiceToTwo: DomElement[] = [];
     columnsDividedToTwo.forEach(item => {
       if (item.children) {
-        columnsDividedTwiceToTwo = [ ...columnsDividedTwiceToTwo, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-columns") ];
+        columnsDividedTwiceToTwo = [ ...columnsDividedTwiceToTwo, ...item.children.filter(child => child.attribs && child.attribs.class && child.attribs.class.match("wp-block-column")) ];
       }
     });
 
     let columnsDividedToFour: DomElement[] = [];
     columnsDividedTwiceToTwo.forEach(item => {
       if (item.children) {
-        columnsDividedToFour = [ ...columnsDividedToFour, ...item.children.filter(child => child.attribs && child.attribs.class === "wp-block-column") ];
+        columnsDividedToFour = [ ...columnsDividedToFour, ...item.children.filter(child => child.attribs && child.attribs.class && child.attribs.class.match("wp-block-column")) ];
       }
     });
-    
+
     const nodes = columnsDividedToFour.map(item => {
-      const converted = convertNodeToElement(item, index, this.transformContent);
-      const children = converted.props.children;
-      return [...children];
+      return convertNodeToElement(item, index, this.transformContent);
     });
 
     return nodes;

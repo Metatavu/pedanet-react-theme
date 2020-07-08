@@ -1,6 +1,32 @@
 import { createStyles } from "@material-ui/core";
 
 export default createStyles({
+  "@global": {
+    ".saimaa": {
+      backgroundColor: "#62BAE9!important"
+    },
+    ".mustikka": {
+      backgroundColor: "#224C8E!important"
+    },
+    ".kerkka": {
+      backgroundColor: "#D2D92A!important"
+    },
+    ".ruoho": {
+      backgroundColor: "#5CA740!important"
+    },
+    ".marjapuuro": {
+      backgroundColor: "#D84C6F!important"
+    },
+    ".orvokki": {
+      backgroundColor: "#A61680!important"
+    },
+    ".aurinko": {
+      backgroundColor: "#FFD400!important"
+    },
+    ".aamurusko": {
+      backgroundColor: "#EF7D25!important"
+    }
+  },
   root: {
     height: "100vh"
   },
@@ -21,6 +47,7 @@ export default createStyles({
     padding: "1%",
     margin: "1%",
     textTransform: "none",
+    //default colors
     "&:nth-child(1)": {
       backgroundColor: "#386dc2"
     },
