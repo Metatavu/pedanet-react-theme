@@ -4580,6 +4580,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
       operationId: GetWpV2CustomTaxonomy
+  /tribe/events/v1/events:
+    get:
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/eventCalendarEvents"
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      operationId: GetEventCalendarEvents
 servers:
   - url: http://localhost/index.php/wp-json
 components:
@@ -6040,3 +6056,13 @@ components:
               type: boolean
           items:
             type: string
+    eventCalendarEvents:
+      type: object
+      properties:
+        events:
+          type: array
+          items: 
+            type: object
+            properties:
+              url:
+                type: string

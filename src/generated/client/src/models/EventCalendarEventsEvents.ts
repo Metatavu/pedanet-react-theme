@@ -15,32 +15,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Theme
+ * @interface EventCalendarEventsEvents
  */
-export interface Theme {
+export interface EventCalendarEventsEvents {
     /**
-     * Features supported by this theme.
-     * @type {Array<string>}
-     * @memberof Theme
+     * 
+     * @type {string}
+     * @memberof EventCalendarEventsEvents
      */
-    theme_supports?: Array<string>;
+    url?: string;
 }
 
-export function ThemeFromJSON(json: any): Theme {
-    return ThemeFromJSONTyped(json, false);
+export function EventCalendarEventsEventsFromJSON(json: any): EventCalendarEventsEvents {
+    return EventCalendarEventsEventsFromJSONTyped(json, false);
 }
 
-export function ThemeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Theme {
+export function EventCalendarEventsEventsFromJSONTyped(json: any, ignoreDiscriminator: boolean): EventCalendarEventsEvents {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'theme_supports': !exists(json, 'theme_supports') ? undefined : json['theme_supports'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function ThemeToJSON(value?: Theme | null): any {
+export function EventCalendarEventsEventsToJSON(value?: EventCalendarEventsEvents | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -49,7 +49,7 @@ export function ThemeToJSON(value?: Theme | null): any {
     }
     return {
         
-        'theme_supports': value.theme_supports,
+        'url': value.url,
     };
 }
 
