@@ -67,7 +67,8 @@ class BasicLayout extends React.Component<Props, State> {
       eventCalendarEvents &&
       eventCalendarEvents.events &&
       eventCalendarEvents.events.length > 0 &&
-      eventCalendarEvents.events[0].url) {
+      eventCalendarEvents.events[0].url
+    ) {
       eventCalendarUrl = `${ eventCalendarEvents.events[0].url }`;
     }
 
