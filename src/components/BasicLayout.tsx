@@ -54,23 +54,14 @@ class BasicLayout extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [mainMenu, localeMenu, eventCalendarEvents] = await Promise.all(
+    const [mainMenu, localeMenu] = await Promise.all(
       [
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
-        api.getEventCalendarEvents()
       ]
     );
 
-    let eventCalendarUrl = "";
-    if (
-      eventCalendarEvents &&
-      eventCalendarEvents.events &&
-      eventCalendarEvents.events.length > 0 &&
-      eventCalendarEvents.events[0].url
-    ) {
-      eventCalendarUrl = `${ eventCalendarEvents.events[0].url }`;
-    }
+    const eventCalendarUrl = `${ window.location.origin }/tapahtumat/`;
 
     this.setState({
       loading: false,

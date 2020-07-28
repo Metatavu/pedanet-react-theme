@@ -82,3 +82,8 @@ header img {
   justify-content: center;
 }
 
+.events-return-link {
+  margin-left: 5rem;
+  margin-top: 5rem;
+  font-size: 20px;
+}
