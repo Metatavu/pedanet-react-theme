@@ -44,7 +44,7 @@ h3 {
 
 h4 {
   font-family: 'Cairo', sans-serif;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 h5 {
@@ -57,3 +57,28 @@ p {
   font-size: 1.5rem;
   line-height: 1.5;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Generic header styles */
+
+header, footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header img {
+  width: 100%;
+}
+
+.header-inner {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+

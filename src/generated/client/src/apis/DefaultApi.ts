@@ -26,6 +26,9 @@ import {
     CustomTaxonomy,
     CustomTaxonomyFromJSON,
     CustomTaxonomyToJSON,
+    EventCalendarEvents,
+    EventCalendarEventsFromJSON,
+    EventCalendarEventsToJSON,
     Menu,
     MenuFromJSON,
     MenuToJSON,
@@ -1264,6 +1267,30 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async deleteWpV2UsersMe(requestParameters: DeleteWpV2UsersMeRequest): Promise<User> {
         const response = await this.deleteWpV2UsersMeRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getEventCalendarEventsRaw(): Promise<runtime.ApiResponse<EventCalendarEvents>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/tribe/events/v1/events`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EventCalendarEventsFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async getEventCalendarEvents(): Promise<EventCalendarEvents> {
+        const response = await this.getEventCalendarEventsRaw();
         return await response.value();
     }
 

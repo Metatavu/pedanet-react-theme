@@ -87,7 +87,7 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug } = this.props;
-    const { treeMenuTitle, pageTitle } = this.state;
+    const { treeMenuTitle } = this.state;
     const rightSidebarContent = this.renderSideBarContent();
 
     return (
@@ -311,6 +311,7 @@ class PostPage extends React.Component<Props, State> {
     if (!renderedContent) {
       return undefinedContentError;
     }
+
     return ReactHtmlParser(renderedContent, { transform: this.transformContent });
   }
 

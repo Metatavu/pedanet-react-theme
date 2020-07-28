@@ -22,7 +22,8 @@ interface State {
   loading: boolean
   mainMenu?: MenuLocationData
   localeMenu?: MenuLocationData
-  scrollPosition: number
+  scrollPosition: number;
+  eventCalendarUrl?: string;
 }
 
 /**
@@ -53,17 +54,29 @@ class BasicLayout extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [mainMenu, localeMenu] = await Promise.all(
+    const [mainMenu, localeMenu, eventCalendarEvents] = await Promise.all(
       [
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" })
+        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
+        api.getEventCalendarEvents()
       ]
-    )
+    );
+
+    let eventCalendarUrl = "";
+    if (
+      eventCalendarEvents &&
+      eventCalendarEvents.events &&
+      eventCalendarEvents.events.length > 0 &&
+      eventCalendarEvents.events[0].url
+    ) {
+      eventCalendarUrl = `${ eventCalendarEvents.events[0].url }`;
+    }
 
     this.setState({
       loading: false,
       mainMenu: mainMenu,
       localeMenu: localeMenu,
+      eventCalendarUrl: eventCalendarUrl
     });
   }
 
@@ -109,7 +122,7 @@ class BasicLayout extends React.Component<Props, State> {
    * Render menu method
    */
   private renderMenu = () => {
-    const { mainMenu } = this.state;
+    const { mainMenu, eventCalendarUrl } = this.state;
     const { classes } = this.props;
 
     if (!mainMenu || !mainMenu.items) {
@@ -120,6 +133,9 @@ class BasicLayout extends React.Component<Props, State> {
       <div className={ classes.nav }>
         {
           mainMenu.items.map(this.renderMenuItem)
+        }
+        {
+          eventCalendarUrl && this.renderEventCalendarLink(eventCalendarUrl)
         }
       </div>
     );
@@ -139,6 +155,26 @@ class BasicLayout extends React.Component<Props, State> {
       >
         {
           item.title
+        }
+      </Link>
+    );
+  }
+
+  /**
+   * Returns event calendar link rendered
+   *
+   * @param link link to event calendar page
+   */
+  private renderEventCalendarLink = (link: string) => {
+    const { classes } = this.props;
+    return (
+      <Link
+        variant="h6"
+        href={ link }
+        className={ classes.navLink }
+      >
+        {
+          "Tapahtumat"
         }
       </Link>
     );

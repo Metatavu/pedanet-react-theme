@@ -1,6 +1,32 @@
 import { createStyles } from "@material-ui/core";
 
 export default createStyles({
+  "@global": {
+    ".saimaa": {
+      backgroundColor: "#62BAE9!important"
+    },
+    ".mustikka": {
+      backgroundColor: "#224C8E!important"
+    },
+    ".kerkka": {
+      backgroundColor: "#D2D92A!important"
+    },
+    ".ruoho": {
+      backgroundColor: "#5CA740!important"
+    },
+    ".marjapuuro": {
+      backgroundColor: "#D84C6F!important"
+    },
+    ".orvokki": {
+      backgroundColor: "#A61680!important"
+    },
+    ".aurinko": {
+      backgroundColor: "#FFD400!important"
+    },
+    ".aamurusko": {
+      backgroundColor: "#EF7D25!important"
+    }
+  },
   root: {
     height: "100vh"
   },
@@ -8,59 +34,30 @@ export default createStyles({
     display: "flex",
     flexDirection: "column"
   },
-  buttonSection: {
+  columnSection: {
+    display: "flex",
+    justifyContent: "center",
     textAlign: "center",
-    opacity: 0.8
+    minHeight: "55rem",
   },
-  menuButtonOne: {
-    backgroundColor: "#386dc2",
-    width: "10%",
-    height: "60%",
+  column: {
+    display: "inline-block",
+    width: "14%",
+    minHeight: "55rem",
+    padding: "1%",
     margin: "1%",
     textTransform: "none",
-    "& .MuiButton-label": {
-      whiteSpace: "normal"
-    },
-    "&:hover": {
+    //default colors
+    "&:nth-child(1)": {
       backgroundColor: "#386dc2"
-    }
-  },
-  menuButtonTwo: {
-    backgroundColor: "#ffdf3d",
-    width: "10%",
-    height: "60%",
-    margin: "1%",
-    textTransform: "none",
-    "& .MuiButton-label": {
-      whiteSpace: "normal"
     },
-    "&:hover": {
+    "&:nth-child(2)": {
       backgroundColor: "#ffdf3d"
-    }
-  },
-  menuButtonThree: {
-    backgroundColor: "#59a345",
-    width: "10%",
-    height: "60%",
-    margin: "1%",
-    textTransform: "none",
-    "& .MuiButton-label": {
-      whiteSpace: "normal"
     },
-    "&:hover": {
+    "&:nth-child(3)": {
       backgroundColor: "#59a345"
-    }
-  },
-  menuButtonFour: {
-    backgroundColor: "#de782a",
-    width: "10%",
-    height: "60%",
-    margin: "1%",
-    textTransform: "none",
-    "& .MuiButton-label": {
-      whiteSpace: "normal"
     },
-    "&:hover": {
+    "&:nth-child(4)": {
       backgroundColor: "#de782a"
     }
   },

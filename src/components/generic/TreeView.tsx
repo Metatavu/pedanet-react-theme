@@ -4,7 +4,7 @@ import ApiUtils from "../../../src/utils/ApiUtils";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
-import { Page } from "src/generated/client/src";
+import { Page, GetWpV2PagesOrderbyEnum } from "../../generated/client/src";
 import { withStyles, WithStyles, ListItem, List, CircularProgress } from "@material-ui/core";
 
 /**
@@ -112,13 +112,12 @@ class TreeView extends React.Component<Props, State> {
     let initialOpenNodes: string[] = [];
     while (current.parent !== undefined) {
       const parentId = current.parent;
-      const [parent, layer] = await Promise.all([
-        parentId ? api.getWpV2PagesById({ id: `${ parentId }` }) : undefined,
-        this.addTreeLayer(`${ parentId }`)
-      ]);
-      initialOpenNodes = initialOpenNodes.map(node => {
-        return `${ current.id }/${ node }`;
-      });
+      const parent = parentId ? await api.getWpV2PagesById({ id: `${ parentId }` }) : undefined;
+      const layer = parentId ? await this.addTreeLayer(`${ parentId }`) : undefined;
+      initialOpenNodes = [
+        `${ current.id }`,
+        ...initialOpenNodes.map(node => `${ current.id }/${ node }`)
+      ];
       initialOpenNodes = page.id !== current.id ? [`${ current.id }`, ...initialOpenNodes] : [];
       if (
         current.taxonomy_academy &&
@@ -138,16 +137,28 @@ class TreeView extends React.Component<Props, State> {
         ];
         break;
       }
-      layer.reverse();
-      treeData = layer.map(node => {
-        if (node.key === `${ current.id }`) {
-          return {
-            ...node,
+      if (layer) {
+        treeData = layer.map(node => {
+          if (node.key === `${ current.id }`) {
+            return {
+              ...node,
+              nodes: treeData
+            };
+          }
+          return node;
+        });
+      } else {
+        treeData = [
+          {
+            key: `${ current.id }`,
+            label: `${ current.title ? current.title.rendered : "" }`,
+            link: `${ current.link }`,
+            academyPage: false,
             nodes: treeData
-          };
-        }
-        return node;
-      });
+          }
+        ];
+
+      }
       if (current.parent === 0 || !parent) {
         break;
       }
@@ -164,48 +175,53 @@ class TreeView extends React.Component<Props, State> {
    * Fetches child nodes for entire tree
    */
   private fetchTreeChildren = async () => {
-    const api = ApiUtils.getApi();
-    const { treeData, onAcademyPage } = this.state;
-    const fetchChildren = async (parent: LinkTreeStructure): Promise<LinkTreeStructure[]> => {
-      const children = await api.getWpV2Pages({ parent: [`${ parent.key }`], per_page: 100 });
-      if (!children || (!onAcademyPage && parent.academyPage)) {
-        return [];
-      }
+    const { treeData } = this.state;
+    const updatedTreeData = await this.handleLayer(treeData);
 
-      const promises = children.map(node => {
-        const structure = {
+    this.setState({
+      treeData: updatedTreeData
+    });
+  }
+
+  /**
+   * 
+   */
+  private handleLayer = async (layer: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
+    return await Promise.all(
+      layer.map(async node => {
+        return {
+          ...node,
+          nodes: (node.nodes && node.nodes.length > 0) ?
+            await this.handleLayer(node.nodes as LinkTreeStructure[]) :
+            await this.fetchChildren(node.key, node.academyPage)
+        };
+      })
+    );
+  };
+
+  /**
+   *
+   * @param parent
+   */
+  private fetchChildren = async (parentId: string, academyPage?: boolean): Promise<LinkTreeStructure[]> => {
+    const api = ApiUtils.getApi();
+    const { onAcademyPage } = this.state;
+    const children = await api.getWpV2Pages({ parent: [`${ parentId }`], per_page: 100, orderby: GetWpV2PagesOrderbyEnum.MenuOrder });
+    if (!children || (!onAcademyPage && academyPage)) {
+      return [];
+    }
+    children.reverse();
+    return await Promise.all(
+      children.map(async node => {
+        return {
           key: `${ node.id }`,
           label: `${ node.title ? node.title.rendered : "" }`,
           link: `${ node.link }`,
           academyPage: node.taxonomy_academy && node.taxonomy_academy.length > 0 ? true : false,
           nodes: []
-        }
-        return structure;
-      });
-      return await Promise.all(promises);
-    };
-
-    const handleLayer = async (layer: LinkTreeStructure[]): Promise<LinkTreeStructure[]> => {
-      const promises = layer.map( async node => {
-        if (node.nodes && node.nodes.length > 0) {
-          return {
-            ...node,
-            nodes: await handleLayer(node.nodes as LinkTreeStructure[])
-          };
-        }
-        return {
-          ...node,
-          nodes: await fetchChildren(node)
         };
-      });
-      return await Promise.all(promises);
-    };
-
-    const updatedTreeData = await handleLayer(treeData);
-
-    this.setState({
-      treeData: updatedTreeData
-    });
+      })
+    );
   }
 
   /**
@@ -215,7 +231,8 @@ class TreeView extends React.Component<Props, State> {
    */
   private addTreeLayer = async (parentId: string) => {
     const api = ApiUtils.getApi();
-    const pages = await api.getWpV2Pages({ parent: [`${ parentId }`], per_page: 100 });
+    const pages = await api.getWpV2Pages({ parent: [`${ parentId }`], per_page: 100, orderby: GetWpV2PagesOrderbyEnum.MenuOrder });
+    pages.reverse();
     return pages.map(page => {
       return {
         key: `${ page.id }`,
