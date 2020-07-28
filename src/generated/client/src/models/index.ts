@@ -8,6 +8,8 @@ export * from './CommentContent';
 export * from './CustomTaxonomy';
 export * from './Error';
 export * from './ErrorData';
+export * from './EventCalendarEvents';
+export * from './EventCalendarEventsEvents';
 export * from './InlineObject';
 export * from './InlineObject1';
 export * from './InlineObject10';
