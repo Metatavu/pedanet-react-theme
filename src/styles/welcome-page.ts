@@ -1,4 +1,5 @@
 import { createStyles } from "@material-ui/core";
+import theme from "./theme";
 
 export default createStyles({
   "@global": {
@@ -47,6 +48,20 @@ export default createStyles({
     padding: "1%",
     margin: "1%",
     textTransform: "none",
+    color: "#fff",
+    "& h2": {
+      fontSize: "3rem"
+    },
+    [theme.breakpoints.down("md")]: {
+      "& h2": {
+        fontSize: "2rem"
+      },
+    },
+    [theme.breakpoints.down("xs")]: {
+      "& h2": {
+        fontSize: "1.5rem"
+      },
+    },
     //default colors
     "&:nth-child(1)": {
       backgroundColor: "#386dc2"
