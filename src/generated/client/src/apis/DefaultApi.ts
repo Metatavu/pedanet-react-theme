@@ -74,6 +74,9 @@ import {
     Theme,
     ThemeFromJSON,
     ThemeToJSON,
+    TreeMenu,
+    TreeMenuFromJSON,
+    TreeMenuToJSON,
     Type,
     TypeFromJSON,
     TypeToJSON,
@@ -156,6 +159,10 @@ export interface GetMenusV1LocationsByIdRequest {
 
 export interface GetMenusV1MenusByIdRequest {
     id: string;
+}
+
+export interface GetTreeMenuRequest {
+    slug: string;
 }
 
 export interface GetWpV2BlockRendererByNameRequest {
@@ -1415,6 +1422,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getMenusV1MenusById(requestParameters: GetMenusV1MenusByIdRequest): Promise<MenuData> {
         const response = await this.getMenusV1MenusByIdRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getTreeMenuRaw(requestParameters: GetTreeMenuRequest): Promise<runtime.ApiResponse<TreeMenu>> {
+        if (requestParameters.slug === null || requestParameters.slug === undefined) {
+            throw new runtime.RequiredError('slug','Required parameter requestParameters.slug was null or undefined when calling getTreeMenu.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-WP-Nonce"] = this.configuration.apiKey("X-WP-Nonce"); // cookieAuth authentication
+        }
+
+        const response = await this.request({
+            path: `/wp/v2/treeMenu?slug={slug}`.replace(`{${"slug"}}`, encodeURIComponent(String(requestParameters.slug))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TreeMenuFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async getTreeMenu(requestParameters: GetTreeMenuRequest): Promise<TreeMenu> {
+        const response = await this.getTreeMenuRaw(requestParameters);
         return await response.value();
     }
 
