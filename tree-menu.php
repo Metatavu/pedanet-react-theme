@@ -8,7 +8,7 @@ function register_tree_menu_endpoint() {
         $isAcademyPage = get_the_terms($page, 'academy') ? true : false;
         $mainPage = get_main_page($page, $isAcademyPage);
         $initial_open_nodes = get_initial_open_nodes($page, $isAcademyPage);
-        $treeData = build_tree($mainPage, $page);
+        $treeData = build_tree($mainPage, $page, $isAcademyPage);
         return array(
           'treeData' => $treeData,
           'initialOpenNodes' => $initial_open_nodes
@@ -68,7 +68,7 @@ function register_tree_menu_endpoint() {
           break;
         }
         $current = $parent;
-        if (wp_get_post_parent_id($current)) {
+        if (wp_get_post_parent_id($current) && get_the_terms(wp_get_post_parent_id($current), 'academy') ? true : false) {
           $id = "$current->ID";
           for ($i = 0; $i < count($initial_open_nodes); $i++) {
             $initial_open_nodes[$i] = "$id/" . $initial_open_nodes[$i];
@@ -93,14 +93,15 @@ function register_tree_menu_endpoint() {
     return $initial_open_nodes;
   }
 
-  function build_tree($mainPage, $page) {
+  function build_tree($mainPage, $page, $isAcademyPage) {
     $all_pages = get_pages(array('child_of' => $mainPage->ID));
-    return build_tree_layer($mainPage->ID, $page->ID, $all_pages);
+    return build_tree_layer($mainPage->ID, $page->ID, $all_pages, $isAcademyPage);
   }
 
-  function build_tree_layer($parentId, $currentPageId, $all_pages) {
+  function build_tree_layer($parentId, $currentPageId, $all_pages, $isAcademyPage) {
     $tree_nodes = array();
     foreach($all_pages as $page) {
+      $renderChildren = (get_the_terms($page, 'academy') ? true : false) === $isAcademyPage;
       if ($page->post_parent === $parentId) {
         array_push(
           $tree_nodes,
@@ -110,7 +111,7 @@ function register_tree_menu_endpoint() {
             'label' => $page->post_title,
             'link' => get_page_link($page->ID),
             'current' => $page->ID === $currentPageId,
-            'nodes' => build_tree_layer($page->ID, $currentPageId, $all_pages)
+            'nodes' => $renderChildren ? build_tree_layer($page->ID, $currentPageId, $all_pages, $isAcademyPage) : []
           )
         );
       }
