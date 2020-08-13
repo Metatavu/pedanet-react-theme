@@ -52,6 +52,7 @@ export * from './Tag';
 export * from './Taxonomy';
 export * from './TaxonomyVisibility';
 export * from './Theme';
+export * from './TreeMenu';
 export * from './Type';
 export * from './User';
 export * from './UserAvatarUrls';

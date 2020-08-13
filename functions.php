@@ -62,4 +62,5 @@
     }
   }
   add_action('save_post', 'add_terms_for_post');
+  require_once("tree-menu.php");
 ?>

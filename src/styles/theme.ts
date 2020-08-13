@@ -120,6 +120,29 @@ export default createMuiTheme({
           borderBottom: "3px solid rgba(245, 239, 234, 0.2)"
         },
       }
+    },
+    MuiListItem: {
+      root: {
+        "& a": {
+          textDecoration: "none",
+          paddingLeft: "1rem",
+          paddingRight: "1rem"
+        },
+        "&.Mui-selected": {
+          backgroundColor: "#d94c70",
+          "& a": {
+            color: "#fff",
+            textDecoration: "underline",
+          },
+          "&:hover": {
+            backgroundColor: "#d94c70"
+          },
+          "& svg": {
+            color: "#fff",
+            borderColor: "#fff"
+          }
+        }
+      }
     }
   }
 });

@@ -11,17 +11,8 @@ export default createStyles({
     display: "flex",
     justifyContent: "space-between",
     margin: 0,
-    paddingRight: 0
-  },
-  treeDataLink: {
-    textDecoration: "none",
-    color: "#71767d",
-    "&:hover, :visited, :focus": {
-      color: "#000"
-    },
-    "&:hover, :active": {
-      textDecoration: "underline",
-    }
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
   },
   iconWrapper: {
     cursor: "pointer",
