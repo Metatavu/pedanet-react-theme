@@ -49,17 +49,26 @@ export default createStyles({
     margin: "1%",
     textTransform: "none",
     color: "#fff",
-    "& h2": {
-      fontSize: "3rem"
+    "& p": {
+      fontSize: "2rem",
+    },
+    "& h1, h2, h3, h4, h5, h6": {
+      fontSize: "3rem",
     },
     [theme.breakpoints.down("md")]: {
-      "& h2": {
-        fontSize: "2rem"
+      "& p": {
+        fontSize: "1.5rem",
+      },
+      "& h1, h2, h3, h4, h5, h6": {
+        fontSize: "2rem",
       },
     },
     [theme.breakpoints.down("xs")]: {
-      "& h2": {
-        fontSize: "1.5rem"
+      "& p": {
+        fontSize: "1rem",
+      },
+      "& h1, h2, h3, h4, h5, h6": {
+        fontSize: "1.5rem",
       },
     },
     //default colors

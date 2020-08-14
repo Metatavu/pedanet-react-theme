@@ -28,12 +28,6 @@ export default createStyles({
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
-    [theme.breakpoints.up("lg")]: {
-      marginLeft: 30,
-    },
-    [theme.breakpoints.up("xl")]: {
-      marginLeft: 50,
-    }
   },
   navLink: {
     display: "flex",
@@ -78,7 +72,12 @@ export default createStyles({
   logo: {
     width: 200,
     display: "flex",
-    marginLeft: 60
+    [theme.breakpoints.up("lg")]: {
+      marginLeft: 30,
+    },
+    [theme.breakpoints.up("xl")]: {
+      marginLeft: 40,
+    }
   },
   titleContainer: {
     display: "flex",
