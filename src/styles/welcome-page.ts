@@ -49,17 +49,26 @@ export default createStyles({
     margin: "1%",
     textTransform: "none",
     color: "#fff",
+    "& p": {
+      fontSize: "2rem",
+    },
     "& h2": {
-      fontSize: "3rem"
+      fontSize: "3rem",
     },
     [theme.breakpoints.down("md")]: {
+      "& p": {
+        fontSize: "1.5rem",
+      },
       "& h2": {
-        fontSize: "2rem"
+        fontSize: "2rem",
       },
     },
     [theme.breakpoints.down("xs")]: {
+      "& p": {
+        fontSize: "1rem",
+      },
       "& h2": {
-        fontSize: "1.5rem"
+        fontSize: "1.5rem",
       },
     },
     //default colors

@@ -237,6 +237,7 @@ class PostPage extends React.Component<Props, State> {
    */
   private renderPostContent = () => {
     const { classes, lang } = this.props;
+    const { page } = this.state;
     moment.locale(lang);
     return (
       <div className={
@@ -244,6 +245,9 @@ class PostPage extends React.Component<Props, State> {
         this.state.isArticle && "article")
         }
       >
+      { page && page.title &&
+        <h1 style={{ fontWeight: 700 }}>{ page.title.rendered }</h1>
+      }
       { !this.state.loading &&
         this.getPageOrPostContent()
       }
