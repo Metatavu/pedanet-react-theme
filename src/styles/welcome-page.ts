@@ -52,14 +52,14 @@ export default createStyles({
     "& p": {
       fontSize: "2rem",
     },
-    "& h2": {
+    "& h1, h2, h3, h4, h5, h6": {
       fontSize: "3rem",
     },
     [theme.breakpoints.down("md")]: {
       "& p": {
         fontSize: "1.5rem",
       },
-      "& h2": {
+      "& h1, h2, h3, h4, h5, h6": {
         fontSize: "2rem",
       },
     },
@@ -67,7 +67,7 @@ export default createStyles({
       "& p": {
         fontSize: "1rem",
       },
-      "& h2": {
+      "& h1, h2, h3, h4, h5, h6": {
         fontSize: "1.5rem",
       },
     },
