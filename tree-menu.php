@@ -116,20 +116,9 @@ function register_tree_menu_endpoint() {
         );
       }
     }
-    $tree_nodes_sorted = array();
-    for ($i = 0; $i < count($tree_nodes); $i++) {
-      $node = find_array_item($tree_nodes, 'menu_order', $i);
-      array_push($tree_nodes_sorted, $node);
-    }
-    return $tree_nodes_sorted;
-  }
-
-  function find_array_item($array, $key, $value) {
-    foreach($array as $item) {
-      if ($item[$key] === $value) {
-        return $item;
-      }
-    }
-    return false;
+    usort($tree_nodes, function($a, $b) {
+      return $a['menu_order'] > $b['menu_order'];
+    });
+    return $tree_nodes;
   }
 ?>
