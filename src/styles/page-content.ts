@@ -31,8 +31,7 @@ export default createStyles({
   },
   columns: {
     display: "flex",
-    height: "calc(100% - 55px)",
-    overflowY: "auto"
+    height: "calc(100% - 55px)"
   },
   navigation: {
     flex: 1, padding: "2rem"

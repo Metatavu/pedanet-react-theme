@@ -45,7 +45,8 @@ export default createStyles({
     color: "#234c8e",
     textTransform: "uppercase",
     [theme.breakpoints.down("md")]: {
-      fontSize: "1.15rem"
+      fontSize: "1.5rem",
+      marginLeft: 10
     },
     [theme.breakpoints.up("lg")]: {
       marginLeft: 30,
