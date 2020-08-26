@@ -15,6 +15,6 @@
 use Tribe\Events\Views\V2\Template_Bootstrap;
 
 get_header();
-echo "<div class='events-return-link'><a href=" . site_url() . ">Palaa takaisin etusivulle</a></div>";
+echo "<div class='events-return-link'><a href=" . site_url() . ">Palaa takaisin Pedanet Mikkelin etusivulle</a></div>";
 echo tribe( Template_Bootstrap::class )->get_view_html();
 get_footer();

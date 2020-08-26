@@ -2,7 +2,6 @@ import * as React from "react";
 import { WithStyles, withStyles, Link, Container, Typography } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
-import socialNetworks from "../resources/img/social.png";
 import { MenuLocationData, MenuItemData } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
@@ -19,9 +18,9 @@ interface Props extends WithStyles<typeof styles> {
  * Interface representing component state
  */
 interface State {
-  loading: boolean
-  mainMenu?: MenuLocationData
-  localeMenu?: MenuLocationData
+  loading: boolean;
+  mainMenu?: MenuLocationData;
+  localeMenu?: MenuLocationData;
   scrollPosition: number;
   eventCalendarUrl?: string;
 }
@@ -61,7 +60,7 @@ class BasicLayout extends React.Component<Props, State> {
       ]
     );
 
-    const eventCalendarUrl = `${ window.location.origin }/tapahtumat/`;
+    const eventCalendarUrl = `${ window.location.origin }/koulutuskalenteri/`;
 
     this.setState({
       loading: false,
@@ -165,7 +164,7 @@ class BasicLayout extends React.Component<Props, State> {
         className={ classes.navLink }
       >
         {
-          "Tapahtumat"
+          "Koulutuskalenteri"
         }
       </Link>
     );
