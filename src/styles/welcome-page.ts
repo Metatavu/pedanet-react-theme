@@ -50,25 +50,46 @@ export default createStyles({
     textTransform: "none",
     color: "#fff",
     "& p": {
-      fontSize: "2rem",
+      fontFamily: "Cairo, sans-serif",
+      fontWeight: 600,
+      fontSize: 18,
+      letterSpacing: 0,
+      color: "#fff"
+    },
+    "& a": {
+      fontFamily: "Cairo, sans-serif",
+      fontWeight: 600,
+      fontSize: 18,
+      letterSpacing: 0,
+      color: "#fff",
+      textDecoration: "none"
+    },
+    "& a:hover": {
+      textDecoration: "underline"
     },
     "& h1, h2, h3, h4, h5, h6": {
-      fontSize: "3rem",
+      fontSize: 28,
     },
     [theme.breakpoints.down("md")]: {
       "& p": {
-        fontSize: "1.5rem",
+        fontSize: 15,
+      },
+      "& a": {
+        fontSize: 15,
       },
       "& h1, h2, h3, h4, h5, h6": {
-        fontSize: "2rem",
+        fontSize: 20,
       },
     },
     [theme.breakpoints.down("xs")]: {
       "& p": {
-        fontSize: "1rem",
+        fontSize: 12,
+      },
+      "& a": {
+        fontSize: 12,
       },
       "& h1, h2, h3, h4, h5, h6": {
-        fontSize: "1.5rem",
+        fontSize: 16,
       },
     },
     //default colors
