@@ -1,6 +1,5 @@
 import { createStyles } from "@material-ui/core";
 import theme from "./theme";
-import headerImage from "../resources/img/headerImage.png";
 
 export default createStyles({
 
@@ -19,7 +18,6 @@ export default createStyles({
     marginBottom: 50
   },
   headerImage: {
-    backgroundImage: `url(${headerImage})`,
     backgroundRepeat: "no-repeat",
     height: "298px",
     backgroundSize: "cover"

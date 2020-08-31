@@ -1,4 +1,5 @@
-<?php 
+<?php
+  
   add_action('after_setup_theme', function() { 
     add_theme_support('post-thumbnails');
     register_nav_menus([
@@ -62,5 +63,7 @@
     }
   }
   add_action('save_post', 'add_terms_for_post');
-  require_once("tree-menu.php");
+
+  require_once(__DIR__ . "/wp-rest-api-endpoints/tree-menu.php");
+  require_once(__DIR__ . "/wp-rest-api-endpoints/post-thumbnail.php");
 ?>

@@ -86,12 +86,12 @@ class PostPage extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    const { classes, lang, slug } = this.props;
+    const { classes, lang, slug, mainPageSlug } = this.props;
     const { treeMenuTitle } = this.state;
     const rightSidebarContent = this.renderSideBarContent();
 
     return (
-      <BasicLayout lang={ lang } title={ this.setTitleSource() || <CircularProgress /> }>
+      <BasicLayout lang={ lang } mainPageSlug={ mainPageSlug } title={ this.setTitleSource() || <CircularProgress /> }>
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>

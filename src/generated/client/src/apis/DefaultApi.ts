@@ -161,6 +161,11 @@ export interface GetMenusV1MenusByIdRequest {
     id: string;
 }
 
+export interface GetPostThumbnailRequest {
+    id?: string;
+    slug?: string;
+}
+
 export interface GetTreeMenuRequest {
     slug: string;
 }
@@ -1422,6 +1427,42 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getMenusV1MenusById(requestParameters: GetMenusV1MenusByIdRequest): Promise<MenuData> {
         const response = await this.getMenusV1MenusByIdRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getPostThumbnailRaw(requestParameters: GetPostThumbnailRequest): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.id !== undefined) {
+            queryParameters['id'] = requestParameters.id;
+        }
+
+        if (requestParameters.slug !== undefined) {
+            queryParameters['slug'] = requestParameters.slug;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-WP-Nonce"] = this.configuration.apiKey("X-WP-Nonce"); // cookieAuth authentication
+        }
+
+        const response = await this.request({
+            path: `/wp/v2/postThumbnail`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async getPostThumbnail(requestParameters: GetPostThumbnailRequest): Promise<string> {
+        const response = await this.getPostThumbnailRaw(requestParameters);
         return await response.value();
     }
 
