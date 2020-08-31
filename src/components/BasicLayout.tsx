@@ -1,7 +1,8 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container, Typography } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Typography, CircularProgress } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
+import headerImage from "../resources/img/headerImage.png";
 import { MenuLocationData, MenuItemData } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
@@ -11,7 +12,8 @@ import styles from "../styles/basic-layout";
  */
 interface Props extends WithStyles<typeof styles> {
   lang: string,
-  title?: string | JSX.Element
+  title?: string | JSX.Element,
+  mainPageSlug?: string
 }
 
 /**
@@ -22,6 +24,7 @@ interface State {
   mainMenu?: MenuLocationData;
   localeMenu?: MenuLocationData;
   scrollPosition: number;
+  postThumbnail: string;
   eventCalendarUrl?: string;
 }
 
@@ -39,6 +42,7 @@ class BasicLayout extends React.Component<Props, State> {
     this.state = {
       loading: false,
       scrollPosition: 0,
+      postThumbnail: headerImage
     };
   }
 
@@ -53,10 +57,11 @@ class BasicLayout extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [mainMenu, localeMenu] = await Promise.all(
+    const [mainMenu, localeMenu, postThumbnail] = await Promise.all(
       [
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
         api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
+        api.getPostThumbnail({ slug: this.props.mainPageSlug })
       ]
     );
 
@@ -66,6 +71,7 @@ class BasicLayout extends React.Component<Props, State> {
       loading: false,
       mainMenu: mainMenu,
       localeMenu: localeMenu,
+      postThumbnail: postThumbnail,
       eventCalendarUrl: eventCalendarUrl
     });
   }
@@ -82,6 +88,7 @@ class BasicLayout extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
+    const { postThumbnail } = this.state;
 
     return (
       <div className={ classes.root }>
@@ -96,7 +103,10 @@ class BasicLayout extends React.Component<Props, State> {
             </div>
           </Container>
         </div>
-        <div className={ `${classes.logoBar} ${classes.headerImage}` }>
+        <div
+          style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
+          className={ `${classes.logoBar} ${classes.headerImage}` }
+        >
           { this.props.title &&
             <div className={ classes.titleContainer }>
               <Typography variant="h1">{ this.props.title }</Typography>

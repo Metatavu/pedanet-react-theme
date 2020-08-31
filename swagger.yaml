@@ -4604,6 +4604,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
       operationId: GetTreeMenu
+  /wp/v2/postThumbnail:
+    get:
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+        - name: slug
+          in: query
+          schema:
+            type: string
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_thumbnail"
+        default:
+          description: error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      operationId: GetPostThumbnail
   /tribe/events/v1/events:
     get:
       responses:
@@ -6104,6 +6131,8 @@ components:
             type: boolean
           nodes:
             $ref: "#/components/schemas/treeData"
+    post_thumbnail:
+      type: string
     eventCalendarEvents:
       type: object
       properties:
