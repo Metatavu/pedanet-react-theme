@@ -35,6 +35,9 @@ import {
     MenuData,
     MenuDataFromJSON,
     MenuDataToJSON,
+    MenuItem,
+    MenuItemFromJSON,
+    MenuItemToJSON,
     MenuLocation,
     MenuLocationFromJSON,
     MenuLocationToJSON,
@@ -1303,6 +1306,34 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getEventCalendarEvents(): Promise<EventCalendarEvents> {
         const response = await this.getEventCalendarEventsRaw();
+        return await response.value();
+    }
+
+    /**
+     */
+    async getMainMenuRaw(): Promise<runtime.ApiResponse<Array<MenuItem>>> {
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-WP-Nonce"] = this.configuration.apiKey("X-WP-Nonce"); // cookieAuth authentication
+        }
+
+        const response = await this.request({
+            path: `/wp/v2/mainMenu`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MenuItemFromJSON));
+    }
+
+    /**
+     */
+    async getMainMenu(): Promise<Array<MenuItem>> {
+        const response = await this.getMainMenuRaw();
         return await response.value();
     }
 

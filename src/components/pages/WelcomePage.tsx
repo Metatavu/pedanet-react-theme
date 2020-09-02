@@ -61,11 +61,9 @@ class WelcomePage extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [ posts, mainMenu, localeMenu, frontPageColumnPost ] = await Promise.all(
+    const [ posts, frontPageColumnPost ] = await Promise.all(
       [
         api.getWpV2Posts({lang: [ this.props.lang ]}),
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
         api.getWpV2Posts({lang: [ this.props.lang ], slug: [ "etusivun-kolumnit" ]})
       ]
     );
@@ -73,8 +71,6 @@ class WelcomePage extends React.Component<Props, State> {
     this.setState({
       posts: posts,
       loading: false,
-      mainMenu: mainMenu,
-      localeMenu: localeMenu,
       frontPageColumnPost: frontPageColumnPost.length > 0 ? frontPageColumnPost[0] : undefined
     });
 

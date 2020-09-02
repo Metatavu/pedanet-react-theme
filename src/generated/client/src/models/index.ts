@@ -33,6 +33,7 @@ export * from './InlineObject8';
 export * from './InlineObject9';
 export * from './Menu';
 export * from './MenuData';
+export * from './MenuItem';
 export * from './MenuItemData';
 export * from './MenuLocation';
 export * from './MenuLocationData';

@@ -3,8 +3,8 @@ import styles from "../../styles/tree-view";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import TreeMenu, { TreeNodeInArray, TreeMenuItem } from "react-simple-tree-menu";
-import { Page, GetWpV2PagesOrderbyEnum } from "../../generated/client/src";
+import TreeMenu, { TreeMenuItem } from "react-simple-tree-menu";
+import { Page } from "../../generated/client/src";
 import { withStyles, WithStyles, ListItem, List, CircularProgress } from "@material-ui/core";
 
 /**

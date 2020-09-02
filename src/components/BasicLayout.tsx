@@ -3,7 +3,7 @@ import { WithStyles, withStyles, Link, Container, Typography, CircularProgress }
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import headerImage from "../resources/img/headerImage.png";
-import { MenuLocationData, MenuItemData } from "../generated/client/src";
+import { MenuItem } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
 
@@ -21,8 +21,7 @@ interface Props extends WithStyles<typeof styles> {
  */
 interface State {
   loading: boolean;
-  mainMenu?: MenuLocationData;
-  localeMenu?: MenuLocationData;
+  mainMenu?: MenuItem[];
   scrollPosition: number;
   postThumbnail: string;
   eventCalendarUrl?: string;
@@ -50,6 +49,7 @@ class BasicLayout extends React.Component<Props, State> {
    * Component did mount life-cycle handler
    */
   public componentDidMount = async () => {
+    const initialPostThumbnail = this.state.postThumbnail;
     window.addEventListener("scroll", this.handleScroll);
     this.setState({
       loading: true,
@@ -57,10 +57,9 @@ class BasicLayout extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [mainMenu, localeMenu, postThumbnail] = await Promise.all(
+    const [mainMenu, postThumbnail] = await Promise.all(
       [
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" }),
-        api.getMenusV1LocationsById({ lang: this.props.lang, id: "locale" }),
+        api.getMainMenu(),
         api.getPostThumbnail({ slug: this.props.mainPageSlug })
       ]
     );
@@ -70,8 +69,7 @@ class BasicLayout extends React.Component<Props, State> {
     this.setState({
       loading: false,
       mainMenu: mainMenu,
-      localeMenu: localeMenu,
-      postThumbnail: postThumbnail,
+      postThumbnail: postThumbnail !== "false" ? postThumbnail : initialPostThumbnail,
       eventCalendarUrl: eventCalendarUrl
     });
   }
@@ -125,14 +123,14 @@ class BasicLayout extends React.Component<Props, State> {
     const { mainMenu, eventCalendarUrl } = this.state;
     const { classes } = this.props;
 
-    if (!mainMenu || !mainMenu.items) {
+    if (!mainMenu || mainMenu.length < 1) {
       return null;
     }
 
     return (
       <div className={ classes.nav }>
         {
-          mainMenu.items.map(this.renderMenuItem)
+          mainMenu.map(this.renderMenuItem)
         }
         {
           eventCalendarUrl && this.renderEventCalendarLink(eventCalendarUrl)
@@ -143,19 +141,19 @@ class BasicLayout extends React.Component<Props, State> {
 
   /**
    * Render menu item method
+   * 
+   * @param item menu item
    */
-  private renderMenuItem = (item: MenuItemData) => {
+  private renderMenuItem = (item: MenuItem) => {
     const { classes } = this.props;
     return (
       <Link
         variant="h6"
-        key={ item.db_id }
-        href={ item.url }
+        key={ item.title }
+        href={ item.link }
         className={ classes.navLink }
       >
-        {
-          item.title
-        }
+        { item.title }
       </Link>
     );
   }

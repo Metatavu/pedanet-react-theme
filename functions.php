@@ -64,6 +64,7 @@
   }
   add_action('save_post', 'add_terms_for_post');
 
+  require_once(__DIR__ . "/wp-rest-api-endpoints/main-menu.php");
   require_once(__DIR__ . "/wp-rest-api-endpoints/tree-menu.php");
   require_once(__DIR__ . "/wp-rest-api-endpoints/post-thumbnail.php");
 ?>

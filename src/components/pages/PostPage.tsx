@@ -165,19 +165,16 @@ class PostPage extends React.Component<Props, State> {
 
     const apiCalls = await Promise.all([
       api.getWpV2Pages({ lang: [ lang ], slug: [ slug ] }),
-      api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] }),
-      api.getMenusV1LocationsById({ lang: this.props.lang, id: "main" })
+      api.getWpV2Posts({ lang: [ lang ], slug: [ slug ] })
     ]);
 
     const page = apiCalls[0][0];
     const post = apiCalls[1][0];
-    const nav = apiCalls[2];
 
     this.setState({
       page: page,
       post: post,
-      isArticle: !!post,
-      nav: nav,
+      isArticle: !!post
     });
 
     this.breadcrumbPath();
