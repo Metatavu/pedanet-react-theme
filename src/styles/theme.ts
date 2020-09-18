@@ -143,6 +143,49 @@ export default createMuiTheme({
           }
         }
       }
+    },
+    MuiExpansionPanel: {
+      root: {
+        backgroundColor: "#fff",
+        borderTop: "1px solid rgba(0, 0, 0, .2)",
+        boxShadow: "none",
+        "&:not(:last-child)": {
+          borderBottom: 0
+        },
+        "&:last-child": {
+          paddingBottom: 1,
+          borderBottom: "1px solid rgba(0, 0, 0, .2)"
+        },
+        "&:before": {
+          display: "none"
+        },
+        "&$expanded": {
+          margin: "auto"
+        },
+      },
+      expanded: {}
+    },
+    MuiExpansionPanelSummary: {
+      root: {
+        backgroundColor: "#fff",
+        borderBottom: "none",
+        marginBottom: -1,
+        minHeight: 56,
+        "&$expanded": {
+          minHeight: 56
+        },
+      },
+      content: {
+        "&$expanded": {
+          margin: "12px 0"
+        },
+      },
+      expanded: {}
+    },
+    MuiExpansionPanelDetails: {
+      root: {
+        display: "block"
+      }
     }
   }
 });

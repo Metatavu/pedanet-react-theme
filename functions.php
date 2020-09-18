@@ -67,4 +67,13 @@
   require_once(__DIR__ . "/wp-rest-api-endpoints/main-menu.php");
   require_once(__DIR__ . "/wp-rest-api-endpoints/tree-menu.php");
   require_once(__DIR__ . "/wp-rest-api-endpoints/post-thumbnail.php");
+
+  add_filter("sptv_service_location_service_channel_components", function ($templates) {
+    $templates[] = [
+      "slug" => "accessibility",
+      "name" => __("Esteettömyystiedot", "sptv")
+    ];
+    
+    return $templates;
+  });
 ?>

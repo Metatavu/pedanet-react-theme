@@ -66,5 +66,14 @@ export default createStyles({
   htmlContainer: {
     // We no longer use this for basic wordpress content styling, instead let's put them to the style.css
     // Use in dire situations only
+  },
+  accessibilityTitle: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  accessibilityGroupLabel: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#54575a"
   }
 });
