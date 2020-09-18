@@ -13,7 +13,7 @@ import * as moment from "moment";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 import TreeView from "../generic/TreeView";
 import RightSideBar from "../generic/RightSideBar";
-
+import PtvAccessibilityAccordion from "../generic/ptv-accessibility-accordion";
 /**
  * Interface representing component properties
  */
@@ -183,8 +183,6 @@ class PostPage extends React.Component<Props, State> {
 
   /**
    * Initializes building a breadcrumb
-   *
-   * @param pages page array
    */
   private breadcrumbPath = async () => {
     const { page } = this.state;
@@ -399,7 +397,57 @@ class PostPage extends React.Component<Props, State> {
       return null;
     }
 
+    if (classNames.indexOf("accessibility") > -1) {
+      const attribs = node.attribs || {};
+      if (attribs["data-entrances"]) {
+        const entranceData: PtvEntranceData[] = JSON.parse(attribs["data-entrances"]);
+
+        if (!entranceData || entranceData.length === 0) {
+          return null;
+        }
+
+        return (
+          <>
+            <h2 className={ classes.accessibilityTitle }>
+              { strings.accessibility }
+            </h2>
+            {
+              entranceData.map(entrance => this.renderPtvEntrance(entrance))
+            }
+          </>
+        );
+      }
+    }
+
     return convertNodeToElement(node, index, this.transformContent);
+  }
+
+  /**
+   * Renders PTV entrance data
+   * 
+   * @param entranceData entrance data
+   */
+  private renderPtvEntrance = (entranceData: PtvEntranceData) => {
+    if (!entranceData.accessibilitySentences) {
+      return null;
+    }
+
+    return entranceData.accessibilitySentences.map(accessibilitySentence => {
+      return this.renderPtvAccessibilitySentence(accessibilitySentence);
+    });
+  }
+
+  /**
+   * Renders PTV accessibility sentence
+   * 
+   * @param accessibilitySentence accessibility sentence
+   */
+  private renderPtvAccessibilitySentence = (accessibilitySentence: PtvAccessibilitySentence) => {
+    return (
+      <PtvAccessibilityAccordion
+        accessibilitySentence={ accessibilitySentence }
+      />
+    );
   }
 
   /**
