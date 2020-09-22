@@ -19,7 +19,8 @@ export default createStyles({
   wrapper: {
     width: "100%",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingBottom: 50
   },
   pageContent: {
     maxWidth: "1200px",

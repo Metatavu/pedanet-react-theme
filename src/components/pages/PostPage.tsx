@@ -460,14 +460,25 @@ class PostPage extends React.Component<Props, State> {
     const classNames = this.getElementClasses(node);
 
     if (classNames.indexOf("meta-side-panel-layout") > -1) {
-      return convertNodeToElement(node, index, this.transformSidePanelContent);
-    }
-    /**
-     * Get right sidebar content to variable
-     * Right sidebar has added custom class in wordpress custom block
-     */
-    if (classNames.indexOf("meta-side-panel") > -1) {
-      return convertNodeToElement(node, index, this.transformContent);
+      if (!node.children || node.children.length < 1) {
+        return convertNodeToElement(node, index, this.transformSidePanelContent);
+      }
+
+      const mainPanel = node.children.find(child =>
+        this.getElementClasses(child).includes("wp-block-column")
+      );
+      if (!mainPanel || !mainPanel.children || mainPanel.children.length < 1) {
+        return convertNodeToElement(node, index, this.transformSidePanelContent);
+      }
+
+      const sidePanel = mainPanel.children.find(child =>
+        this.getElementClasses(child).includes("meta-side-panel")
+      );
+      if (!sidePanel) {
+        return convertNodeToElement(node, index, this.transformSidePanelContent);
+      }
+
+      return convertNodeToElement(sidePanel, 0, this.transformContent);
     }
 
     return null;
