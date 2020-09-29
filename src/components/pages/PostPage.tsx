@@ -1,13 +1,12 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Button, Breadcrumbs, Link, Typography, CircularProgress } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Breadcrumbs, Link, Typography, CircularProgress } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData, PostTitle } from "../../../src/generated/client/src";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
 import strings from "../../localization/strings";
-import ArrowIcon from "@material-ui/icons/ArrowForwardRounded";
 import * as classNames from "classnames";
 import * as moment from "moment";
 import "../../../node_modules/react-simple-tree-menu/dist/main.css";
@@ -281,20 +280,6 @@ class PostPage extends React.Component<Props, State> {
   }
 
   /**
-   * Get html link href
-   */
-  private getLinkHref = (node: DomElement) => {
-    return node.attribs && node.attribs.href ? node.attribs.href : "";
-  }
-
-  /**
-   * Get html text content
-   */
-  private getElementTextContent = (node: DomElement) => {
-    return node.children && node.children[0] ? node.children[0].data as string : "";
-  }
-
-  /**
    * Set html source for page content
    */
   private getPageOrPostContent = () => {
@@ -373,31 +358,12 @@ class PostPage extends React.Component<Props, State> {
   private transformContent = (node: DomElement, index: number) => {
     const { classes } = this.props;
     const classNames = this.getElementClasses(node);
-    const { page, post } = this.state;
 
-    // Find any buttons and replace them with Material UI button
-    if (classNames.indexOf("wp-block-button") > -1) {
-      const childNode = node.children && node.children.length ? node.children[0] : null;
-      if (childNode) {
-        return (
-          <a href={ this.getLinkHref(childNode) } style={{ textDecoration: "none" }}>
-            <Button className={ classes.button } color="primary" variant="outlined" endIcon={ <ArrowIcon /> }>
-              { this.getElementTextContent(childNode) }
-            </Button>
-          </a>
-        );
-      }
-    }
-
-    /**
-     * Get right sidebar content to variable
-     * Right sidebar has added custom class in wordpress custom block
-     */
-    if (classNames.indexOf("meta-side-panel") > -1) {
+    if (classNames.includes("meta-side-panel")) {
       return null;
     }
 
-    if (classNames.indexOf("accessibility") > -1) {
+    if (classNames.includes("accessibility")) {
       const attribs = node.attribs || {};
       if (attribs["data-entrances"]) {
         const entranceData: PtvEntranceData[] = JSON.parse(attribs["data-entrances"]);
@@ -451,37 +417,52 @@ class PostPage extends React.Component<Props, State> {
   }
 
   /**
-   * transform html source content before it is rendered
+   * Extract possible side panel content from HTML structure and transform it to React elements
    *
    * @param node DomElement
    * @param index DomElement index
    */
   private transformSidePanelContent = (node: DomElement, index: number) => {
-    const classNames = this.getElementClasses(node);
+    const sidePanelContent = this.findContentByClassnames([ node ], [ "meta-side-panel" ]);
+    return sidePanelContent ?
+      convertNodeToElement(sidePanelContent, 0, this.defaultTransformContent) :
+      null;
+  }
 
-    if (classNames.indexOf("meta-side-panel-layout") > -1) {
-      if (!node.children || node.children.length < 1) {
-        return convertNodeToElement(node, index, this.transformSidePanelContent);
+  /**
+   * Finds first node from DOM tree that matches all given class names
+   * 
+   * @param domElements DOM elements as list
+   * @param classNames class names list to be matched
+   * @returns matching DOM element if found, otherwise undefined
+   */
+  private findContentByClassnames = (domElements: DomElement[], classNames: string[]): DomElement | undefined => {
+    for (let i = 0; i < domElements.length; i++) {
+      const element = domElements[i];
+      const elementClasses = this.getElementClasses(element);
+      if (classNames.every(className => elementClasses.includes(className))) {
+        return element;
       }
 
-      const mainPanel = node.children.find(child =>
-        this.getElementClasses(child).includes("wp-block-column")
-      );
-      if (!mainPanel || !mainPanel.children || mainPanel.children.length < 1) {
-        return convertNodeToElement(node, index, this.transformSidePanelContent);
+      if (element.children && element.children.length > 0) {
+        const childMatch = this.findContentByClassnames(element.children, classNames);
+        if (childMatch) {
+          return childMatch;
+        }
       }
-
-      const sidePanel = mainPanel.children.find(child =>
-        this.getElementClasses(child).includes("meta-side-panel")
-      );
-      if (!sidePanel) {
-        return convertNodeToElement(node, index, this.transformSidePanelContent);
-      }
-
-      return convertNodeToElement(sidePanel, 0, this.transformContent);
     }
 
-    return null;
+    return undefined;
+  }
+
+  /**
+   * Default transform content
+   * 
+   * @param node DOM element
+   * @param index index of DOM element
+   */
+  private defaultTransformContent = (node: DomElement, index: number) => {
+    return convertNodeToElement(node, index, this.defaultTransformContent);
   }
 }
 
