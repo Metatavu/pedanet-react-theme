@@ -73,7 +73,12 @@
       "slug" => "accessibility",
       "name" => __("Esteettömyystiedot", "sptv")
     ];
-    
+
+    $templates[] = [
+      "slug" => "contact-info",
+      "name" => __("Yhteystiedot - sivupaneeli", "sptv")
+    ];
+
     return $templates;
   });
 ?>

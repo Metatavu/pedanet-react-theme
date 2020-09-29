@@ -20,15 +20,18 @@
         $chargeInfo = __("Chargeable", "sptv");
     }
 
+    echo "<div class=\"ptv-phone-numbers\">";
     echo "<p>";
 
     if ($additionalInformation) {
-      echo "<b>$additionalInformation<br/></b>";
+      echo "<b>$additionalInformation</b>";
+      echo "<br/>";
     }
 
     echo implode(" ", [$prefixNumber, $number, $chargeInfo]);
 
     echo "</p>";
+    echo "</div>";
   }
 
 ?>

@@ -8,8 +8,10 @@
     return;
   }
 
+  echo "<div class=\"ptv-emails\">";
   echo "<p>";
   echo getLocalizedValue($emails, $data->language);
   echo "</p>";
+  echo "</div>";
 
 ?>

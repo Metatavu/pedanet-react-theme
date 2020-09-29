@@ -93,15 +93,17 @@
       if ($serviceHour["serviceHourType"] == "DaysOfTheWeek") {
         $additionalInformation = getLocalizedValue($serviceHour["additionalInformation"], $data->language);
         $openingHours = $serviceHour["openingHour"];
-        $result .= "<p>$additionalInformation</p>";
+        $result .= "<h4>$additionalInformation</h4>";
         
-        $result .= "<p>";
+        $result .= "<div class='opening-hours'>";
         if (!$serviceHour["isClosed"] && count($openingHours) == 0) {
-          $result .= __("Open 24 hours.", "sptv");
+          $result .= "<p>" . __("Open 24 hours.", "sptv") . "</p>";
         } else {
+          $result .= "<table><tbody>";
           $result .= formatOpeningHours($openingHours);
+          $result .= "</tbody></table>";
         }
-        $result .= "</p>";
+        $result .= "</div>";
 
       }
     }
@@ -119,24 +121,30 @@
     $days = isset($openingHour['dayFrom']) ? getLocalizedDayName($openingHour['dayFrom']) : '';
     $from = "";
     $to = "";
-    
-    if (isset($openingHour['dayTo'])) {
+
+    if (isset($openingHour['dayTo']) && $openingHour['dayTo'] != "") {
       $days .= ' - ' . getLocalizedDayName($openingHour['dayTo']);
     }
-    
+
     if (isset($openingHour['from'])) {
       $from = implode('.', array_slice(explode(':', $openingHour['from']), 0, 2));
     }
-    
+
     if (isset($openingHour['to'])) {
       $to = implode('.', array_slice(explode(':', $openingHour['to']), 0, 2));
     }
-    
+
+    $result = "<tr>";
+    $result .= "<td>${days}</td>";
+
     if (!empty($from) || !empty($to)) {
-      return "${days} ${from} - ${to}";
+      $result .= "<td>${from} - ${to}</td>";
     } else {
-      return "${days} ${from}";
+      $result .= "<td>${from}</td>";
     }
+    $result .= "</tr>";
+
+    return $result;
   }
 
   /**
@@ -146,7 +154,7 @@
    * @return string formatted string
    */
   function formatOpeningHours($openingHours) {
-    return implode(", ", array_map(function ($openingHour) {
+    return join("", array_map(function ($openingHour) {
       return formatOpeningHour($openingHour);
     }, $openingHours));
   }
