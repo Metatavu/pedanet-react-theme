@@ -19,17 +19,24 @@
       $mapUrl = $serviceId ? "https://www.suomi.fi/kartta/palvelupaikat/$serviceId?sl=$serviceChannelId" : null;
       $routeUrl = $latitude && $longitude ? "https://www.suomi.fi/kartta/reitit?to.lat=$latitude&to.lon=$longitude" : null;
 
+      echo "<div class=\"ptv-addresses\">";
+      echo "<p>";
       echo getLocalizedValue($streetAddress["street"], $data->language) . " " . $streetAddress["streetNumber"];
       echo "<br/>";
       echo $streetAddress["postalCode"] . " " . getLocalizedValue($streetAddress["postOffice"], $data->language);
 
       if ($mapUrl) {
-        echo "<br/><a target=\"_blank\" href=\"$mapUrl\">Palvelupaikka kartalla</a>";
+        echo "<br/>";
+        echo "<a class=\"ptv-address-link\" target=\"_blank\" href=\"$mapUrl\">Palvelupaikka kartalla</a>";
       }
 
       if ($routeUrl) {
-        echo "<br/><a target=\"_blank\" href=\"$routeUrl\">Näytä reitti tänne</a>";
+        echo "<br/>";
+        echo "<a class=\"ptv-address-link\" target=\"_blank\" href=\"$routeUrl\">Näytä reitti tänne</a>";
       }
+
+      echo "</p>";
+      echo "</div>";
     }
   }
 

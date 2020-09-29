@@ -22,7 +22,7 @@
         /**
          * Div containing accessibility info as JSON for parsing in theme
          */
-        echo sprintf('<div class="accessibility" data-entrances="%s"/>', htmlspecialchars(json_encode($address['entrances'])));
+        echo sprintf("<div class=\"accessibility\" data-entrances=\"%s\"/>", htmlspecialchars(json_encode($address['entrances'])));
 
         /**
          * Accessibility info displayed in HTML for Wordpress editor
