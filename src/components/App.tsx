@@ -70,7 +70,7 @@ class App extends React.Component<Props, State> {
 
   /**
    * Takes in a path and returns the last location
-   * 
+   *
    * @param path path as string
    */
   private pathToSlug = (path?: string) => {

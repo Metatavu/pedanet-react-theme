@@ -59,7 +59,7 @@ class TreeView extends React.Component<Props, State> {
     const { classes } = this.props;
     const { treeData, initialOpenNodes } = this.state;
     return (
-      <div className={ classes.treeWrapper }>
+      <div className={ classes.treeWrapper } role="navigation" aria-label="side nav">
         { initialOpenNodes !== undefined &&
           <TreeMenu data={ treeData } initialOpenNodes={ initialOpenNodes } hasSearch={ false }>
             {({ search, items }) => (

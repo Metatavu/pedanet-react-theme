@@ -54,7 +54,7 @@ export default createStyles({
       fontWeight: 600,
       fontSize: 18,
       letterSpacing: 0,
-      color: "#fff"
+      color: "#000"
     },
     "& a": {
       fontFamily: "Cairo, sans-serif",

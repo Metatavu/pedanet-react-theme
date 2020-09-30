@@ -94,7 +94,7 @@ class PostPage extends React.Component<Props, State> {
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
-              <Breadcrumbs separator=">">
+              <Breadcrumbs separator=">" aria-label="breadcrumb">
                 <Link color="inherit" href="/">
                   Etusivu
                 </Link>
@@ -102,8 +102,8 @@ class PostPage extends React.Component<Props, State> {
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
-              <div className={ classes.leftsidebar }>
-                <Typography variant="h3" className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
+              <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                <Typography className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
                 <TreeView lang={ lang } slug={ slug } />
               </div>
               <div className={ classes.contentarea }>
@@ -234,10 +234,12 @@ class PostPage extends React.Component<Props, State> {
     const { page } = this.state;
     moment.locale(lang);
     return (
-      <div className={
-        classNames(classes.htmlContainer,
-        this.state.isArticle && "article")
+      <div
+        className={
+          classNames(classes.htmlContainer,
+          this.state.isArticle && "article")
         }
+        role="main"
       >
       { page && page.title &&
         <h1 style={{ fontWeight: 700 }}>{ page.title.rendered }</h1>
