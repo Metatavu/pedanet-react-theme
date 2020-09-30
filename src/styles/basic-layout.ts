@@ -15,12 +15,23 @@ export default createStyles({
     flexDirection: "row",
     justifyContent: "center",
     width: "100%",
-    marginBottom: 50
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.up("md")]: {
+      marginBottom: 50
+    }
+  },
+  horizontalColorBar: {
+    width: "100%",
+    height: 8,
+    backgroundRepeat: "repeat-x",
   },
   headerImage: {
     backgroundRepeat: "no-repeat",
-    height: "298px",
-    backgroundSize: "cover"
+    height: 200,
+    backgroundSize: "cover",
+    [theme.breakpoints.up("md")]: {
+      height: 298,
+    }
   },
   nav: {
     display: "flex",
@@ -53,6 +64,15 @@ export default createStyles({
       marginLeft: 40,
     }
   },
+  mobileNav: {
+    [theme.breakpoints.down("md")]: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+  },
   topNavDesktop: {
     position: "relative",
     textAlign: "center"
@@ -82,12 +102,18 @@ export default createStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "auto",
+    width: "100%",
     height: "100%",
     paddingLeft: "2.5rem",
     paddingRight: "2.5rem",
-    backgroundColor: "green",
-    color: "white",
+    backgroundColor: "#008000",
+    color: "#fff",
     fontSize: "3rem",
+    [theme.breakpoints.up("md")]: {
+      maxWidth: "60%"
+    },
+    [theme.breakpoints.up("lg")]: {
+      minWidth: 600
+    }
   },
 });

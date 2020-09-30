@@ -28,11 +28,20 @@ export default createStyles({
   },
   breadcrumb: {
     width: "100%",
-    marginBottom: "3rem"
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.up("md")]: {
+      marginBottom: "3rem"
+    }
   },
   columns: {
     display: "flex",
-    height: "calc(100% - 55px)"
+    flexDirection: "column",
+    [theme.breakpoints.up("md")]: {
+      height: "calc(100% - 55px)",
+      flexDirection: "row"
+    }
   },
   navigation: {
     flex: 1, padding: "2rem"

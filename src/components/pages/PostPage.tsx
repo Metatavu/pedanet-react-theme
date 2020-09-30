@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Breadcrumbs, Link, Typography, CircularProgress } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Breadcrumbs, Link, Typography, CircularProgress, Hidden } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData, PostTitle } from "../../../src/generated/client/src";
@@ -102,10 +102,12 @@ class PostPage extends React.Component<Props, State> {
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
-              <div className={ classes.leftsidebar }>
-                <Typography variant="h3" className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
-                <TreeView lang={ lang } slug={ slug } />
-              </div>
+              <Hidden smDown>
+                <div className={ classes.leftsidebar }>
+                  <Typography variant="h3" className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
+                  <TreeView lang={ lang } slug={ slug } />
+                </div>
+              </Hidden>
               <div className={ classes.contentarea }>
                 { this.renderContent() }
               </div>
