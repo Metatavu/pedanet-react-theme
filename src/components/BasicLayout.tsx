@@ -90,11 +90,11 @@ class BasicLayout extends React.Component<Props, State> {
 
     return (
       <div className={ classes.root }>
-        <div className={ classes.top }>
-          <img className={ classes.logoBar } src={ bar } />
+        <div className={ classes.top } role="navigation" aria-label="top nav">
+          <img className={ classes.logoBar } src={ bar } alt="top bar" />
           <Container maxWidth="lg">
             <a href="/?lang=fi">
-              <img className={ classes.logo } src={ mikkeliLogo } />
+              <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
             </a>
             <div className={ classes.topNavDesktop }>
               { this.renderMenu() }
@@ -102,8 +102,9 @@ class BasicLayout extends React.Component<Props, State> {
           </Container>
         </div>
         <div
-          style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
+          role="banner"
           className={ `${classes.logoBar} ${classes.headerImage}` }
+          style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         >
           { this.props.title &&
             <div className={ classes.titleContainer }>
