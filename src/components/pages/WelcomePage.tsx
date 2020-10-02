@@ -93,7 +93,7 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang }>
-        <div className={ classes.columnSection }>
+        <div className={ classes.columnSection } role="heading" aria-level={ 1 }>
           { this.renderColumns() }
         </div>
       </BasicLayout>

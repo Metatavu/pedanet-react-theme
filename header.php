@@ -27,7 +27,7 @@
 		wp_body_open();
 		?>
 
-		<header id="site-header" class="header-footer-group" role="banner">
+		<div id="site-header" class="header-footer-group">
 			<img src="<?php bloginfo('template_url') ?>/dist/bar.png" >
 
 			<div class="header-inner section-inner">

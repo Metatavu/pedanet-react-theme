@@ -9,7 +9,13 @@ export default createStyles({
     gridTemplateColumns: "1fr",
     gridTemplateRows: "auto auto 1fr"
   },
-  top: {},
+  top: {
+    [theme.breakpoints.down("md")]: {
+      display: "grid",
+      gridTemplateRows: "auto auto auto",
+      transition: "grid-template-rows 0.2s linear"
+    }
+  },
   logoBar: {
     display: "flex",
     flexDirection: "row",
@@ -35,27 +41,32 @@ export default createStyles({
   },
   nav: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      flexDirection: "row",
+    },
   },
   navLink: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     whiteSpace: "nowrap",
-    height: 80,
+    height: 40,
     textDecoration: "none",
     fontFamily: theme.typography.body1.fontFamily,
     cursor: "pointer",
     fontWeight: 700,
     fontSize: 16,
-    lineHeight: "21px",
+    lineHeight: 21,
     letterSpacing: 0,
     color: "#234c8e",
     textTransform: "uppercase",
-    [theme.breakpoints.down("md")]: {
-      fontSize: "1.5rem",
-      marginLeft: 10
+    [theme.breakpoints.up("sm")]: {
+      height: 80,
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: 16,
     },
     [theme.breakpoints.up("lg")]: {
       marginLeft: 30,
@@ -64,7 +75,8 @@ export default createStyles({
       marginLeft: 40,
     }
   },
-  mobileNav: {
+  logoSection: {
+    marginTop: theme.spacing(5),
     [theme.breakpoints.down("md")]: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
@@ -76,6 +88,11 @@ export default createStyles({
   topNavDesktop: {
     position: "relative",
     textAlign: "center"
+  },
+  topNavMobile: {
+    [theme.breakpoints.up("sm")]: {
+      display: "none"
+    }
   },
   social: {
     width: "15%",
@@ -89,8 +106,14 @@ export default createStyles({
     marginLeft: "55%"
   },
   logo: {
-    width: 200,
+    width: 140,
     display: "flex",
+    [theme.breakpoints.up("sm")]: {
+      width: 180,
+    },
+    [theme.breakpoints.up("md")]: {
+      width: 200,
+    },
     [theme.breakpoints.up("lg")]: {
       marginLeft: 30,
     },

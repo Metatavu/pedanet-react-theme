@@ -94,17 +94,17 @@ class BasicLayout extends React.Component<Props, State> {
 
     return (
       <div className={ classes.root }>
-        <div className={ classes.top }>
-          <div className={ classes.horizontalColorBar } style={{ backgroundImage: `url( ${ bar } )` }} />
+        <div className={ classes.top } role="navigation" aria-label="top nav">
+          <div className={ classes.horizontalColorBar } aria-label="top bar" style={{ backgroundImage: `url( ${ bar } )` }} />
           <Container maxWidth="lg">
-            <div className={ classes.mobileNav }>
+            <div className={ classes.logoSection }>
               <Hidden smUp>
                 <IconButton size="medium" onClick={ this.onMenuClick }>
                   <MenuIcon color="primary" />
                 </IconButton>
               </Hidden>
               <a href="/?lang=fi">
-                <img className={ classes.logo } src={ mikkeliLogo } />
+                <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
               </a>
             </div>
             <Hidden smDown>
@@ -113,13 +113,16 @@ class BasicLayout extends React.Component<Props, State> {
               </div>
             </Hidden>
           </Container>
-          { showMenu &&
-            <div>Moi, oon menu</div>
-          }
+          <div className={ classes.topNavMobile }>
+            { showMenu &&
+              this.renderMenu()
+            }
+          </div>
         </div>
         <div
-          style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
+          role="banner"
           className={ `${ classes.logoBar } ${ classes.headerImage }` }
+          style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         >
           { this.props.title &&
             <div className={ classes.titleContainer }>
@@ -205,12 +208,32 @@ class BasicLayout extends React.Component<Props, State> {
   }
 
   /**
-   * Mobile menu click
+   * Mobile menu toggle
    */
   private onMenuClick = () => {
-    this.setState({
-      showMenu: true
-    });
+    return ( this.state.showMenu ? this.hideMobileMenu() : this.showMobileMenu() );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private showMobileMenu = () => {
+    return (
+      this.setState({
+        showMenu: true
+      })
+    );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private hideMobileMenu = () => {
+    return (
+      this.setState({
+        showMenu: false
+      })
+    );
   }
 }
 
