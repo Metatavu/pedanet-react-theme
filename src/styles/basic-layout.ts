@@ -43,8 +43,11 @@ export default createStyles({
     display: "flex",
     flexDirection: "column",
     alignContent: "center",
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.up("sm")]: {
       flexDirection: "row",
+      marginBottom: 0,
+      justifyContent: "space-between"
     },
   },
   navLink: {
@@ -52,24 +55,26 @@ export default createStyles({
     justifyContent: "center",
     alignItems: "center",
     whiteSpace: "nowrap",
-    height: 40,
+    height: 46,
     textDecoration: "none",
     fontFamily: theme.typography.body1.fontFamily,
     cursor: "pointer",
     fontWeight: 700,
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 21,
     letterSpacing: 0,
     color: "#234c8e",
     textTransform: "uppercase",
     [theme.breakpoints.up("sm")]: {
-      height: 80,
+      height: 50,
     },
     [theme.breakpoints.up("md")]: {
-      fontSize: 16,
+      height: 60
     },
     [theme.breakpoints.up("lg")]: {
+      fontSize: 16,
       marginLeft: 30,
+      height: 80
     },
     [theme.breakpoints.up("xl")]: {
       marginLeft: 40,
@@ -136,7 +141,8 @@ export default createStyles({
       maxWidth: "60%"
     },
     [theme.breakpoints.up("lg")]: {
-      minWidth: 600
+      minWidth: 600,
+      maxWidth: "40%"
     }
   },
 });

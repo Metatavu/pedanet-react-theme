@@ -3,6 +3,8 @@ import { createMuiTheme, responsiveFontSizes } from "@material-ui/core";
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
 
+const { breakpoints } = theme;
+
 export default createMuiTheme({
   palette: {
     primary: {
@@ -66,7 +68,12 @@ export default createMuiTheme({
   overrides: {
     MuiButton: {
       label: {
-        fontSize: "1rem",
+        fontSize: 16,
+        fontFamily: "'Cairo', sans-serif",
+        fontWeight: 700,
+        [breakpoints.up("sm")]: {
+          fontSize: 18,
+        },
         whiteSpace: "nowrap",
       },
       text: {
@@ -78,16 +85,10 @@ export default createMuiTheme({
         textTransform: "initial",
         height: 55,
         borderRadius: 0,
-        padding: "5px 15px",
-        border: "1px solid rgba(245, 239, 234, 0.8)",
-        borderWidth: 3,
-        "&:hover": {
-          borderWidth: 3,
-        },
-        "&:active": {
-          borderWidth: 3,
-        }
-      }
+        padding: "5px 15px"
+      },
+      textPrimary: {},
+      containedPrimary: {}
     },
     MuiInputBase: {
       input: {
@@ -97,51 +98,6 @@ export default createMuiTheme({
     MuiInputLabel: {
       root: {
         fontSize: "1.6rem",
-        color: "#F5EFEA"
-      }
-    },
-    MuiFormLabel: {
-      root: {
-        color: "#F5EFEA",
-        "&$focused": {
-          color: "rgba(245, 239, 234, 0.5)"
-        }
-      }
-    },
-    MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: "3px solid #F5EFEA"
-        },
-        "&:after": {
-          borderBottom: "3px solid rgba(245, 239, 234, 0.8)"
-        },
-        "&:hover:not($disabled):before": {
-          borderBottom: "3px solid rgba(245, 239, 234, 0.2)"
-        },
-      }
-    },
-    MuiListItem: {
-      root: {
-        "& a": {
-          textDecoration: "none",
-          paddingLeft: "1rem",
-          paddingRight: "1rem"
-        },
-        "&.Mui-selected": {
-          backgroundColor: "#d94c70",
-          "& a": {
-            color: "#fff",
-            textDecoration: "underline",
-          },
-          "&:hover": {
-            backgroundColor: "#d94c70"
-          },
-          "& svg": {
-            color: "#fff",
-            borderColor: "#fff"
-          }
-        }
       }
     },
     MuiExpansionPanel: {

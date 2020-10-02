@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container, Typography, Hidden, IconButton } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Typography, Hidden, IconButton, Collapse } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import headerImage from "../resources/img/headerImage.png";
@@ -98,7 +98,7 @@ class BasicLayout extends React.Component<Props, State> {
           <div className={ classes.horizontalColorBar } aria-label="top bar" style={{ backgroundImage: `url( ${ bar } )` }} />
           <Container maxWidth="lg">
             <div className={ classes.logoSection }>
-              <Hidden smUp>
+              <Hidden mdUp>
                 <IconButton size="medium" onClick={ this.onMenuClick }>
                   <MenuIcon color="primary" />
                 </IconButton>
@@ -107,16 +107,18 @@ class BasicLayout extends React.Component<Props, State> {
                 <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
               </a>
             </div>
+            {/* Desktop menu, hidden from mobile devices */}
             <Hidden smDown>
               <div className={ classes.topNavDesktop }>
                 { this.renderMenu() }
               </div>
             </Hidden>
           </Container>
+          {/* Mobile menu */}
           <div className={ classes.topNavMobile }>
-            { showMenu &&
-              this.renderMenu()
-            }
+            <Collapse in={ showMenu }>
+              { this.renderMenu() }
+            </Collapse>
           </div>
         </div>
         <div
@@ -160,7 +162,7 @@ class BasicLayout extends React.Component<Props, State> {
 
   /**
    * Render menu item method
-   * 
+   *
    * @param item menu item
    */
   private renderMenuItem = (item: MenuItem) => {

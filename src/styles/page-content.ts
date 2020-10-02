@@ -8,6 +8,11 @@ export default createStyles({
   root: {
 
   },
+  pageTitle: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: 26
+    }
+  },
   content: {
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.primary.dark,
@@ -44,10 +49,14 @@ export default createStyles({
     }
   },
   navigation: {
-    flex: 1, padding: "2rem"
+    flex: 1,
+    padding: "2rem"
   },
   contentarea: {
-    flex: 3
+    flex: 2,
+    [theme.breakpoints.up("lg")]: {
+      flex: 3
+    }
   },
   leftsidebar: {
     flex: 1,
