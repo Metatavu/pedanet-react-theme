@@ -109,7 +109,9 @@ class PostPage extends React.Component<Props, State> {
               {/* Left side bar */}
               <Hidden smDown>
                 <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
-                  <Typography className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
+                  <Typography className={ classes.treeMenuTitle }>
+                    { treeMenuTitle || this.setTitleSource() }
+                  </Typography>
                   <TreeView lang={ lang } slug={ slug } />
                 </div>
               </Hidden>
