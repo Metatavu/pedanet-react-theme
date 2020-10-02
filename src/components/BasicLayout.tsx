@@ -1,11 +1,13 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container, Typography, CircularProgress } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Typography, Hidden, IconButton, Collapse } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import headerImage from "../resources/img/headerImage.png";
 import { MenuItem } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
+
+import MenuIcon from "@material-ui/icons/Menu";
 
 /**
  * Interface representing component properties
@@ -25,6 +27,7 @@ interface State {
   scrollPosition: number;
   postThumbnail: string;
   eventCalendarUrl?: string;
+  showMenu: boolean;
 }
 
 /**
@@ -41,7 +44,8 @@ class BasicLayout extends React.Component<Props, State> {
     this.state = {
       loading: false,
       scrollPosition: 0,
-      postThumbnail: headerImage
+      postThumbnail: headerImage,
+      showMenu: false
     };
   }
 
@@ -86,24 +90,40 @@ class BasicLayout extends React.Component<Props, State> {
    */
   public render() {
     const { classes } = this.props;
-    const { postThumbnail } = this.state;
+    const { postThumbnail, showMenu } = this.state;
 
     return (
       <div className={ classes.root }>
         <div className={ classes.top } role="navigation" aria-label="top nav">
-          <img className={ classes.logoBar } src={ bar } alt="top bar" />
+          <div className={ classes.horizontalColorBar } aria-label="top bar" style={{ backgroundImage: `url( ${ bar } )` }} />
           <Container maxWidth="lg">
-            <a href="/?lang=fi">
-              <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
-            </a>
-            <div className={ classes.topNavDesktop }>
-              { this.renderMenu() }
+            <div className={ classes.logoSection }>
+              <Hidden mdUp>
+                <IconButton size="medium" onClick={ this.onMenuClick }>
+                  <MenuIcon color="primary" />
+                </IconButton>
+              </Hidden>
+              <a href="/?lang=fi">
+                <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
+              </a>
             </div>
+            {/* Desktop menu, hidden from mobile devices */}
+            <Hidden smDown>
+              <div className={ classes.topNavDesktop }>
+                { this.renderMenu() }
+              </div>
+            </Hidden>
           </Container>
+          {/* Mobile menu */}
+          <div className={ classes.topNavMobile }>
+            <Collapse in={ showMenu }>
+              { this.renderMenu() }
+            </Collapse>
+          </div>
         </div>
         <div
           role="banner"
-          className={ `${classes.logoBar} ${classes.headerImage}` }
+          className={ `${ classes.logoBar } ${ classes.headerImage }` }
           style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         >
           { this.props.title &&
@@ -142,7 +162,7 @@ class BasicLayout extends React.Component<Props, State> {
 
   /**
    * Render menu item method
-   * 
+   *
    * @param item menu item
    */
   private renderMenuItem = (item: MenuItem) => {
@@ -187,6 +207,35 @@ class BasicLayout extends React.Component<Props, State> {
     this.setState({
       scrollPosition: currentScrollPos
     });
+  }
+
+  /**
+   * Mobile menu toggle
+   */
+  private onMenuClick = () => {
+    return ( this.state.showMenu ? this.hideMobileMenu() : this.showMobileMenu() );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private showMobileMenu = () => {
+    return (
+      this.setState({
+        showMenu: true
+      })
+    );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private hideMobileMenu = () => {
+    return (
+      this.setState({
+        showMenu: false
+      })
+    );
   }
 }
 

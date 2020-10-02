@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicLayout from "../BasicLayout";
-import { Container, WithStyles, withStyles, Breadcrumbs, Link, Typography, CircularProgress } from "@material-ui/core";
+import { Container, WithStyles, withStyles, Breadcrumbs, Link, Typography, CircularProgress, Hidden, Collapse, Button } from "@material-ui/core";
 import styles from "../../styles/page-content";
 import ApiUtils from "../../../src/utils/ApiUtils";
 import { Page, Post, MenuLocationData, PostTitle } from "../../../src/generated/client/src";
@@ -13,6 +13,8 @@ import "../../../node_modules/react-simple-tree-menu/dist/main.css";
 import TreeView from "../generic/TreeView";
 import RightSideBar from "../generic/RightSideBar";
 import PtvAccessibilityAccordion from "../generic/ptv-accessibility-accordion";
+
+import MenuIcon from "@material-ui/icons/Menu";
 /**
  * Interface representing component properties
  */
@@ -36,6 +38,7 @@ interface State {
   breadcrumb: Breadcrumb[];
   pageTitle?: PostTitle;
   treeMenuTitle?: string;
+  showMobileMenu: boolean;
 }
 
 /**
@@ -61,6 +64,7 @@ class PostPage extends React.Component<Props, State> {
     this.state = {
       isArticle: false,
       loading: false,
+      showMobileMenu: false,
       breadcrumb: [],
     };
   }
@@ -86,7 +90,7 @@ class PostPage extends React.Component<Props, State> {
    */
   public render() {
     const { classes, lang, slug, mainPageSlug } = this.props;
-    const { treeMenuTitle } = this.state;
+    const { treeMenuTitle, showMobileMenu } = this.state;
     const rightSidebarContent = this.renderSideBarContent();
 
     return (
@@ -102,10 +106,29 @@ class PostPage extends React.Component<Props, State> {
               </Breadcrumbs>
             </div>
             <div className={ classes.columns }>
-              <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
-                <Typography className={ classes.treeMenuTitle }>{ treeMenuTitle || this.setTitleSource() }</Typography>
-                <TreeView lang={ lang } slug={ slug } />
-              </div>
+              {/* Left side bar */}
+              <Hidden smDown>
+                <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                  <Typography className={ classes.treeMenuTitle }>
+                    { treeMenuTitle || this.setTitleSource() }
+                  </Typography>
+                  <TreeView lang={ lang } slug={ slug } />
+                </div>
+              </Hidden>
+              {/* Mobile menu toggle */}
+              <Hidden mdUp>
+                <Button endIcon={ <MenuIcon /> } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
+                  { treeMenuTitle || this.setTitleSource() }
+                </Button>
+              </Hidden>
+              {/* Mobile menu */}
+              <Hidden mdUp>
+                <Collapse in={ showMobileMenu }>
+                  <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                    <TreeView lang={ lang } slug={ slug } />
+                  </div>
+                </Collapse>
+              </Hidden>
               <div className={ classes.contentarea }>
                 { this.renderContent() }
               </div>
@@ -242,7 +265,7 @@ class PostPage extends React.Component<Props, State> {
         role="main"
       >
       { page && page.title &&
-        <h1 style={{ fontWeight: 700 }}>{ page.title.rendered }</h1>
+        <h1 className={ classes.pageTitle } style={{ fontWeight: 700 }}>{ page.title.rendered }</h1>
       }
       { !this.state.loading &&
         this.getPageOrPostContent()
@@ -264,6 +287,35 @@ class PostPage extends React.Component<Props, State> {
           this.getSideBarContent()
         }
       </>
+    );
+  }
+
+  /**
+   * Mobile menu toggle
+   */
+  private onMobileMenuClick = () => {
+    return ( this.state.showMobileMenu ? this.hideMobileMenu() : this.showMobileMenu() );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private showMobileMenu = () => {
+    return (
+      this.setState({
+        showMobileMenu: true
+      })
+    );
+  }
+
+  /**
+   * Mobile menu visibility method
+   */
+  private hideMobileMenu = () => {
+    return (
+      this.setState({
+        showMobileMenu: false
+      })
     );
   }
 
@@ -392,7 +444,7 @@ class PostPage extends React.Component<Props, State> {
 
   /**
    * Renders PTV entrance data
-   * 
+   *
    * @param entranceData entrance data
    */
   private renderPtvEntrance = (entranceData: PtvEntranceData) => {
@@ -407,7 +459,7 @@ class PostPage extends React.Component<Props, State> {
 
   /**
    * Renders PTV accessibility sentence
-   * 
+   *
    * @param accessibilitySentence accessibility sentence
    */
   private renderPtvAccessibilitySentence = (accessibilitySentence: PtvAccessibilitySentence) => {
@@ -433,7 +485,7 @@ class PostPage extends React.Component<Props, State> {
 
   /**
    * Finds first node from DOM tree that matches all given class names
-   * 
+   *
    * @param domElements DOM elements as list
    * @param classNames class names list to be matched
    * @returns matching DOM element if found, otherwise undefined
@@ -459,7 +511,7 @@ class PostPage extends React.Component<Props, State> {
 
   /**
    * Default transform content
-   * 
+   *
    * @param node DOM element
    * @param index index of DOM element
    */

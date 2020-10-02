@@ -11,6 +11,7 @@ export default createStyles({
       flex: 1,
       backgroundColor: "#edeef2",
       padding: "2rem",
+      height: "100%"
     },
     "& a": {
       fontFamily: "'Titillium Web', sans-serif",

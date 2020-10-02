@@ -8,6 +8,11 @@ export default createStyles({
   root: {
 
   },
+  pageTitle: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: 26
+    }
+  },
   content: {
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.primary.dark,
@@ -28,17 +33,30 @@ export default createStyles({
   },
   breadcrumb: {
     width: "100%",
-    marginBottom: "3rem"
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.up("md")]: {
+      marginBottom: "3rem"
+    }
   },
   columns: {
     display: "flex",
-    height: "calc(100% - 55px)"
+    flexDirection: "column",
+    [theme.breakpoints.up("md")]: {
+      height: "calc(100% - 55px)",
+      flexDirection: "row"
+    }
   },
   navigation: {
-    flex: 1, padding: "2rem"
+    flex: 1,
+    padding: "2rem"
   },
   contentarea: {
-    flex: 3
+    flex: 2,
+    [theme.breakpoints.up("lg")]: {
+      flex: 3
+    }
   },
   leftsidebar: {
     flex: 1,
