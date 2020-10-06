@@ -16,12 +16,19 @@ export default createStyles({
     "& a": {
       fontFamily: "'Titillium Web', sans-serif",
       fontWeight: 700,
-      fontSize: 16,
+      fontSize: 15,
       letterSpacing: 0,
       color: "#064e8d"
     },
+    "& h2, h3, h4": {
+      fontWeight: "bold",
+      margin: 0
+    },
     "& h2:first-child, h3:first-child, h4:first-child, h5:first-child, p:first-child": {
-      marginTop: 0
+      marginBottom: "1em"
+    },
+    "& h4": {
+      fontSize: 16
     },
   }
 });

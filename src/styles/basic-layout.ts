@@ -9,13 +9,6 @@ export default createStyles({
     gridTemplateColumns: "1fr",
     gridTemplateRows: "auto auto 1fr"
   },
-  top: {
-    [theme.breakpoints.down("md")]: {
-      display: "grid",
-      gridTemplateRows: "auto auto auto",
-      transition: "grid-template-rows 0.2s linear"
-    }
-  },
   logoBar: {
     display: "flex",
     flexDirection: "row",
@@ -44,7 +37,7 @@ export default createStyles({
     flexDirection: "column",
     alignContent: "center",
     marginBottom: theme.spacing(1),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       flexDirection: "row",
       marginBottom: 0,
       justifyContent: "space-between"
@@ -61,7 +54,6 @@ export default createStyles({
     cursor: "pointer",
     fontWeight: 700,
     fontSize: 14,
-    lineHeight: 21,
     letterSpacing: 0,
     color: "#234c8e",
     textTransform: "uppercase",
@@ -82,6 +74,7 @@ export default createStyles({
   },
   logoSection: {
     marginTop: theme.spacing(5),
+    minHeight: 85,
     [theme.breakpoints.down("md")]: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
@@ -91,18 +84,12 @@ export default createStyles({
     }
   },
   topNavDesktop: {
-    position: "relative",
     textAlign: "center"
   },
   topNavMobile: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none"
     }
-  },
-  social: {
-    width: "15%",
-    minWidth: "10%",
-    marginLeft: 15
   },
   searchSection: {
     display: "flex",
@@ -112,7 +99,6 @@ export default createStyles({
   },
   logo: {
     width: 140,
-    display: "flex",
     [theme.breakpoints.up("sm")]: {
       width: 180,
     },

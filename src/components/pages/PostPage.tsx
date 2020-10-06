@@ -271,7 +271,9 @@ class PostPage extends React.Component<Props, State> {
         this.getPageOrPostContent()
       }
       { this.state.loading &&
-        <CircularProgress />
+        <div className={ classes.contentLoader }>
+          <CircularProgress />
+        </div>
       }
     </div>
     );
