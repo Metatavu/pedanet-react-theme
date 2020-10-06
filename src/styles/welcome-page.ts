@@ -28,69 +28,66 @@ export default createStyles({
       backgroundColor: "#EF7D25!important"
     }
   },
-  root: {
-    height: "100vh"
-  },
   content: {
     display: "flex",
     flexDirection: "column"
   },
   columnSection: {
     display: "flex",
+    alignItems: "stretch",
     justifyContent: "center",
     textAlign: "center",
-    minHeight: "55rem",
+    height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap",
+    }
   },
   column: {
-    display: "inline-block",
-    width: "14%",
-    minHeight: "55rem",
-    padding: "1%",
-    margin: "1%",
+    margin: "10px 0",
+    width: "100%",
+    padding: 10,
     textTransform: "none",
     color: "#fff",
-    "& p": {
+    minHeight: 250,
+    "& p, a": {
       fontFamily: "Cairo, sans-serif",
       fontWeight: 600,
-      fontSize: 18,
-      letterSpacing: 0,
-      color: "#000"
-    },
-    "& a": {
-      fontFamily: "Cairo, sans-serif",
-      fontWeight: 600,
-      fontSize: 18,
       letterSpacing: 0,
       color: "#fff",
-      textDecoration: "none"
+      fontSize: 18
     },
-    "& a:hover": {
-      textDecoration: "underline"
+    "& h2": {
+      fontSize: 26
     },
-    "& h1, h2, h3, h4, h5, h6": {
-      fontSize: 28,
+    "& h3": {
+      fontSize: 24
     },
-    [theme.breakpoints.down("md")]: {
-      "& p": {
-        fontSize: 15,
+    "& h4": {
+      fontSize: 22
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "calc(50% - 20px)",
+      padding: 15,
+      margin: 10,
+      "& p, a": {
+        fontSize: 16
       },
-      "& a": {
-        fontSize: 15,
+      "& h2": {
+        fontSize: 22
       },
-      "& h1, h2, h3, h4, h5, h6": {
-        fontSize: 20,
+      "& h3": {
+        fontSize: 20
+      },
+      "& h4": {
+        fontSize: 18
       },
     },
-    [theme.breakpoints.down("xs")]: {
-      "& p": {
-        fontSize: 12,
-      },
-      "& a": {
-        fontSize: 12,
-      },
-      "& h1, h2, h3, h4, h5, h6": {
-        fontSize: 16,
-      },
+    [theme.breakpoints.up("md")]: {
+      padding: 20,
+      width: 250
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: 300
     },
     //default colors
     "&:nth-child(1)": {

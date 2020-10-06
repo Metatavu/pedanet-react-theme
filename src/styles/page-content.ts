@@ -9,9 +9,15 @@ export default createStyles({
 
   },
   pageTitle: {
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 26
     }
+  },
+  contentLoader: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+    paddingTop: 50
   },
   content: {
     backgroundColor: theme.palette.background.paper,
@@ -33,11 +39,11 @@ export default createStyles({
   },
   breadcrumb: {
     width: "100%",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
-      marginBottom: "3rem"
+      paddingBottom: "3rem"
     }
   },
   columns: {

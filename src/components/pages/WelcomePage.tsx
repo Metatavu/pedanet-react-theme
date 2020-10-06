@@ -2,7 +2,7 @@ import * as React from "react";
 import BasicLayout from "../BasicLayout";
 import { Post, MenuLocationData } from "../../generated/client/src";
 import ApiUtils from "../../utils/ApiUtils";
-import { WithStyles, withStyles, Button } from "@material-ui/core";
+import { Container, WithStyles, withStyles } from "@material-ui/core";
 import styles from "../../styles/welcome-page";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import { DomElement } from "domhandler";
@@ -93,9 +93,15 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang }>
-        <div className={ classes.columnSection } role="heading" aria-level={ 1 }>
-          { this.renderColumns() }
-        </div>
+        <Container fixed>
+          <div
+            className={ classes.columnSection }
+            role="heading"
+            aria-level={ 1 }
+          >
+            { this.renderColumns() }
+          </div>
+        </Container>
       </BasicLayout>
     );
   }

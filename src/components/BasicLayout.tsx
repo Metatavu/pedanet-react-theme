@@ -94,21 +94,29 @@ class BasicLayout extends React.Component<Props, State> {
 
     return (
       <div className={ classes.root }>
-        <div className={ classes.top } role="navigation" aria-label="top nav">
-          <div className={ classes.horizontalColorBar } aria-label="top bar" style={{ backgroundImage: `url( ${ bar } )` }} />
+        <div role="navigation" aria-label="top nav">
+          <div
+            className={ classes.horizontalColorBar }
+            aria-label="top bar"
+            style={{ backgroundImage: `url( ${ bar } )` }}
+          />
           <Container maxWidth="lg">
             <div className={ classes.logoSection }>
-              <Hidden mdUp>
+              <Hidden mdUp implementation="js">
                 <IconButton size="medium" onClick={ this.onMenuClick }>
                   <MenuIcon color="primary" />
                 </IconButton>
               </Hidden>
-              <a href="/?lang=fi">
-                <img className={ classes.logo } src={ mikkeliLogo } alt="mikkeli logo" />
+              <a href="/">
+                <img
+                  className={ classes.logo }
+                  src={ mikkeliLogo }
+                  alt="mikkeli logo"
+                />
               </a>
             </div>
             {/* Desktop menu, hidden from mobile devices */}
-            <Hidden smDown>
+            <Hidden smDown implementation="js">
               <div className={ classes.topNavDesktop }>
                 { this.renderMenu() }
               </div>
