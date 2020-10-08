@@ -142,6 +142,32 @@ export default createMuiTheme({
       root: {
         display: "block"
       }
+    },
+    MuiListItem: {
+      root: {
+        "& a": {
+          textDecoration: "none",
+          paddingLeft: "1rem",
+          paddingRight: "1rem"
+        },
+        "&:hover": {
+          textDecoration: "underline"
+        },
+        "&.Mui-selected": {
+          backgroundColor: "#064e8d",
+          "& a": {
+            color: "#fff",
+          },
+          "&:hover": {
+            backgroundColor: "#064e8d",
+            textDecoration: "underline"
+          },
+          "& svg": {
+            color: "#fff",
+            borderColor: "#fff"
+          }
+        }
+      }
     }
   }
 });

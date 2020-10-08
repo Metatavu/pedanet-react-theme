@@ -24,7 +24,7 @@
     echo "<p>";
 
     if ($additionalInformation) {
-      echo "<b>$additionalInformation</b>";
+      echo $additionalInformation;
       echo "<br/>";
     }
 

@@ -118,7 +118,9 @@ class PostPage extends React.Component<Props, State> {
               {/* Mobile menu toggle */}
               <Hidden mdUp>
                 <Button endIcon={ <MenuIcon /> } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
-                  { treeMenuTitle || this.setTitleSource() }
+                  <div>
+                    { treeMenuTitle || this.setTitleSource() }
+                  </div>
                 </Button>
               </Hidden>
               {/* Mobile menu */}
@@ -129,7 +131,7 @@ class PostPage extends React.Component<Props, State> {
                   </div>
                 </Collapse>
               </Hidden>
-              <div className={ classes.contentarea }>
+              <div className={ classes.contentArea }>
                 { this.renderContent() }
               </div>
               <RightSideBar rightSideBarContent={ rightSidebarContent }/>
@@ -147,7 +149,11 @@ class PostPage extends React.Component<Props, State> {
     const { breadcrumb } = this.state;
     return breadcrumb.map((crumb) => {
       return (
-        <Link color="inherit" href={ crumb.link } onClick={() => {}}>
+        <Link
+          key={ crumb.label }
+          color="inherit"
+          href={ crumb.link }
+        >
           { crumb.label }
         </Link>
       );
@@ -265,7 +271,7 @@ class PostPage extends React.Component<Props, State> {
         role="main"
       >
       { page && page.title &&
-        <h1 className={ classes.pageTitle } style={{ fontWeight: 700 }}>{ page.title.rendered }</h1>
+        <h1 className={ classes.pageTitle }>{ page.title.rendered }</h1>
       }
       { !this.state.loading &&
         this.getPageOrPostContent()
@@ -296,29 +302,7 @@ class PostPage extends React.Component<Props, State> {
    * Mobile menu toggle
    */
   private onMobileMenuClick = () => {
-    return ( this.state.showMobileMenu ? this.hideMobileMenu() : this.showMobileMenu() );
-  }
-
-  /**
-   * Mobile menu visibility method
-   */
-  private showMobileMenu = () => {
-    return (
-      this.setState({
-        showMobileMenu: true
-      })
-    );
-  }
-
-  /**
-   * Mobile menu visibility method
-   */
-  private hideMobileMenu = () => {
-    return (
-      this.setState({
-        showMobileMenu: false
-      })
-    );
+    this.setState({ showMobileMenu: !this.state.showMobileMenu });
   }
 
   /**
@@ -454,8 +438,8 @@ class PostPage extends React.Component<Props, State> {
       return null;
     }
 
-    return entranceData.accessibilitySentences.map(accessibilitySentence => {
-      return this.renderPtvAccessibilitySentence(accessibilitySentence);
+    return entranceData.accessibilitySentences.map((accessibilitySentence, index) => {
+      return this.renderPtvAccessibilitySentence(accessibilitySentence, index);
     });
   }
 
@@ -463,10 +447,12 @@ class PostPage extends React.Component<Props, State> {
    * Renders PTV accessibility sentence
    *
    * @param accessibilitySentence accessibility sentence
+   * @param index index
    */
-  private renderPtvAccessibilitySentence = (accessibilitySentence: PtvAccessibilitySentence) => {
+  private renderPtvAccessibilitySentence = (accessibilitySentence: PtvAccessibilitySentence, index: number) => {
     return (
       <PtvAccessibilityAccordion
+        key={ index }
         accessibilitySentence={ accessibilitySentence }
       />
     );

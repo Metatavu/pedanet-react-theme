@@ -65,6 +65,33 @@
   }
 
   /**
+   * Returns abbreviated day name
+   * 
+   * @param $dayName day name
+   * @return abbreviated day name
+   */
+  function getAbbreviatedDayName($dayName) {
+    switch ($dayName) {
+      case "Monday":
+        return "ma";
+      case "Tuesday":
+        return "ti";
+      case "Wednesday":
+        return "ke";
+      case "Thursday":
+        return "to";
+      case "Friday":
+        return "pe";
+      case "Saturday":
+        return "la";
+      case "Sunday":
+        return "su";
+    }
+
+    return $dayName;
+  }
+
+  /**
    * Converts wraps text into html paragraphs by line breaks
    * 
    * @param string $text text
@@ -93,7 +120,7 @@
       if ($serviceHour["serviceHourType"] == "DaysOfTheWeek") {
         $additionalInformation = getLocalizedValue($serviceHour["additionalInformation"], $data->language);
         $openingHours = $serviceHour["openingHour"];
-        $result .= "<h4>$additionalInformation</h4>";
+        $result .= "<h3>Aukioloajat</h3>";
         
         $result .= "<div class='opening-hours'>";
         if (!$serviceHour["isClosed"] && count($openingHours) == 0) {
@@ -118,12 +145,12 @@
    * @return string formatted object
    */
   function formatOpeningHour($openingHour) {
-    $days = isset($openingHour['dayFrom']) ? getLocalizedDayName($openingHour['dayFrom']) : '';
+    $days = isset($openingHour['dayFrom']) ? getAbbreviatedDayName($openingHour['dayFrom']) : '';
     $from = "";
     $to = "";
 
     if (isset($openingHour['dayTo']) && $openingHour['dayTo'] != "") {
-      $days .= ' - ' . getLocalizedDayName($openingHour['dayTo']);
+      $days .= ' - ' . getAbbreviatedDayName($openingHour['dayTo']);
     }
 
     if (isset($openingHour['from'])) {
@@ -154,9 +181,41 @@
    * @return string formatted string
    */
   function formatOpeningHours($openingHours) {
+    $openingHours = simplifyOpeningHours($openingHours);
     return join("", array_map(function ($openingHour) {
       return formatOpeningHour($openingHour);
     }, $openingHours));
+  }
+
+  /**
+   * Simplifies opening hours by uniting consecutive days with identical opening hours
+   * 
+   * @param object[] $openingHours opening hours array
+   * @return object[] simplified opening hours
+   */
+  function simplifyOpeningHours($openingHours) {
+    $simplified = array();
+
+    for ($i = 0; $i < count($openingHours); $i++) {
+      $openingHour = $openingHours[$i];
+      if (isset($openingHour['dayTo']) && $openingHour['dayTo'] != "" || empty($simplified)) {
+        $simplified[] = $openingHour;
+      } else {
+        $lastSimplified = end($simplified);
+        
+        if (
+          $lastSimplified['from'] == $openingHour['from'] &&
+          $lastSimplified['to'] == $openingHour['to']
+        ) {
+          $lastSimplified['dayTo'] = $openingHour['dayFrom'];
+          array_splice($simplified, count($simplified) - 1, 1, [ $lastSimplified ]);
+        } else {
+          $simplified[] = $openingHour;
+        }
+      }
+    }
+
+    return $simplified;
   }
 
 ?>

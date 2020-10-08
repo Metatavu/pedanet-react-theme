@@ -3,15 +3,13 @@ import { createStyles } from "@material-ui/core";
 export default createStyles({
 
   accessibilityTitle: {
-    fontSize: 20,
     fontWeight: "bold"
   },
 
   accessibilityGroupLabel: {
-    fontSize: 15,
     fontWeight: "bold",
     color: "#54575a",
-    paddingTop: 5,
+    margin: 0,
     marginLeft: 10
   },
 
@@ -22,6 +20,16 @@ export default createStyles({
   },
 
   accordionContent: {
-    padding: "24px 24px 12px"
+    padding: "24px 48px 12px"
+  },
+
+  sentence: {
+    position: "relative",
+    "&:before": {
+      content: '"•"',
+      display: "block",
+      position: "absolute",
+      left: -15
+    }
   }
 });

@@ -3,11 +3,11 @@
 
   $serviceChannel = $data->serviceChannel;
 
-  echo "<h3>YHTEYSTIEDOT</h3>";
+  echo "<h2>YHTEYSTIEDOT</h2>";
   include "email.php";
   include "phone-numbers.php";
 
-  echo "<h4>" . __("Visiting information", "sptv") . "</h4>";
+  echo "<h3>Käyntiosoite</h3>";
 
   include "addresses.php";
   include "service-hours.php";
