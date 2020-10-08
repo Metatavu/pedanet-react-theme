@@ -62,7 +62,7 @@ class TreeView extends React.Component<Props, State> {
       <div className={ classes.treeWrapper } role="navigation" aria-label="side nav">
         { initialOpenNodes !== undefined &&
           <TreeMenu data={ treeData } initialOpenNodes={ initialOpenNodes } hasSearch={ false }>
-            {({ search, items }) => (
+            {({ items }) => (
               <List>
                 { items.map((item: any) => this.renderTreeMenuItem(item)) }
               </List>
@@ -105,9 +105,31 @@ class TreeView extends React.Component<Props, State> {
     const toggleIcon = (on: boolean) => on ?
       <ExpandLessIcon htmlColor={ focused ? "#000" : "#888" } /> :
       <ExpandMoreIcon htmlColor={ focused ? "#000" : "#888" }  />;
-    const { level, focused, hasNodes, toggleNode, isOpen, label, link, key, current } = item;
+
+    const {
+      level,
+      focused,
+      hasNodes,
+      toggleNode,
+      isOpen,
+      label,
+      link,
+      key,
+      current,
+      active,
+      openNodes,
+      searchTerm,
+      ...otherProps
+    } = item;
+
     return (
-      <ListItem selected={ current } { ...item } className={ classes.listItem } style={{ paddingLeft: level * 20 }}>
+      <ListItem
+        key={ key }
+        selected={ current }
+        className={ classes.listItem }
+        style={{ paddingLeft: level * 20 }}
+        { ...otherProps }
+      >
         <a href={ link }>{ label }</a>
         <div className={ classes.iconWrapper } onClick={ this.onNodeClick(key, hasNodes, toggleNode) }>
           { hasNodes && toggleIcon(isOpen) }

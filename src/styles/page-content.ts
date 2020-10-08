@@ -58,7 +58,7 @@ export default createStyles({
     flex: 1,
     padding: "2rem"
   },
-  contentarea: {
+  contentArea: {
     flex: 2,
     [theme.breakpoints.up("lg")]: {
       flex: 3

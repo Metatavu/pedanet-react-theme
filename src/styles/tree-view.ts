@@ -13,6 +13,9 @@ export default createStyles({
     margin: 0,
     paddingLeft: "1rem",
     paddingRight: "1rem",
+    "& a": {
+      textDecoration: "none"
+    }
   },
   iconWrapper: {
     cursor: "pointer",

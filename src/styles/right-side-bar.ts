@@ -1,4 +1,5 @@
 import { createStyles } from "@material-ui/core";
+import theme from "./theme";
 
 export default createStyles({
   root: {
@@ -13,22 +14,14 @@ export default createStyles({
       padding: "2rem",
       height: "100%"
     },
-    "& a": {
-      fontFamily: "'Titillium Web', sans-serif",
-      fontWeight: 700,
-      fontSize: 15,
-      letterSpacing: 0,
-      color: "#064e8d"
-    },
     "& h2, h3, h4": {
-      fontWeight: "bold",
       margin: 0
     },
     "& h2:first-child, h3:first-child, h4:first-child, h5:first-child, p:first-child": {
       marginBottom: "1em"
     },
-    "& h4": {
-      fontSize: 16
-    },
+    [theme.breakpoints.down("md")]: {
+      marginTop: 25
+    }
   }
 });

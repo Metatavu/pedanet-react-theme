@@ -62,13 +62,13 @@ class PtvAccessibilityAccordion extends React.Component<Props, State> {
       >
         <ExpansionPanelSummary>
           { toggleIcon }
-          <Typography variant="h3" className={ classes.accessibilityGroupLabel }>
+          <h3 className={ classes.accessibilityGroupLabel }>
             { groupName }
-          </Typography>
+          </h3>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={ classes.accordionContent }>
           {
-            sentences.map(sentence => this.renderPtvLocalizedAccessibilitySentence(sentence))
+            sentences.map((sentence, index) => this.renderPtvLocalizedAccessibilitySentence(sentence, index))
           }
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -80,9 +80,10 @@ class PtvAccessibilityAccordion extends React.Component<Props, State> {
    * 
    * @param sentence sentence
    */
-  private renderPtvLocalizedAccessibilitySentence = (sentence: string) => {
+  private renderPtvLocalizedAccessibilitySentence = (sentence: string, index: number) => {
+    const { classes } = this.props;
     return (
-      <Typography paragraph>
+      <Typography paragraph key={ index } className={ classes.sentence }>
         { sentence }
       </Typography>
     );

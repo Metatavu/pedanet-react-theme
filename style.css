@@ -26,30 +26,33 @@ body {
 h1 {
   font-size: 4rem;
   font-family: 'Cairo', sans-serif;
-  font-weight: 900;
   line-height: 1;
 }
 
 h2 {
-  font-size: 3.5rem;
+  font-size: 2.1rem;
   font-family: 'Cairo', sans-serif;
-  font-weight: 700;
   line-height: 1;
 }
 
 h3 {
+  font-size: 1.7rem;
   font-family: 'Cairo', sans-serif;
-  font-weight: 600;
 }
 
 h4 {
+  font-size: 1.5rem;
   font-family: 'Cairo', sans-serif;
-  font-weight: 600;
 }
 
 h5 {
+  font-size: 1.5rem;
   font-family: 'Cairo', sans-serif;
-  font-weight: 400;
+}
+
+h6 {
+  font-size: 1.4rem;
+  font-family: 'Cairo', sans-serif;
 }
 
 p {
@@ -59,11 +62,11 @@ p {
 }
 
 a {
-  text-decoration: none;
+  color: #064e8d
 }
 
 a:hover {
-  text-decoration: underline;
+  font-weight: bold;
 }
 
 body {
@@ -94,4 +97,8 @@ header img {
   margin-left: 5rem;
   margin-top: 5rem;
   font-size: 20px;
+}
+
+td:first-child {
+  padding-right: 15px;
 }
