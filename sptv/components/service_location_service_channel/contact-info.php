@@ -3,7 +3,7 @@
 
   $serviceChannel = $data->serviceChannel;
 
-  echo "<h2>YHTEYSTIEDOT</h2>";
+  echo "<h2>Yhteystiedot</h2>";
   include "email.php";
   include "phone-numbers.php";
 
