@@ -4633,6 +4633,10 @@ paths:
           in: query
           schema:
             type: string
+        - name: postType
+          in: query
+          schema:
+            type: string
       security:
         - cookieAuth: []
       responses:

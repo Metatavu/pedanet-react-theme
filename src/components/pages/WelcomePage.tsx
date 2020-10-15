@@ -92,7 +92,7 @@ class WelcomePage extends React.Component<Props, State> {
     const { lang, classes } = this.props;
 
     return (
-      <BasicLayout lang={ lang }>
+      <BasicLayout lang={ lang } frontPage>
         <Container fixed>
           <div
             className={ classes.columnSection }

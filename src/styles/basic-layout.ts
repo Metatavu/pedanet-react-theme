@@ -26,8 +26,9 @@ export default createStyles({
   },
   headerImage: {
     backgroundRepeat: "no-repeat",
-    height: 200,
+    backgroundPosition: "center",
     backgroundSize: "cover",
+    height: 200,
     [theme.breakpoints.up("md")]: {
       height: 298,
     }
@@ -39,8 +40,9 @@ export default createStyles({
     marginBottom: theme.spacing(1),
     [theme.breakpoints.up("md")]: {
       flexDirection: "row",
+      flexWrap: "wrap",
       marginBottom: 0,
-      justifyContent: "space-between"
+      justifyContent: "flex-start"
     },
   },
   navLink: {
@@ -61,7 +63,8 @@ export default createStyles({
       height: 50,
     },
     [theme.breakpoints.up("md")]: {
-      height: 60
+      height: 60,
+      marginLeft: 15,
     },
     [theme.breakpoints.up("lg")]: {
       fontSize: 16,
@@ -84,7 +87,8 @@ export default createStyles({
     }
   },
   topNavDesktop: {
-    textAlign: "center"
+    textAlign: "center",
+
   },
   topNavMobile: {
     [theme.breakpoints.up("md")]: {

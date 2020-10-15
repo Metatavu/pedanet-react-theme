@@ -15,7 +15,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 interface Props extends WithStyles<typeof styles> {
   lang: string,
   title?: string | JSX.Element,
-  mainPageSlug?: string
+  innerPageSlug?: string,
+  mainPageSlug?: string,
+  frontPage?: boolean
 }
 
 /**
@@ -53,27 +55,23 @@ class BasicLayout extends React.Component<Props, State> {
    * Component did mount life-cycle handler
    */
   public componentDidMount = async () => {
-    const initialPostThumbnail = this.state.postThumbnail;
     window.addEventListener("scroll", this.handleScroll);
     this.setState({
       loading: true,
     });
 
-    const api = ApiUtils.getApi();
-
-    const [mainMenu, postThumbnail] = await Promise.all(
-      [
-        api.getMainMenu(),
-        api.getPostThumbnail({ slug: this.props.mainPageSlug })
-      ]
-    );
-
     const eventCalendarUrl = `${ window.location.origin }/koulutuskalenteri/`;
+
+    const api = ApiUtils.getApi();
+    const mainMenu = await api.getMainMenu();
+    const bannerImage = await this.getBannerImage();
+    if (bannerImage) {
+      this.setState({ postThumbnail: bannerImage });
+    }
 
     this.setState({
       loading: false,
       mainMenu: mainMenu,
-      postThumbnail: postThumbnail !== "false" ? postThumbnail : initialPostThumbnail,
       eventCalendarUrl: eventCalendarUrl
     });
   }
@@ -133,13 +131,7 @@ class BasicLayout extends React.Component<Props, State> {
           role="banner"
           className={ `${ classes.logoBar } ${ classes.headerImage }` }
           style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
-        >
-          { this.props.title &&
-            <div className={ classes.titleContainer }>
-              <Typography variant="h1">{ this.props.title }</Typography>
-            </div>
-          }
-        </div>
+        />
         { this.props.children }
       </div>
     );
@@ -205,6 +197,41 @@ class BasicLayout extends React.Component<Props, State> {
         }
       </Link>
     );
+  }
+
+  /**
+   * Gets banner image
+   */
+  private getBannerImage = async () => {
+    const { frontPage, innerPageSlug, mainPageSlug } = this.props;
+    const api = ApiUtils.getApi();
+
+    if (innerPageSlug) {
+      const innerPageBannerImage = await api.getPostThumbnail({ slug: innerPageSlug });
+      if (innerPageBannerImage !== "false") {
+        return innerPageBannerImage;
+      }
+    }
+
+    if (mainPageSlug) {
+      const mainPageBannerImage = await api.getPostThumbnail({ slug: mainPageSlug });
+      if (mainPageBannerImage !== "false") {
+        return mainPageBannerImage;
+      }
+    }
+
+    if (frontPage) {
+      const frontPageBannerImage = await api.getPostThumbnail({
+        slug: "etusivun-kolumnit",
+        post_type: "post"
+      });
+
+      if (frontPageBannerImage !== "false") {
+        return frontPageBannerImage;
+      }
+    }
+
+    return undefined;
   }
 
   /**
