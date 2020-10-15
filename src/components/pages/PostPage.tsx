@@ -65,7 +65,7 @@ class PostPage extends React.Component<Props, State> {
       isArticle: false,
       loading: false,
       showMobileMenu: false,
-      breadcrumb: [],
+      breadcrumb: []
     };
   }
 
@@ -94,7 +94,12 @@ class PostPage extends React.Component<Props, State> {
     const rightSidebarContent = this.renderSideBarContent();
 
     return (
-      <BasicLayout lang={ lang } mainPageSlug={ mainPageSlug } title={ this.setTitleSource() || <CircularProgress /> }>
+      <BasicLayout
+        lang={ lang }
+        innerPageSlug={ slug }
+        mainPageSlug={ mainPageSlug }
+        title={ this.setTitleSource() || <CircularProgress /> }
+      >
         <div className={ classes.wrapper }>
           <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>

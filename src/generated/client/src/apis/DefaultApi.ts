@@ -167,6 +167,7 @@ export interface GetMenusV1MenusByIdRequest {
 export interface GetPostThumbnailRequest {
     id?: string;
     slug?: string;
+    post_type?: string;
 }
 
 export interface GetTreeMenuRequest {
@@ -1472,6 +1473,10 @@ export class DefaultApi extends runtime.BaseAPI {
 
         if (requestParameters.slug !== undefined) {
             queryParameters['slug'] = requestParameters.slug;
+        }
+
+        if (requestParameters.post_type !== undefined) {
+            queryParameters['postType'] = requestParameters.post_type;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url') ?>/inc/loader.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo get_stylesheet_uri() ?>" />
 <link rel="icon" type="image/png" href="<?php bloginfo('template_url') ?>/inc/favicon.png" sizes="512x512" />
-<title>Pedanet Mikkeli</title>
+<title>Mikkeli - Oppiminen</title>
 <script>
   window.THEME_PATH = "<?php bloginfo('template_url');?>";
 </script>
