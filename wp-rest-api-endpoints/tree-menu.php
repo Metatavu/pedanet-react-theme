@@ -87,15 +87,16 @@ function get_initial_open_nodes($page, $isAcademyPage, $academicPageIds) {
   if ($isAcademyPage) {
     $current = $page;
     $parentIsAcademyPage = $isAcademyPage;
-    while (wp_get_post_parent_id($current)) {
-      $parentId = wp_get_post_parent_id($current);
+    $parentId = wp_get_post_parent_id($current);
+    while ($parentId) {
       $parent = get_post($parentId);
       $parentIsAcademyPage = is_academic_page($parent, $academicPageIds);
       if (!$parentIsAcademyPage) {
         break;
       }
       $current = $parent;
-      if (wp_get_post_parent_id($current) && is_academic_page(wp_get_post_parent_id($current), $academicPageIds)) {
+      $parentId = wp_get_post_parent_id($current);
+      if ($parentId && is_academic_page($parentId, $academicPageIds)) {
         $id = "$current->ID";
         for ($i = 0; $i < count($initial_open_nodes); $i++) {
           $initial_open_nodes[$i] = "$id/" . $initial_open_nodes[$i];
@@ -105,10 +106,11 @@ function get_initial_open_nodes($page, $isAcademyPage, $academicPageIds) {
     }
   } else {
     $current = $page;
-    while (wp_get_post_parent_id($current)) {
-      $parentId = wp_get_post_parent_id($current);
+    $parentId = wp_get_post_parent_id($current);
+    while ($parentId) {
       $current = get_post($parentId);
-      if (wp_get_post_parent_id($current)) {
+      $parentId = wp_get_post_parent_id($current);
+      if ($parentId) {
         $id = "$current->ID";
         for ($i = 0; $i < count($initial_open_nodes); $i++) {
           $initial_open_nodes[$i] = "$id/" . $initial_open_nodes[$i];
