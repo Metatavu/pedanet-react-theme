@@ -90,7 +90,7 @@ function get_initial_open_nodes($page, $isAcademyPage, $academicPageIds) {
     $parentId = wp_get_post_parent_id($current);
     while ($parentId) {
       $parent = get_post($parentId);
-      $parentIsAcademyPage = is_academic_page($parent, $academicPageIds);
+      $parentIsAcademyPage = is_academic_page($parentId, $academicPageIds);
       if (!$parentIsAcademyPage) {
         break;
       }
