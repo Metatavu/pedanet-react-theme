@@ -4,12 +4,13 @@ function register_tree_menu_endpoint() {
   register_rest_route('wp/v2', '/treeMenu', array(
     'methods' => 'GET',
     'callback' => function (WP_REST_Request $request) {
+      $academicPageIds = list_page_ids_by_taxonomy('academy');
       $slug = $request->get_param('slug');
       $page = page_by_slug($slug);
-      $isAcademyPage = get_the_terms($page, 'academy') ? true : false;
-      $mainPage = get_main_page($page, $isAcademyPage);
-      $initial_open_nodes = get_initial_open_nodes($page, $isAcademyPage);
-      $treeData = build_tree($mainPage, $page, $isAcademyPage);
+      $isAcademyPage = is_academic_page($page->ID, $academicPageIds);
+      $mainPage = get_main_page($page, $isAcademyPage, $academicPageIds);
+      $initial_open_nodes = get_initial_open_nodes($page, $isAcademyPage, $academicPageIds);
+      $treeData = build_tree($mainPage, $page, $isAcademyPage, $academicPageIds);
       return array(
         'treeData' => $treeData,
         'initialOpenNodes' => $initial_open_nodes
@@ -32,14 +33,39 @@ function page_by_slug($slug) {
   return $pages[0];
 }
 
-function get_main_page($page, $isAcademyPage) {
+function list_page_ids_by_taxonomy($taxonomyName) {
+  $terms = get_terms( array(
+    'taxonomy' => $taxonomyName,
+    'hide_empty' => false,
+  ) );
+  $term_ids = wp_list_pluck( $terms, 'term_id' );
+  return get_posts(
+    array(
+    'posts_per_page' => -1,
+    'fields' => 'ids',
+    'post_type' => 'page',
+    'tax_query' => array(
+        array(
+            'taxonomy' => $taxonomyName,
+            'field' => 'term_id',
+            'terms' => $term_ids
+        )
+    )
+  ));
+}
+
+function is_academic_page($pageId, $academicPageIds) {
+  return array_search($pageId, $academicPageIds) ? true : false;
+}
+
+function get_main_page($page, $isAcademyPage, $academicPageIds) {
   if ($isAcademyPage) {
     $current = $page;
     $parentIsAcademyPage = $isAcademyPage;
     while (wp_get_post_parent_id($current)) {
       $parentId = wp_get_post_parent_id($current);
       $parent = get_post($parentId);
-      $parentIsAcademyPage = get_the_terms($parent, 'academy') ? true : false;
+      $parentIsAcademyPage = is_academic_page($parentId, $academicPageIds);
       if (!$parentIsAcademyPage) {
         break;
       }
@@ -56,20 +82,21 @@ function get_main_page($page, $isAcademyPage) {
   }
 }
 
-function get_initial_open_nodes($page, $isAcademyPage) {
+function get_initial_open_nodes($page, $isAcademyPage, $academicPageIds) {
   $initial_open_nodes = array("$page->ID");
   if ($isAcademyPage) {
     $current = $page;
     $parentIsAcademyPage = $isAcademyPage;
-    while (wp_get_post_parent_id($current)) {
-      $parentId = wp_get_post_parent_id($current);
+    $parentId = wp_get_post_parent_id($current);
+    while ($parentId) {
       $parent = get_post($parentId);
-      $parentIsAcademyPage = get_the_terms($parent, 'academy') ? true : false;
+      $parentIsAcademyPage = is_academic_page($parentId, $academicPageIds);
       if (!$parentIsAcademyPage) {
         break;
       }
       $current = $parent;
-      if (wp_get_post_parent_id($current) && get_the_terms(wp_get_post_parent_id($current), 'academy') ? true : false) {
+      $parentId = wp_get_post_parent_id($current);
+      if ($parentId && is_academic_page($parentId, $academicPageIds)) {
         $id = "$current->ID";
         for ($i = 0; $i < count($initial_open_nodes); $i++) {
           $initial_open_nodes[$i] = "$id/" . $initial_open_nodes[$i];
@@ -79,10 +106,11 @@ function get_initial_open_nodes($page, $isAcademyPage) {
     }
   } else {
     $current = $page;
-    while (wp_get_post_parent_id($current)) {
-      $parentId = wp_get_post_parent_id($current);
+    $parentId = wp_get_post_parent_id($current);
+    while ($parentId) {
       $current = get_post($parentId);
-      if (wp_get_post_parent_id($current)) {
+      $parentId = wp_get_post_parent_id($current);
+      if ($parentId) {
         $id = "$current->ID";
         for ($i = 0; $i < count($initial_open_nodes); $i++) {
           $initial_open_nodes[$i] = "$id/" . $initial_open_nodes[$i];
@@ -94,15 +122,15 @@ function get_initial_open_nodes($page, $isAcademyPage) {
   return $initial_open_nodes;
 }
 
-function build_tree($mainPage, $page, $isAcademyPage) {
+function build_tree($mainPage, $page, $isAcademyPage, $academicPageIds) {
   $all_pages = get_pages(array('child_of' => $mainPage->ID));
-  return build_tree_layer($mainPage->ID, $page->ID, $all_pages, $isAcademyPage);
+  return build_tree_layer($mainPage->ID, $page->ID, $all_pages, $isAcademyPage, $academicPageIds);
 }
 
-function build_tree_layer($parentId, $currentPageId, $all_pages, $isAcademyPage) {
+function build_tree_layer($parentId, $currentPageId, $all_pages, $isAcademyPage, $academicPageIds) {
   $tree_nodes = array();
   foreach($all_pages as $page) {
-    $renderChildren = (get_the_terms($page, 'academy') ? true : false) === $isAcademyPage;
+    $renderChildren = is_academic_page($page->ID, $academicPageIds) === $isAcademyPage;
     if ($page->post_parent === $parentId) {
       array_push(
         $tree_nodes,
@@ -112,7 +140,7 @@ function build_tree_layer($parentId, $currentPageId, $all_pages, $isAcademyPage)
           'label' => $page->post_title,
           'link' => get_page_link($page->ID),
           'current' => $page->ID === $currentPageId,
-          'nodes' => $renderChildren ? build_tree_layer($page->ID, $currentPageId, $all_pages, $isAcademyPage) : []
+          'nodes' => $renderChildren ? build_tree_layer($page->ID, $currentPageId, $all_pages, $isAcademyPage, $academicPageIds) : []
         )
       );
     }
