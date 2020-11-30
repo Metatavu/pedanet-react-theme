@@ -1,5 +1,13 @@
 <?php
   
+  //TODO: Remove this abomination
+  add_filter('rest_category_query', function ($args, $request) {
+    if ($args["number"] == 100) {
+      $args["number"] = 500;
+    } 
+    return $args;
+  }, 10, 2);
+
   add_action('after_setup_theme', function() { 
     add_theme_support('post-thumbnails');
     register_nav_menus([
