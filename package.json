@@ -20,7 +20,7 @@
     "react-router-dom": "^5.1.2",
     "react-simple-tree-menu": "^1.1.15",
     "react-swipeable-views": "^0.13.3",
-    "urijs": "^1.19.1"
+    "urijs": "^1.19.6"
   },
   "scripts": {
     "build-client": "./node_modules/@openapitools/openapi-generator-cli/bin/openapi-generator generate -i swagger.yaml -o ./src/generated/client -c generator-config.json -g typescript-fetch"
