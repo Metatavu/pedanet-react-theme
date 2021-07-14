@@ -66,6 +66,7 @@ a {
 }
 
 a:hover {
+  color: #4c34eb;
   font-weight: bold;
 }
 
