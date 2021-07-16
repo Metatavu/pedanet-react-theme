@@ -59,15 +59,16 @@ p {
   font-family: 'Titillium Web', sans-serif;
   font-size: 1.5rem;
   line-height: 1.5;
+  margin-top: 0;
 }
 
 a {
-  color: #064e8d
+  color: #064e8d;
+  font-weight: bold;
 }
 
 a:hover {
   color: #4c34eb;
-  font-weight: bold;
 }
 
 body {
