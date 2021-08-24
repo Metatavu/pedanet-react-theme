@@ -61,15 +61,19 @@
    * @param id post id
    */
   function add_terms_for_post($id) {
-    $terms = get_terms('academy', array(
-      'hide_empty' => false
-    ));
-    foreach ($terms as $term) {
-      if (in_array($term->name, wp_get_current_user()->roles)) {
-        wp_set_object_terms($id, array($term->name), 'academy');
-      }
-    }
+    $academies = get_terms('academy', [ 'hide_empty' => false ]);
+
+    $roles = array_map(function ($role) {
+      return mb_convert_case($role, MB_CASE_LOWER, "UTF-8");
+    }, wp_get_current_user()->roles);
+
+    $terms = array_filter($academies, function ($academy) {
+      return in_array(to_lower_case($academy->name), $roles);
+    });
+
+    wp_set_object_terms($id, $terms, 'academy');
   }
+
   add_action('save_post', 'add_terms_for_post');
 
   require_once(__DIR__ . "/wp-rest-api-endpoints/main-menu.php");
