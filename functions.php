@@ -61,7 +61,7 @@
    * @param str string
    */
   function to_lower_case ($str) {
-    return mb_convert_case($role, MB_CASE_LOWER, "UTF-8");
+    return mb_convert_case($str, MB_CASE_LOWER, "UTF-8");
   }
 
   /**
@@ -70,7 +70,7 @@
    * @param id post id
    */
   function add_terms_for_post($id) {
-    $academies = get_terms('academy', [ 'hide_empty' => false ]);
+    $academies = get_terms('academy', array('hide_empty' => false));
 
     $roles = array_map('to_lower_case', wp_get_current_user()->roles);
 
