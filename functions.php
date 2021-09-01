@@ -97,19 +97,12 @@
     $academies = get_terms('academy', [ 'hide_empty' => false ]);
     $roles = wp_get_current_user()->roles;
 
-    error_log('academies: ' . json_encode($academies));
-    error_log('roles: ' . json_encode($roles));
-
     $terms = [];
 
     foreach ($academies as $academy) {
       $slug = slugify($academy->name);
 
-      error_log('current academy: ' . json_encode($academy));
-      error_log('current slug: ' . json_encode($slug));
-
       if (in_array($slug, $roles)) {
-        error_log('Matching slug found: ' . json_encode($slug));
         $terms[] = $academy->name;
       }
     }
