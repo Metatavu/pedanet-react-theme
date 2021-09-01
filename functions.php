@@ -68,8 +68,8 @@
   function slugify ($text, string $divider = '_') {
     $text = strtolower($text);
     $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
-    $text = str_replace('ö', 'o');
-    $text = str_replace('ä', 'a');
+    $text = str_replace('ö', 'o', $text);
+    $text = str_replace('ä', 'a', $text);
     $text = preg_replace('~[^-\w]+~', '', $text);
     $text = trim($text, $divider);
 
