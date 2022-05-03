@@ -6,6 +6,13 @@
   <body class="template-dangerous">
     <?php require get_template_directory() . '/inc/template-loader.php'; ?>
     <div id="root"></div>
-    <script type="text/javascript" src="<?php echo get_template_directory_uri() ?>/dist/bundle.js"></script>
+    <?php 
+
+        $script_name = get_template_directory_uri() . '/dist/bundle.js';
+        $url = get_option('theme_elastic_url');
+        $key = get_option('theme_elastic_key');
+        echo "<script name='bundle_script' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
+    
+    ?>
   </body>
 </html>

@@ -1,13 +1,14 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container, Typography, Hidden, IconButton, Collapse } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Hidden, IconButton, Collapse, TextField } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import headerImage from "../resources/img/headerImage.png";
 import { MenuItem } from "../generated/client/src";
 import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
-
+import { Autocomplete } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
+import strings from "../localization/strings";
 
 /**
  * Interface representing component properties
@@ -30,6 +31,8 @@ interface State {
   postThumbnail: string;
   eventCalendarUrl?: string;
   showMenu: boolean;
+  options: string[];
+  search: string;
 }
 
 /**
@@ -47,7 +50,9 @@ class BasicLayout extends React.Component<Props, State> {
       loading: false,
       scrollPosition: 0,
       postThumbnail: headerImage,
-      showMenu: false
+      showMenu: false,
+      options: [],
+      search: ""
     };
   }
 
@@ -116,15 +121,16 @@ class BasicLayout extends React.Component<Props, State> {
             {/* Desktop menu, hidden from mobile devices */}
             <Hidden smDown implementation="js">
               <div className={ classes.topNavDesktop }>
-                { this.renderMenu() }
+                { this.renderMenu(true) }
               </div>
             </Hidden>
           </Container>
           {/* Mobile menu */}
           <div className={ classes.topNavMobile }>
             <Collapse in={ showMenu }>
-              { this.renderMenu() }
+              { this.renderMenu(false) }
             </Collapse>
+            { this.renderSearchbar() }
           </div>
         </div>
         <div
@@ -137,10 +143,62 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
+  private onSearchChange = async (_: React.ChangeEvent<{}>, value: string) => {
+    this.setState({ search: value });
+    const currentScript = document.scripts["bundle_script"];
+    if (!currentScript) {
+      return;
+    }
+    const url = currentScript.getAttribute('data-elastic-url');
+    const key = currentScript.getAttribute('data-elastic-key');
+    if (!url || !key) {
+      return;
+    }
+
+    const result = await fetch(url + "/search.json", {
+      method: "POST",
+      body: JSON.stringify({
+        query: value,
+        result_fields: {
+          body_content: {
+            raw: {}
+          },
+          title: {
+            raw: {}
+          },
+          url: {
+            raw: {}
+          }
+        }
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`
+      }
+    });
+
+    const body = await result.json();
+    const options = body.results.map((result: any) => result.title.raw);
+    this.setState({ options });
+  }
+
+  private renderSearchbar = () => {
+    return (
+      <Autocomplete
+        value={ this.state.search }
+        size="small"
+        style={{ alignSelf: "center", marginLeft: "20px", minWidth: "300px" }}
+        options={ this.state.options }
+        onInputChange={ this.onSearchChange } 
+        renderInput={(params) => <TextField {...params} label={ strings.search } variant="outlined" />}
+      />
+    );
+  }
+
   /**
    * Render menu method
    */
-  private renderMenu = () => {
+  private renderMenu = (isDesktop: boolean) => {
     const { mainMenu, eventCalendarUrl } = this.state;
     const { classes } = this.props;
 
@@ -149,12 +207,15 @@ class BasicLayout extends React.Component<Props, State> {
     }
 
     return (
-      <div className={ classes.nav }>
+      <div style={{ flexWrap: 'nowrap' }} className={ classes.nav }>
         {
           mainMenu.map(this.renderMenuItem)
         }
         {
           eventCalendarUrl && this.renderEventCalendarLink(eventCalendarUrl)
+        }
+        {
+          isDesktop && this.renderSearchbar()
         }
       </div>
     );

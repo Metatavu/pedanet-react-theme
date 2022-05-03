@@ -132,4 +132,35 @@
 
     return $templates;
   });
+
+  /**
+   * Settings
+   */
+  add_action('admin_menu', function () {
+    add_theme_page('Elastic settings', 'Elastic settings', 'edit_theme_options', 'pedanet-theme-elastic-options', function () {
+      echo '<div class="wrap">';
+      echo '<h1>Elastic settings</h1>';
+      echo '<form method="post" action="options.php">';
+      settings_fields("pedanet-theme-elastic-options");
+      do_settings_sections("pedanet-theme-elastic-options");
+      submit_button();
+      echo '</form>';
+      echo '</div>';
+    });
+  });
+
+  add_action('admin_init', function () {
+    add_settings_section('pedanet-theme-elastic-options', null, null, 'pedanet-theme-elastic-options');
+    add_settings_field('theme_elastic_url','Elastic url',function () {
+      $url = get_option('theme_elastic_url');
+      echo "<input style='width: 600px;' type='url' name='theme_elastic_url' value='$url'/>";
+    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
+    register_setting( 'pedanet-theme-elastic-options', 'theme_elastic_url');
+
+    add_settings_field('theme_elastic_key','Elastic key',function () {
+      $key = get_option('theme_elastic_key');
+      echo "<input style='width: 600px;' type='text' name='theme_elastic_key' value='$key'/>";
+    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
+    register_setting( 'pedanet-theme-elastic-options', 'theme_elastic_key');
+  });
 ?>

@@ -3,3 +3,4 @@ test/vendor
 test/composer.lock
 test/*.sql
 test/wp
+.env
