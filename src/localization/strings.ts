@@ -13,7 +13,8 @@ export interface IStrings extends LocalizedStringsMethods {
   somethingWentWrong: string,
   whoops: string,
   accessibility: string,
-  search: string
+  search: string,
+  searchPageTitle: string
 }
 
 const strings: IStrings = new LocalizedStrings({

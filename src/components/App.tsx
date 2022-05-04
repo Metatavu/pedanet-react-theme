@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import WelcomePage from "./pages/WelcomePage";
 import PostPage from "./pages/PostPage";
 import { CssBaseline, responsiveFontSizes } from "@material-ui/core";
@@ -44,34 +44,37 @@ class App extends React.Component<Props, State> {
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
-            <Route
-              path="/"
-              exact={ true }
-              render={ (props) => (
-                <WelcomePage
-                  lang={language}
-                />
-              )}
-            />
-            <Route
-              path="/haku"
-              exact={ true }
-              render={ (props) => (
-                <SearchResultsPage
-                  query={ queryParams.search as string || "" }
-                />
-              )}
-            />
-            <Route
-              path="/:slug"
-              render={ (props) => (
-                <PostPage
-                  lang={ language }
-                  slug={ this.pathToSlug(props.location.pathname) }
-                  mainPageSlug={ this.pathToTitle(props.location.pathname) }
-                />
-              )}
-            />
+            <Switch>
+              <Route
+                path="/"
+                exact={ true }
+                render={ (props) => (
+                  <WelcomePage
+                    lang={language}
+                  />
+                )}
+              />
+              <Route
+                path="/haku"
+                exact={ true }
+                render={ (props) => (
+                  <SearchResultsPage
+                    lang={ language }
+                    query={ queryParams.search as string || "" }
+                  />
+                )}
+              />
+              <Route
+                path="/:slug"
+                render={ (props) => (
+                  <PostPage
+                    lang={ language }
+                    slug={ this.pathToSlug(props.location.pathname) }
+                    mainPageSlug={ this.pathToTitle(props.location.pathname) }
+                  />
+                )}
+              />
+            </Switch>
           </div>
         </BrowserRouter>
       </ThemeProvider>
