@@ -7,6 +7,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import pedanetTheme from "../styles/theme";
 import * as qs from "query-string";
 import strings from "../localization/strings";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 /**
  * Interface representing component properties
@@ -37,7 +38,7 @@ class App extends React.Component<Props, State> {
     const queryParams = qs.parse(location.search);
     const language = (queryParams.lang || "fi") as string;
     strings.setLanguage(language);
-
+    
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -49,6 +50,15 @@ class App extends React.Component<Props, State> {
               render={ (props) => (
                 <WelcomePage
                   lang={language}
+                />
+              )}
+            />
+            <Route
+              path="/haku"
+              exact={ true }
+              render={ (props) => (
+                <SearchResultsPage
+                  query={ queryParams.search as string || "" }
                 />
               )}
             />
