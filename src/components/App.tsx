@@ -59,6 +59,7 @@ class App extends React.Component<Props, State> {
                 exact={ true }
                 render={ (props) => (
                   <SearchResultsPage
+                    history={ props.history }
                     lang={ language }
                     query={ queryParams.search as string || "" }
                   />
