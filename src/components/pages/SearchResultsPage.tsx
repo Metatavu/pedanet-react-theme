@@ -5,8 +5,7 @@ import BasicLayout from "../BasicLayout";
 import { History } from "history";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
-import { throws } from "assert";
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface Props {
   query: string;
@@ -20,6 +19,7 @@ interface State {
   searchAgain: boolean;
   currentPage: number;
   numberOfPages: number;
+  loading: boolean;
 };
 
 interface SearchResult {
@@ -47,7 +47,8 @@ interface SearchResult {
       query: "",
       searchAgain: false,
       currentPage: 1,
-      numberOfPages: 1
+      numberOfPages: 1,
+      loading: false
     }
   }
 
@@ -75,12 +76,21 @@ interface SearchResult {
               variant="outlined" 
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
-            { this.state.results.map(this.renderResult) }
+            { this.state.loading ? this.renderLoader() : this.state.results.map(this.renderResult) }
             { this.renderPageNavigation() }
         </Container>
     </BasicLayout>
     );
   }
+
+  /**
+   * Renders the loader
+   */
+  private renderLoader = () => (
+    <Container style={{ height: "100%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+      <CircularProgress/>
+    </Container>
+  );
 
   /**
    * Renders page navigation
@@ -218,12 +228,13 @@ interface SearchResult {
       return;
     }
 
+    this.setState({ loading: true });
     const result = await fetch(url + "/search.json", this.buildRequestParams(key, pageToLoad));
 
     const body = await result.json();
     const results = body.results.map(this.translateSearchResult);
 
-    this.setState({ results, numberOfPages: body.meta.page.total_pages });
+    this.setState({ results, numberOfPages: body.meta.page.total_pages, loading: false });
   }
 
   /**
