@@ -60,7 +60,7 @@ interface SearchResult {
    */
   public componentDidMount = async () => {
     this.setState({ query: this.props.query });
-    await this.searchItems(1, "page");
+    await this.searchItems(this.props.query, 1, "page");
   }
   
   /**
@@ -100,8 +100,8 @@ interface SearchResult {
    * @param selectedResultType selected result type
    */
   private changeResultType = async (selectedResultType: SearchResultType) => {
-    this.setState({ selectedResultType });
-    await this.searchItems(1, selectedResultType);
+    this.setState({ selectedResultType, currentPage: 1 });
+    await this.searchItems(this.state.query, 1, selectedResultType);
   }
 
   /**
@@ -155,7 +155,7 @@ interface SearchResult {
     if (this.state.currentPage > 1) {
       const newNumber = this.state.currentPage - 1;
       this.setState({ currentPage: newNumber });
-      await this.searchItems(newNumber, this.state.selectedResultType);
+      await this.searchItems(this.state.query, newNumber, this.state.selectedResultType);
     }
   }
 
@@ -166,7 +166,7 @@ interface SearchResult {
     if (this.state.currentPage < this.state.numberOfPages) {
       const newNumber = this.state.currentPage + 1;
       this.setState({ currentPage: newNumber });
-      await this.searchItems(newNumber, this.state.selectedResultType);
+      await this.searchItems(this.state.query, newNumber, this.state.selectedResultType);
     }
   }
 
@@ -199,12 +199,13 @@ interface SearchResult {
   private onSearch = async () => {
     this.props.history.push(`/haku?search=${this.state.query}`);
     this.setState({ selectedResultType: "page" });
-    await this.searchItems(1, "page");
+    await this.searchItems(this.state.query, 1, "page");
   }
 
   /**
    * Builds request params
    * 
+   * @param query query
    * @param elasticKey Elasticsearch key
    * @param pageToLoad the page to load
    * @param selectedResultType the selected result type
@@ -212,6 +213,7 @@ interface SearchResult {
    * @param oppiminenDomain Oppiminen domain
    */
   private buildRequestParams = (
+      query: string,
       elasticKey: string, 
       pageToLoad: number, 
       selectedResultType: SearchResultType,
@@ -224,7 +226,7 @@ interface SearchResult {
         size: 5,
         current: pageToLoad
       },
-      query: this.state.query,
+      query,
       filters: {
         "all": [
           { "all": [
@@ -258,12 +260,13 @@ interface SearchResult {
   /**
    * Searches items from the Elastic search
    * 
+   * @param query query
    * @param pageToLoad the page to load
    * @param resultType the result type
    */
-  private searchItems = async (pageToLoad: number, resultType: SearchResultType) => {
+  private searchItems = async (query: string, pageToLoad: number, resultType: SearchResultType) => {
     const currentScript = document.scripts["bundle_script"];
-    if (!currentScript || this.props.query == "") {
+    if (!currentScript || query == "") {
       return;
     }
 
@@ -279,6 +282,7 @@ interface SearchResult {
 
     this.setState({ loading: true });
     const result = await fetch(url + "/search.json", this.buildRequestParams(
+      query,
       key, 
       pageToLoad, 
       resultType, 
