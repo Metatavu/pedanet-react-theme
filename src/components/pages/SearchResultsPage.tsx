@@ -76,13 +76,16 @@ interface SearchResult {
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
             { this.state.results.map(this.renderResult) }
-            { this.renderPagination() }
+            { this.renderPageNavigation() }
         </Container>
     </BasicLayout>
     );
   }
 
-  private renderPagination = () => {
+  /**
+   * Renders page navigation
+   */
+  private renderPageNavigation = () => {
    const previousPageElement = this.renderPreviousPageLink();
    const nextPageElement = this.renderNextPageLink();
    return (
@@ -92,23 +95,32 @@ interface SearchResult {
    );
   }
 
+  /**
+   * Renders the link for the previous page
+   */
   private renderPreviousPageLink = () => {
     if (this.state.currentPage > 1) {
-      return <Link onClick={ this.lastPage } style={{ display: "flex", cursor: "pointer" }}><ArrowLeft/>{ strings.previousPage }</Link>;
+      return <Link onClick={ this.goToPreviousPage } style={{ display: "flex", cursor: "pointer" }}><ArrowLeft/>{ strings.previousPage }</Link>;
     } else {
       return <span style={{display: "flex"}}><ArrowLeft/>{ strings.previousPage }</span>;
     }
   }
 
+  /**
+   * Renders the link for the next page
+   */
   private renderNextPageLink = () => {
     if (this.state.currentPage < this.state.numberOfPages) {
-      return <Link onClick={ this.nextPage } style={{display: "flex", cursor: "pointer"}} color="primary">{ strings.nextPage }<ArrowRight/></Link>;
+      return <Link onClick={ this.goToNextPage } style={{display: "flex", cursor: "pointer"}} color="primary">{ strings.nextPage }<ArrowRight/></Link>;
     } else {
       return <span style={{display: "flex"}}>{ strings.nextPage }<ArrowRight/></span>;
     }
   }
 
-  private lastPage = async () => {
+  /**
+   * Navigates to the previous page
+   */
+  private goToPreviousPage = async () => {
     if (this.state.currentPage > 1) {
       const newNumber = this.state.currentPage - 1;
       this.setState({ currentPage: newNumber });
@@ -116,7 +128,10 @@ interface SearchResult {
     }
   }
 
-  private nextPage = async () => {
+  /**
+   * Navigate to the next page
+   */
+  private goToNextPage = async () => {
     if (this.state.currentPage < this.state.numberOfPages) {
       const newNumber = this.state.currentPage + 1;
       this.setState({ currentPage: newNumber });
@@ -124,6 +139,11 @@ interface SearchResult {
     }
   }
 
+  /**
+   * Renders a single search result
+   * 
+   * @param result a result to render
+   */
   private renderResult = (result: SearchResult) => {
     return (
       <div style={{
@@ -142,10 +162,47 @@ interface SearchResult {
     );
   }
 
+  /**
+   * Runs when the search button is pressed
+   */
   private onSearch = async () => {
     this.props.history.push(`/haku?search=${this.state.query}`);
     await this.searchItems(1);
   }
+
+  /**
+   * Builds request params
+   * 
+   * @param elasticKey Elasticsearch key
+   * @param pageToLoad the page to load
+   */
+  private buildRequestParams = (elasticKey: string, pageToLoad: number) => ({
+    method: "POST",
+    body: JSON.stringify({
+      page: {
+        size: 5,
+        current: pageToLoad
+      },
+      query: this.state.query
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${elasticKey}`
+    }
+  });
+
+  /**
+   * Translates a search result
+   * 
+   * @param result result to translate
+   */
+  private translateSearchResult = (result: any) => ({
+    title: result.title.raw,
+    url: result.url.raw,
+    imageUrl: `${result.featured_media_url.raw}`,
+    summary: result.content.raw,
+    date: this.formatDate(result.date.raw)
+  }); 
 
   /**
    * Searches items from the Elastic search
@@ -161,29 +218,10 @@ interface SearchResult {
       return;
     }
 
-    const result = await fetch(url + "/search.json", {
-      method: "POST",
-      body: JSON.stringify({
-        page: {
-          size: 5,
-          current: pageToLoad
-        },
-        query: this.state.query
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${key}`
-      }
-    });
+    const result = await fetch(url + "/search.json", this.buildRequestParams(key, pageToLoad));
 
     const body = await result.json();
-    const results = body.results.map((result: any) => ({
-      title: result.title.raw,
-      url: result.url.raw,
-      imageUrl: `${result.featured_media_url.raw}`,
-      summary: result.content.raw,
-      date: this.formatDate(result.date.raw)
-    }));
+    const results = body.results.map(this.translateSearchResult);
 
     this.setState({ results, numberOfPages: body.meta.page.total_pages });
   }
