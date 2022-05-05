@@ -6,11 +6,12 @@ import { History } from "history";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import * as qs from "query-string";
 
 interface Props {
-  query: string;
   lang: string;
   history: History;
+  query: string;
 }
 
 interface State {
@@ -198,7 +199,7 @@ interface SearchResult {
    */
   private onSearch = async () => {
     this.props.history.push(`/haku?search=${this.state.query}`);
-    this.setState({ selectedResultType: "page" });
+    this.setState({ selectedResultType: "page", currentPage: 1 });
     await this.searchItems(this.state.query, 1, "page");
   }
 
@@ -219,7 +220,7 @@ interface SearchResult {
       selectedResultType: SearchResultType,
       mikkeliDomain: string,
       oppiminenDomain: string
-    ) => ({
+  ) => ({
     method: "POST",
     body: JSON.stringify({
       page: {
