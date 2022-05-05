@@ -12,5 +12,8 @@
   "whoops": "Whoops!",
   "accessibility": "Accessibility",
   "search": "Search",
-  "searchPageTitle": "Search"
+  "searchPageTitle": "Search",  
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "page": "Page"
 }

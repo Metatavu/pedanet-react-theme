@@ -12,5 +12,8 @@
   "whoops": "Hups!",
   "accessibility": "Esteettömyystiedot",
   "search": "Hae",
-  "searchPageTitle": "Haku"
+  "searchPageTitle": "Haku",
+  "previousPage": "Edellinen sivu",
+  "nextPage": "Seuraava sivu",
+  "page": "Sivu"
 }

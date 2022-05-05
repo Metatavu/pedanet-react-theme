@@ -1,9 +1,12 @@
-import { Button, Container, TextField } from "@material-ui/core";
+import { Button, Container, Link, TextField, Typography } from "@material-ui/core";
 import React from "react";
-import { Redirect } from "react-router-dom";
 import strings from "../../localization/strings";
 import BasicLayout from "../BasicLayout";
 import { History } from "history";
+import ArrowLeft from "@material-ui/icons/ArrowLeft";
+import ArrowRight from "@material-ui/icons/ArrowRight";
+import { throws } from "assert";
+
 
 interface Props {
   query: string;
@@ -15,12 +18,16 @@ interface State {
   results: SearchResult[];
   query: string;
   searchAgain: boolean;
+  currentPage: number;
+  numberOfPages: number;
 };
 
 interface SearchResult {
   title: string;
   summary: string;
   imageUrl: string;
+  date: string;
+  url: string;
 }
 
 /**
@@ -38,7 +45,9 @@ interface SearchResult {
     this.state = {
       results: [],
       query: "",
-      searchAgain: false
+      searchAgain: false,
+      currentPage: 1,
+      numberOfPages: 1
     }
   }
 
@@ -47,23 +56,13 @@ interface SearchResult {
    */
   public componentDidMount = async () => {
     this.setState({ query: this.props.query });
-  }
-
-  /**
-   * Component did update life-cycle handler
-   */
-  public componentDidUpdate = async (prevProps: Props) => {
-    if (prevProps.query !== this.props.query) {
-      this.setState({ query: this.props.query });
-
-    }
+    await this.searchItems(1);
   }
   
-  /**this.setState({ searchAgain: true })
+  /**
    * Component render method
    */
   public render() {
-
     return (
       <BasicLayout lang={ this.props.lang }>
         <Container fixed>
@@ -76,19 +75,82 @@ interface SearchResult {
               variant="outlined" 
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
+            { this.state.results.map(this.renderResult) }
+            { this.renderPagination() }
         </Container>
     </BasicLayout>
     );
   }
 
-  private onSearch = () => {
+  private renderPagination = () => {
+   const previousPageElement = this.renderPreviousPageLink();
+   const nextPageElement = this.renderNextPageLink();
+   return (
+    <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", fontSize: "1.6rem", marginTop: "20px", marginBottom: "20px" }}>
+      { previousPageElement } <span style={{ marginLeft: "10px", marginRight: "10px" }}>{ `${strings.page} ${this.state.currentPage}` }</span> { nextPageElement }
+    </div>
+   );
+  }
+
+  private renderPreviousPageLink = () => {
+    if (this.state.currentPage > 1) {
+      return <Link onClick={ this.lastPage } style={{ display: "flex", cursor: "pointer" }}><ArrowLeft/>{ strings.previousPage }</Link>;
+    } else {
+      return <span style={{display: "flex"}}><ArrowLeft/>{ strings.previousPage }</span>;
+    }
+  }
+
+  private renderNextPageLink = () => {
+    if (this.state.currentPage < this.state.numberOfPages) {
+      return <Link onClick={ this.nextPage } style={{display: "flex", cursor: "pointer"}} color="primary">{ strings.nextPage }<ArrowRight/></Link>;
+    } else {
+      return <span style={{display: "flex"}}>{ strings.nextPage }<ArrowRight/></span>;
+    }
+  }
+
+  private lastPage = async () => {
+    if (this.state.currentPage > 1) {
+      const newNumber = this.state.currentPage - 1;
+      this.setState({ currentPage: newNumber });
+      await this.searchItems(newNumber);
+    }
+  }
+
+  private nextPage = async () => {
+    if (this.state.currentPage < this.state.numberOfPages) {
+      const newNumber = this.state.currentPage + 1;
+      this.setState({ currentPage: newNumber });
+      await this.searchItems(newNumber);
+    }
+  }
+
+  private renderResult = (result: SearchResult) => {
+    return (
+      <div style={{
+        borderBottom: "1px solid #aaa",
+        paddingTop: "7px",
+        paddingBottom: "7px",
+        display: "flex",
+        flexDirection: "row"
+      }}>
+        <img src={ result.imageUrl } width={ 120 } height={ 120 }/>
+        <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
+          <p>{ result.date } - <a href={ result.url }> { result.title } </a></p>
+          <p>{ result.summary }</p>
+        </div>
+      </div>
+    );
+  }
+
+  private onSearch = async () => {
     this.props.history.push(`/haku?search=${this.state.query}`);
+    await this.searchItems(1);
   }
 
   /**
    * Searches items from the Elastic search
    */
-  private searchItems = async () => {
+  private searchItems = async (pageToLoad: number) => {
     const currentScript = document.scripts["bundle_script"];
     if (!currentScript || this.props.query == "") {
       return;
@@ -102,7 +164,11 @@ interface SearchResult {
     const result = await fetch(url + "/search.json", {
       method: "POST",
       body: JSON.stringify({
-        query: this.props.query
+        page: {
+          size: 5,
+          current: pageToLoad
+        },
+        query: this.state.query
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -111,8 +177,26 @@ interface SearchResult {
     });
 
     const body = await result.json();
-    console.log(body);
+    const results = body.results.map((result: any) => ({
+      title: result.title.raw,
+      url: result.url.raw,
+      imageUrl: `${result.featured_media_url.raw}`,
+      summary: result.content.raw,
+      date: this.formatDate(result.date.raw)
+    }));
+
+    this.setState({ results, numberOfPages: body.meta.page.total_pages });
   }
+
+  /**
+   * Formats date
+   * @param datetime
+   */
+  private formatDate = (datetime: string) => {
+    const date = datetime.split("T")[0];
+    const dateParts = date.split("-");
+    return `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+  } 
 }
 
 export default SearchResultsPage;
