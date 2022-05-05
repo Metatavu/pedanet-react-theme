@@ -15,5 +15,9 @@
   "searchPageTitle": "Haku",
   "previousPage": "Edellinen sivu",
   "nextPage": "Seuraava sivu",
-  "page": "Sivu"
+  "page": "Sivu",
+  "files": "Tiedostot",
+  "news": "Uutiset",
+  "oppiminen": "Oppiminen.fi",
+  "pages": "Sivut"
 }

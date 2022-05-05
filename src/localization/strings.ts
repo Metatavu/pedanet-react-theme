@@ -17,7 +17,11 @@ export interface IStrings extends LocalizedStringsMethods {
   searchPageTitle: string,
   previousPage: string,
   nextPage: string,
-  page: string
+  page: string,
+  news: string,
+  files: string,
+  oppiminen: string,
+  pages: string
 }
 
 const strings: IStrings = new LocalizedStrings({

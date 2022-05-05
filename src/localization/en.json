@@ -15,5 +15,9 @@
   "searchPageTitle": "Search",  
   "previousPage": "Previous page",
   "nextPage": "Next page",
-  "page": "Page"
+  "page": "Page",
+  "files": "Files",
+  "news": "News",
+  "oppiminen": "Oppiminen.fi",
+  "pages": "Pages"
 }

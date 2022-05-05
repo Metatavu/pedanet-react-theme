@@ -1,4 +1,4 @@
-import { Button, Container, Link, TextField, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Container, Link, TextField, Typography } from "@material-ui/core";
 import React from "react";
 import strings from "../../localization/strings";
 import BasicLayout from "../BasicLayout";
@@ -20,6 +20,7 @@ interface State {
   currentPage: number;
   numberOfPages: number;
   loading: boolean;
+  selectedResultType: SearchResultType;
 };
 
 interface SearchResult {
@@ -48,7 +49,8 @@ interface SearchResult {
       searchAgain: false,
       currentPage: 1,
       numberOfPages: 1,
-      loading: false
+      loading: false,
+      selectedResultType: "page"
     }
   }
 
@@ -57,7 +59,7 @@ interface SearchResult {
    */
   public componentDidMount = async () => {
     this.setState({ query: this.props.query });
-    await this.searchItems(1);
+    await this.searchItems(1, "page");
   }
   
   /**
@@ -76,11 +78,29 @@ interface SearchResult {
               variant="outlined" 
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
-            { this.state.loading ? this.renderLoader() : this.state.results.map(this.renderResult) }
-            { this.renderPageNavigation() }
+            <div style={{ marginTop: "40px" }}>
+              <ButtonGroup variant="text" style={{ marginBottom: "20px" }}>
+                <Button onClick={() => this.changeResultType("page") }>{ strings.pages }</Button>
+                <Button onClick={() => this.changeResultType("post") }>{ strings.news }</Button>
+                <Button onClick={() => this.changeResultType("attachment") }>{ strings.files }</Button>
+                <Button onClick={() => this.changeResultType("oppiminen") }>{ strings.oppiminen }</Button>
+              </ButtonGroup>
+              { this.state.loading ? this.renderLoader() : this.state.results.map(this.renderResult) }
+              { this.renderPageNavigation() }
+            </div>
         </Container>
     </BasicLayout>
     );
+  }
+
+  /**
+   * Changes the search result type
+   * 
+   * @param selectedResultType selected result type
+   */
+  private changeResultType = async (selectedResultType: SearchResultType) => {
+    this.setState({ selectedResultType });
+    await this.searchItems(1, selectedResultType);
   }
 
   /**
@@ -134,7 +154,7 @@ interface SearchResult {
     if (this.state.currentPage > 1) {
       const newNumber = this.state.currentPage - 1;
       this.setState({ currentPage: newNumber });
-      await this.searchItems(newNumber);
+      await this.searchItems(newNumber, this.state.selectedResultType);
     }
   }
 
@@ -145,7 +165,7 @@ interface SearchResult {
     if (this.state.currentPage < this.state.numberOfPages) {
       const newNumber = this.state.currentPage + 1;
       this.setState({ currentPage: newNumber });
-      await this.searchItems(newNumber);
+      await this.searchItems(newNumber, this.state.selectedResultType);
     }
   }
 
@@ -177,7 +197,8 @@ interface SearchResult {
    */
   private onSearch = async () => {
     this.props.history.push(`/haku?search=${this.state.query}`);
-    await this.searchItems(1);
+    this.setState({ selectedResultType: "page" });
+    await this.searchItems(1, "page");
   }
 
   /**
@@ -185,15 +206,32 @@ interface SearchResult {
    * 
    * @param elasticKey Elasticsearch key
    * @param pageToLoad the page to load
+   * @param selectedResultType the selected result type
+   * @param mikkeliDomain Mikkeli main domain
+   * @param oppiminenDomain Oppiminen domain
    */
-  private buildRequestParams = (elasticKey: string, pageToLoad: number) => ({
+  private buildRequestParams = (
+      elasticKey: string, 
+      pageToLoad: number, 
+      selectedResultType: SearchResultType,
+      mikkeliDomain: string,
+      oppiminenDomain: string
+    ) => ({
     method: "POST",
     body: JSON.stringify({
       page: {
         size: 5,
         current: pageToLoad
       },
-      query: this.state.query
+      query: this.state.query,
+      filters: {
+        "all": [
+          { "all": [
+            { "base_url": (selectedResultType === "oppiminen" ? oppiminenDomain : mikkeliDomain) }, 
+            { "type" : selectedResultType === "oppiminen" ? "page" : selectedResultType }
+          ]}
+        ]
+      }
     }),
     headers: {
       'Content-Type': 'application/json',
@@ -209,27 +247,38 @@ interface SearchResult {
   private translateSearchResult = (result: any) => ({
     title: result.title.raw,
     url: result.url.raw,
-    imageUrl: `${result.featured_media_url.raw}`,
-    summary: result.content.raw,
+    imageUrl: `${result.featured_media_url_thumbnail.raw}`,
+    summary: result.excerpt.raw,
     date: this.formatDate(result.date.raw)
   }); 
 
   /**
    * Searches items from the Elastic search
+   * 
+   * @param pageToLoad the page to load
+   * @param resultType the result type
    */
-  private searchItems = async (pageToLoad: number) => {
+  private searchItems = async (pageToLoad: number, resultType: SearchResultType) => {
     const currentScript = document.scripts["bundle_script"];
     if (!currentScript || this.props.query == "") {
       return;
     }
     const url = currentScript.getAttribute('data-elastic-url');
     const key = currentScript.getAttribute('data-elastic-key');
-    if (!url || !key) {
+    const oppiminenDomain = currentScript.getAttribute('data-oppiminen-domain');
+    const mikkeliDomain = currentScript.getAttribute('data-mikkeli-domain');
+    if (!url || !key || !oppiminenDomain || !mikkeliDomain) {
       return;
     }
 
     this.setState({ loading: true });
-    const result = await fetch(url + "/search.json", this.buildRequestParams(key, pageToLoad));
+    const result = await fetch(url + "/search.json", this.buildRequestParams(
+      key, 
+      pageToLoad, 
+      resultType, 
+      mikkeliDomain, 
+      oppiminenDomain
+    ));
 
     const body = await result.json();
     const results = body.results.map(this.translateSearchResult);
@@ -249,5 +298,3 @@ interface SearchResult {
 }
 
 export default SearchResultsPage;
-
-
