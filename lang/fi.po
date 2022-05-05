@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-05-03 13:32+0300\n"
-"PO-Revision-Date: 2022-05-03 13:52+0300\n"
+"POT-Creation-Date: 2022-05-05 13:42+0300\n"
+"PO-Revision-Date: 2022-05-05 13:45+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -99,6 +99,18 @@ msgstr "URL-osoite"
 msgid "Elastic key"
 msgstr "Avain"
 
+#: functions.php:169
+msgid "Mikkeli domain"
+msgstr "Kaupungin etusivun osoite"
+
+#: functions.php:176
+msgid "Oppiminen domain"
+msgstr "Oppimisen etusivun osoite"
+
+#: functions.php:183
+msgid "Result image placeholder url"
+msgstr "Hakutulosten oletuskuvan osoite"
+
 #: node_modules/moment/min/locales.min.js:1
 msgid "s"
 msgstr ""
@@ -125,6 +137,14 @@ msgstr ""
 
 #: node_modules/moment/min/moment.min.js:1
 msgid ": "
+msgstr ""
+
+#: node_modules/react-router/umd/react-router.min.js:1
+msgid "Router-History"
+msgstr ""
+
+#: node_modules/react-router/umd/react-router.min.js:1
+msgid "Router"
 msgstr ""
 
 #: node_modules/sass-graph/node_modules/yargs-parser/index.js:301

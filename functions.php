@@ -169,16 +169,23 @@
     $mikkeliDomainTitle = __('Mikkeli domain', 'pedanet-react-theme');
     add_settings_field('theme_mikkeli_domain', $mikkeliDomainTitle, function () {
       $mikkeliDomain = get_option('theme_mikkeli_domain');
-      echo "<input style='width: 600px;' type='text' name='theme_mikkeli_domain' value='$mikkeliDomain'/>";
+      echo "<input style='width: 600px;' type='url' name='theme_mikkeli_domain' value='$mikkeliDomain'/>";
     }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
     register_setting( 'pedanet-theme-elastic-options', 'theme_mikkeli_domain');
 
     $oppiminenDomainTitle = __('Oppiminen domain', 'pedanet-react-theme');
     add_settings_field('theme_oppiminen_domain', $oppiminenDomainTitle, function () {
       $oppiminenDomain = get_option('theme_oppiminen_domain');
-      echo "<input style='width: 600px;' type='text' name='theme_oppiminen_domain' value='$oppiminenDomain'/>";
+      echo "<input style='width: 600px;' type='url' name='theme_oppiminen_domain' value='$oppiminenDomain'/>";
     }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
     register_setting( 'pedanet-theme-elastic-options', 'theme_oppiminen_domain');
+
+    $resultPlaceholderImageTitle = __('Result image placeholder url', 'pedanet-react-theme');
+    add_settings_field('theme_result_placeholder_image', $resultPlaceholderImageTitle, function () {
+      $resultPlaceholderImage = get_option('theme_result_placeholder_image');
+      echo "<input style='width: 600px;' type='url' name='theme_result_placeholder_image' value='$resultPlaceholderImage'/>";
+    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
+    register_setting( 'pedanet-theme-elastic-options', 'theme_result_placeholder_image');
   });
 
   add_action('after_setup_theme', function () {

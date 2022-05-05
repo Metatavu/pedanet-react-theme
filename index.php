@@ -13,8 +13,9 @@
         $key = get_option('theme_elastic_key');
         $mikkeliDomain = get_option('theme_mikkeli_domain');
         $oppiminenDomain = get_option('theme_oppiminen_domain');
+        $resultPlaceholderImage = get_option('theme_result_placeholder_image');
 
-        echo "<script name='bundle_script' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
+        echo "<script name='bundle_script' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
      
     ?>
     <?php } else { ?>

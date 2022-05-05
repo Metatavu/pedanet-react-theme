@@ -29,6 +29,7 @@ interface SearchResult {
   imageUrl: string;
   date: string;
   url: string;
+  placeholderImage: boolean;
 }
 
 /**
@@ -183,7 +184,7 @@ interface SearchResult {
         display: "flex",
         flexDirection: "row"
       }}>
-        <img src={ result.imageUrl } width={ 120 } height={ 120 }/>
+        { result.placeholderImage ? <img style={{ alignSelf: "center" }} src={ result.imageUrl } width={ 120 } height={ 60 }/> : <img src={ result.imageUrl } width={ 120 } height={ 120 }/> }
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
           <p>{ result.date } - <a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>
@@ -243,13 +244,15 @@ interface SearchResult {
    * Translates a search result
    * 
    * @param result result to translate
+   * @param placeholderImageUrl placeholder image url
    */
-  private translateSearchResult = (result: any) => ({
+  private translateSearchResult = (result: any, placeholderImageUrl: string) => ({
     title: result.title.raw,
     url: result.url.raw,
-    imageUrl: `${result.featured_media_url_thumbnail.raw}`,
+    imageUrl: `${result.featured_media_url_thumbnail.raw || placeholderImageUrl}`,
     summary: result.excerpt.raw,
-    date: this.formatDate(result.date.raw)
+    date: this.formatDate(result.date.raw),
+    placeholderImage: !result.featured_media_url_thumbnail.raw
   }); 
 
   /**
@@ -263,11 +266,14 @@ interface SearchResult {
     if (!currentScript || this.props.query == "") {
       return;
     }
+
     const url = currentScript.getAttribute('data-elastic-url');
     const key = currentScript.getAttribute('data-elastic-key');
     const oppiminenDomain = currentScript.getAttribute('data-oppiminen-domain');
     const mikkeliDomain = currentScript.getAttribute('data-mikkeli-domain');
-    if (!url || !key || !oppiminenDomain || !mikkeliDomain) {
+    const placeholderImageUrl = currentScript.getAttribute('data-result-placeholder-image');
+
+    if (!url || !key || !oppiminenDomain || !mikkeliDomain || !placeholderImageUrl) {
       return;
     }
 
@@ -281,14 +287,15 @@ interface SearchResult {
     ));
 
     const body = await result.json();
-    const results = body.results.map(this.translateSearchResult);
+    const results = body.results.map((result: any) => this.translateSearchResult(result, placeholderImageUrl));
 
     this.setState({ results, numberOfPages: body.meta.page.total_pages, loading: false });
   }
 
   /**
-   * Formats date
-   * @param datetime
+   * Formats a date
+   * 
+   * @param datetime datetime to format
    */
   private formatDate = (datetime: string) => {
     const date = datetime.split("T")[0];
