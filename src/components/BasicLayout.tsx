@@ -14,7 +14,6 @@ import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
 import CommentOutlined from "@material-ui/icons/CommentOutlined";
 
 import strings from "../localization/strings";
-import { Redirect } from "react-router-dom";
 
 
 /**
@@ -145,18 +144,21 @@ class BasicLayout extends React.Component<Props, State> {
                   alt="mikkeli logo"
                 />
               </a>
+              <Hidden smDown implementation="js">
+                { this.renderSearchbar() }
+              </Hidden>
             </div>
             {/* Desktop menu, hidden from mobile devices */}
             <Hidden smDown implementation="js">
               <div className={ classes.topNavDesktop }>
-                { this.renderMenu(true) }
+                { this.renderMenu() }
               </div>
             </Hidden>
           </Container>
           {/* Mobile menu */}
           <div className={ classes.topNavMobile }>
             <Collapse in={ showMenu }>
-              { this.renderMenu(false) }
+              { this.renderMenu() }
             </Collapse>
             { this.renderSearchbar() }
           </div>
@@ -240,7 +242,7 @@ class BasicLayout extends React.Component<Props, State> {
         id="site-wide-search"
         value={ this.state.search }
         size="small"
-        style={{ alignSelf: "center", marginLeft: "20px", minWidth: "400px" }}
+        style={{ alignSelf: "flex-start", marginLeft: "20px", minWidth: "400px" }}
         options={ this.state.options }
         getOptionLabel={ option => option.title }
         groupBy={ option => option.type }
@@ -274,7 +276,7 @@ class BasicLayout extends React.Component<Props, State> {
   /**
    * Render menu method
    */
-  private renderMenu = (isDesktop: boolean) => {
+  private renderMenu = () => {
     const { mainMenu, eventCalendarUrl } = this.state;
     const { classes } = this.props;
 
@@ -289,9 +291,6 @@ class BasicLayout extends React.Component<Props, State> {
         }
         {
           eventCalendarUrl && this.renderEventCalendarLink(eventCalendarUrl)
-        }
-        {
-          isDesktop && this.renderSearchbar()
         }
       </div>
     );
