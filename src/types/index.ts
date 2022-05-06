@@ -41,3 +41,5 @@ interface PtvLocalizedValue {
   value: string;
   language: PtvLanguage;
 }
+
+type SearchResultType = "page" | "post" | "attachment" | "oppiminen";
