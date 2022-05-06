@@ -5,8 +5,8 @@ export default createStyles({
   footerContainer: {
     color: "white", 
     paddingTop: "10px",
-    paddingLeft: "80px",
-    paddingRight: "80px",
+    paddingLeft: "150px",
+    paddingRight: "150px",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
