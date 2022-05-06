@@ -8,6 +8,7 @@ import ApiUtils from "../utils/ApiUtils";
 import styles from "../styles/basic-layout";
 
 import MenuIcon from "@material-ui/icons/Menu";
+import Footer from "./Footer";
 
 /**
  * Interface representing component properties
@@ -133,6 +134,7 @@ class BasicLayout extends React.Component<Props, State> {
           style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         />
         { this.props.children }
+        <Footer />
       </div>
     );
   }
