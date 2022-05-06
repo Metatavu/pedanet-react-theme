@@ -169,7 +169,7 @@ class BasicLayout extends React.Component<Props, State> {
           style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         />
         { this.props.children }
-        <Footer />
+        <Footer lang={ this.props.lang }/>
       </div>
     );
   }
