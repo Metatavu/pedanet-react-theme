@@ -242,7 +242,7 @@ class BasicLayout extends React.Component<Props, State> {
         id="site-wide-search"
         value={ this.state.search }
         size="small"
-        style={{ alignSelf: "flex-start", marginLeft: "20px", minWidth: "400px" }}
+        style={{ alignSelf: "flex-start", marginLeft: "20px", minWidth: "400px", marginBottom: "10px" }}
         options={ this.state.options }
         getOptionLabel={ option => option.title }
         groupBy={ option => option.type }
