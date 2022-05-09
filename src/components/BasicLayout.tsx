@@ -40,6 +40,9 @@ interface State {
   redirectToSearch: boolean;
 }
 
+/**
+ * Search result option
+ */
 interface SearchOption {
   title: string;
   type: string;
@@ -203,6 +206,12 @@ class BasicLayout extends React.Component<Props, State> {
     }
   });
 
+  /**
+   * Reacts to changing search text
+   * 
+   * @param _ event
+   * @param value search text
+   */
   private onSearchChange = async (_: React.ChangeEvent<{}>, value: string) => {
     this.setState({ search: { type: "", title: value, url: "" } });
     const currentScript = document.scripts["bundle_script"];
@@ -230,6 +239,9 @@ class BasicLayout extends React.Component<Props, State> {
     this.setState({ options });
   }
 
+  /**
+   * Renders the search bar
+   */
   private renderSearchbar = () => {
     return (
       <Autocomplete
