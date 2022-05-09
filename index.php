@@ -1,6 +1,7 @@
 <html lang="fi">
   <head>
     <?php require get_template_directory() . '/inc/template-head-generic.php'; ?>
+    <script src="//f1-eu.readspeaker.com/script/8419/ReadSpeaker.js?pids=embhl"></script>
   </head>
   <body>
     <?php if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || preg_match('~Trident/7.0(; Touch)?; rv:11.0~',$_SERVER['HTTP_USER_AGENT']) === 0) { ?>

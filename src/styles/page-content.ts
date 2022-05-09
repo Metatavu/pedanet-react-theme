@@ -44,7 +44,10 @@ export default createStyles({
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
       paddingBottom: "3rem"
-    }
+    },
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   columns: {
     display: "flex",
