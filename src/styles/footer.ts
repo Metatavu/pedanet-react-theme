@@ -28,5 +28,10 @@ export default createStyles({
     "& figure": {
       marginLeft: 0
     }
+  },
+  noPrint: {
+    ["@media print"]: {
+      display: "none"
+    }
   }
 });

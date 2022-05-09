@@ -100,5 +100,10 @@ export default createStyles({
     fontSize: 15,
     fontWeight: "bold",
     color: "#54575a"
+  },
+  noPrint: {
+    ["@media print"]: {
+      display: "none"
+    }
   }
 });

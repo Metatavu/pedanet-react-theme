@@ -124,7 +124,7 @@ class BasicLayout extends React.Component<Props, State> {
 
     return (
       <div className={ classes.root }>
-        <div role="navigation" aria-label="top nav">
+        <div className={ classes.noPrint } role="navigation" aria-label="top nav">
           <div
             className={ classes.horizontalColorBar }
             aria-label="top bar"
@@ -165,7 +165,7 @@ class BasicLayout extends React.Component<Props, State> {
         </div>
         <div
           role="banner"
-          className={ `${ classes.logoBar } ${ classes.headerImage }` }
+          className={ `${ classes.logoBar } ${ classes.headerImage } ${classes.noPrint}` }
           style={{ backgroundImage: `url(${ this.state.loading ? "" : postThumbnail })` }}
         />
         { this.props.children }

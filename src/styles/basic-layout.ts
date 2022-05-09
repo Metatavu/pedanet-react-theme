@@ -7,7 +7,7 @@ export default createStyles({
     display: "grid",
     height: "100vh",
     gridTemplateColumns: "1fr",
-    gridTemplateRows: "auto auto 1fr"
+    gridTemplateRows: "auto auto 1fr",
   },
   logoBar: {
     display: "flex",
@@ -135,4 +135,9 @@ export default createStyles({
       maxWidth: "40%"
     }
   },
+  noPrint: {
+    ["@media print"]: {
+      display: "none"
+    }
+  }
 });

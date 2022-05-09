@@ -48,7 +48,7 @@ class Footer extends React.Component<Props, State> {
     const { classes } = this.props;
     
     return (
-      <>
+      <div className={ classes.noPrint }>
           <Grid
             container
             justifyContent="space-around"
@@ -66,7 +66,7 @@ class Footer extends React.Component<Props, State> {
           </Grid>
         
         <img style={{ height: "8px", width: "100%" }} src="https://mikkeli.fi/gfx/layout/mikkeli-banner-border.png"/>
-      </>
+      </div>
     );
   }
 

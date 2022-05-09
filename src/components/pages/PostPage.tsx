@@ -113,7 +113,7 @@ class PostPage extends React.Component<Props, State> {
             <div className={ classes.columns }>
               {/* Left side bar */}
               <Hidden smDown>
-                <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                <div className={ `${classes.leftsidebar} ${classes.noPrint}` } role="navigation" aria-label="nav wrapper">
                   <Typography className={ classes.treeMenuTitle }>
                     { treeMenuTitle || this.setTitleSource() }
                   </Typography>
@@ -122,7 +122,7 @@ class PostPage extends React.Component<Props, State> {
               </Hidden>
               {/* Mobile menu toggle */}
               <Hidden mdUp>
-                <Button endIcon={ <MenuIcon /> } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
+                <Button endIcon={ <MenuIcon /> } className={ classes.noPrint } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
                   <div>
                     { treeMenuTitle || this.setTitleSource() }
                   </div>
@@ -131,7 +131,7 @@ class PostPage extends React.Component<Props, State> {
               {/* Mobile menu */}
               <Hidden mdUp>
                 <Collapse in={ showMobileMenu }>
-                  <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                  <div className={ `${classes.leftsidebar} ${classes.noPrint}` } role="navigation" aria-label="nav wrapper">
                     <TreeView lang={ lang } slug={ slug } />
                   </div>
                 </Collapse>
