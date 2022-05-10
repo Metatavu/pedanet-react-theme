@@ -78,10 +78,10 @@ export default createStyles({
   logoSection: {
     marginTop: theme.spacing(5),
     minHeight: 85,
+    display: "flex",
     [theme.breakpoints.down("md")]: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
-      display: "flex",
       justifyContent: "space-between",
       alignItems: "center"
     }
