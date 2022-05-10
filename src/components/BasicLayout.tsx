@@ -89,8 +89,8 @@ class BasicLayout extends React.Component<Props, State> {
     const eventCalendarUrl = `${ window.location.origin }/koulutuskalenteri/`;
 
     const api = ApiUtils.getApi();
-    const mainMenu = await api.getMainMenu();
-    mainMenu.shift();
+    console.log(await api.getMainMenu());
+    const mainMenu = (await api.getMainMenu()).filter(item => item.title != "Haku");
     const bannerImage = await this.getBannerImage();
     if (bannerImage) {
       this.setState({ postThumbnail: bannerImage });
