@@ -260,6 +260,11 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
+  /**
+   * Renders one group for the searchbar results
+   * 
+   * @param params group params
+   */
   private renderGroup = (params: any) => {
     return (
       <>
@@ -271,6 +276,11 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
+  /**
+   * Renders an option
+   * 
+   * @param option option to render
+   */
   private renderOption = (option: SearchOption) => {
     const title = option.title.length > 56 ? option.title.substring(0, 56) + "..." : option.title;
     const icon = option.type === strings.news ? <CommentOutlined fontSize="inherit"/> : <DescriptionOutlined fontSize="inherit"/>;
