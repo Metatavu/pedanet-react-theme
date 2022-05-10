@@ -10,5 +10,14 @@
   "searchSite": "Search from the site",
   "somethingWentWrong": "Something went wrong. Contact site administrator.",
   "whoops": "Whoops!",
-  "accessibility": "Accessibility"
+  "accessibility": "Accessibility",
+  "search": "Search",
+  "searchPageTitle": "Search",  
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "page": "Page",
+  "files": "Files",
+  "news": "News",
+  "oppiminen": "Oppiminen.fi",
+  "pages": "Pages"
 }

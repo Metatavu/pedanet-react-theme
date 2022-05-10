@@ -1,0 +1,419 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2022-05-05 13:42+0300\n"
+"PO-Revision-Date: 2022-05-05 13:45+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: functions.php:18
+msgid "Main Navigation"
+msgstr ""
+
+#: functions.php:19
+msgid "Localization menu"
+msgstr ""
+
+#: functions.php:20
+msgid "Site Navigation"
+msgstr ""
+
+#: functions.php:21
+msgid "Quick Links"
+msgstr ""
+
+#: functions.php:22
+msgid "Footer Navigation"
+msgstr ""
+
+#: functions.php:33
+msgid "Etsi oppilaitoksia"
+msgstr ""
+
+#: functions.php:34
+msgid "Suosittuja oppilaitoksia"
+msgstr ""
+
+#: functions.php:35
+msgid "Kaikki oppilaitokset"
+msgstr ""
+
+#: functions.php:38
+msgid "Muokkaa oppilaitosta"
+msgstr ""
+
+#: functions.php:39
+msgid "Päivitä oppilaitos"
+msgstr ""
+
+#: functions.php:40
+msgid "Lisää uusi oppilaitos"
+msgstr ""
+
+#: functions.php:41
+msgid "Uuden oppilaitoksen nimi"
+msgstr ""
+
+#: functions.php:42
+msgid "Erota oppilaitokset pilkulla"
+msgstr ""
+
+#: functions.php:43
+msgid "Lisää tai poista oppilaitoksia"
+msgstr ""
+
+#: functions.php:44
+msgid "Valitse eniten käytetyistä oppilaitoksista"
+msgstr ""
+
+#: functions.php:45
+msgid "Oppilaitokset"
+msgstr ""
+
+#: functions.php:125
+msgid "Esteettömyystiedot"
+msgstr ""
+
+#: functions.php:130
+msgid "Yhteystiedot - sivupaneeli"
+msgstr ""
+
+#: functions.php:140
+msgid "Elastic settings"
+msgstr "Elasticsearch asetukset"
+
+#: functions.php:154
+msgid "Elastic url"
+msgstr "URL-osoite"
+
+#: functions.php:162
+msgid "Elastic key"
+msgstr "Avain"
+
+#: functions.php:169
+msgid "Mikkeli domain"
+msgstr "Kaupungin etusivun osoite"
+
+#: functions.php:176
+msgid "Oppiminen domain"
+msgstr "Oppimisen etusivun osoite"
+
+#: functions.php:183
+msgid "Result image placeholder url"
+msgstr "Hakutulosten oletuskuvan osoite"
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "s"
+msgstr ""
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "m"
+msgstr ""
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "h"
+msgstr ""
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "d"
+msgstr ""
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "M"
+msgstr ""
+
+#: node_modules/moment/min/locales.min.js:1
+msgid "y"
+msgstr ""
+
+#: node_modules/moment/min/moment.min.js:1
+msgid ": "
+msgstr ""
+
+#: node_modules/react-router/umd/react-router.min.js:1
+msgid "Router-History"
+msgstr ""
+
+#: node_modules/react-router/umd/react-router.min.js:1
+msgid "Router"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs-parser/index.js:301
+#: node_modules/yargs-parser/index.js:367
+#, javascript-format
+msgid "Not enough arguments following: %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs-parser/index.js:449
+#: node_modules/yargs-parser/index.js:541
+#, javascript-format
+msgid "Invalid JSON config file: %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:169
+#: node_modules/yargs/lib/usage.js:203
+msgid "Commands:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:177
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:407
+#: node_modules/yargs/lib/usage.js:223 node_modules/yargs/lib/usage.js:458
+msgid "default:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:179
+#: node_modules/yargs/lib/usage.js:225
+msgid "aliases:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:241
+#: node_modules/yargs/lib/usage.js:288
+msgid "boolean"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:242
+#: node_modules/yargs/lib/usage.js:289
+msgid "count"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:243
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:244
+#: node_modules/terser/dist/bundle.min.js:1 node_modules/yargs/lib/usage.js:290
+#: node_modules/yargs/lib/usage.js:291
+msgid "string"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:245
+#: node_modules/yargs/lib/usage.js:292
+msgid "array"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:246
+#: node_modules/yargs/lib/usage.js:293
+msgid "number"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:250
+#: node_modules/yargs/lib/usage.js:297
+msgid "required"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:251
+#: node_modules/yargs/lib/usage.js:298
+msgid "choices:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:270
+#: node_modules/yargs/lib/usage.js:317
+msgid "Examples:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/usage.js:385
+#: node_modules/yargs/lib/usage.js:436
+msgid "generated-value"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:26
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:49
+#: node_modules/yargs/lib/validation.js:29
+#: node_modules/yargs/lib/validation.js:52
+#, javascript-format
+msgid "Not enough non-option arguments: got %s, need at least %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:37
+#: node_modules/yargs/lib/validation.js:40
+#, javascript-format
+msgid "Too many non-option arguments: got %s, maximum of %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:185
+#: node_modules/yargs/lib/validation.js:147
+msgid "Invalid values:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:188
+#: node_modules/yargs/lib/validation.js:150
+#, javascript-format
+msgid "Argument: %s, Given: %s, Choices: %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:218
+#: node_modules/yargs/lib/validation.js:180
+#, javascript-format
+msgid "Argument check failed: %s"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:283
+#: node_modules/yargs/lib/validation.js:256
+msgid "Implications failed:"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:313
+#: node_modules/yargs/lib/validation.js:295
+#, javascript-format
+msgid "Arguments %s and %s are mutually exclusive"
+msgstr ""
+
+#: node_modules/sass-graph/node_modules/yargs/lib/validation.js:332
+#: node_modules/yargs/lib/validation.js:316
+#, javascript-format
+msgid "Did you mean %s?"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "big_int"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "num"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "template_head"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "comment2"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "regexp"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "operator"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "eof"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "expand"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "punc"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "arrow"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "name"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "atom"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "keyword"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "("
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid ")"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid ":"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid ";"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid ","
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "]"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "}"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "{"
+msgstr ""
+
+#: node_modules/terser/dist/bundle.min.js:1
+msgid "["
+msgstr ""
+
+#: node_modules/yargs/lib/usage.js:92
+msgid "Positionals:"
+msgstr ""
+
+#: node_modules/yargs/lib/usage.js:192 node_modules/yargs/lib/usage.js:194
+msgid "command"
+msgstr ""
+
+#: sptv/components/common.php:74
+msgid "Monday"
+msgstr ""
+
+#: sptv/components/common.php:76
+msgid "Tuesday"
+msgstr ""
+
+#: sptv/components/common.php:78
+msgid "Wednesday"
+msgstr ""
+
+#: sptv/components/common.php:80
+msgid "Thursday"
+msgstr ""
+
+#: sptv/components/common.php:82
+msgid "Friday"
+msgstr ""
+
+#: sptv/components/common.php:84
+msgid "Saturday"
+msgstr ""
+
+#: sptv/components/common.php:86
+msgid "Sunday"
+msgstr ""
+
+#: sptv/components/common.php:152
+msgid "Open 24 hours."
+msgstr ""
+
+#: sptv/components/service_location_service_channel/default-all.php:5
+msgid "Visiting information"
+msgstr ""
+
+#: sptv/components/service_location_service_channel/default-all.php:10
+msgid "Other contact details"
+msgstr ""
+
+#: sptv/components/service_location_service_channel/default-all.php:13
+msgid "Email"
+msgstr ""
+
+#: sptv/components/service_location_service_channel/default-all.php:20
+msgid "Website"
+msgstr ""
+
+#: sptv/components/service_location_service_channel/phone-numbers.php:20
+msgid "Chargeable"
+msgstr ""
