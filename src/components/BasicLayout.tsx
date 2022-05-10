@@ -42,6 +42,9 @@ interface State {
   redirectToSearch: boolean;
 }
 
+/**
+ * Search result option
+ */
 interface SearchOption {
   title: string;
   type: string;
@@ -208,6 +211,12 @@ class BasicLayout extends React.Component<Props, State> {
     }
   });
 
+  /**
+   * Reacts to changing search text
+   * 
+   * @param _ event
+   * @param value search text
+   */
   private onSearchChange = async (_: React.ChangeEvent<{}>, value: string) => {
     this.setState({ search: { type: "", title: value, url: "" } });
     const currentScript = document.scripts["bundle_script"];
@@ -235,6 +244,9 @@ class BasicLayout extends React.Component<Props, State> {
     this.setState({ options });
   }
 
+  /**
+   * Renders the search bar
+   */
   private renderSearchbar = () => {
     return (
       <Autocomplete
@@ -253,6 +265,11 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
+  /**
+   * Renders one group for the searchbar results
+   * 
+   * @param params group params
+   */
   private renderGroup = (params: any) => {
     return (
       <>
@@ -264,6 +281,11 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
+  /**
+   * Renders an option
+   * 
+   * @param option option to render
+   */
   private renderOption = (option: SearchOption) => {
     const title = option.title.length > 56 ? option.title.substring(0, 56) + "..." : option.title;
     const icon = option.type === strings.news ? <CommentOutlined fontSize="inherit"/> : <DescriptionOutlined fontSize="inherit"/>;

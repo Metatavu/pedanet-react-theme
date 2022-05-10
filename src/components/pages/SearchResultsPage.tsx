@@ -6,14 +6,19 @@ import { History } from "history";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import * as qs from "query-string";
 
+/**
+ * Component props
+ */
 interface Props {
   lang: string;
   history: History;
   query: string;
 }
 
+/**
+ * Component state
+ */
 interface State {
   results: SearchResult[];
   query: string;
@@ -24,6 +29,9 @@ interface State {
   selectedResultType: SearchResultType;
 };
 
+/**
+ * Search result
+ */
 interface SearchResult {
   title: string;
   summary: string;
