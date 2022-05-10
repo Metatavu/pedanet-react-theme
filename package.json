@@ -11,7 +11,7 @@
     "@types/react-swipeable-views": "^0.13.0",
     "classnames": "^2.2.6",
     "localized-strings": "^0.2.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "query-string": "^6.9.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
