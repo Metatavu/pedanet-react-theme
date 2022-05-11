@@ -110,7 +110,7 @@ class PostPage extends React.Component<Props, State> {
                 { this.state.breadcrumb && this.renderBreadcrumb() }
               </Breadcrumbs>
               <div id="readspeaker_button1" className="rs_skip rsbtn rs_preserve">
-                <a rel="nofollow" className="rsbtn_play" accessKey="L" title="Kuuntele" href={"//app-eu.readspeaker.com/cgi-bin/rsent?customerid=8419&amp;lang=fi_fi&amp;readclass=readSpeakerArea&amp;url="+encodeURIComponent(window.location.href)}>
+                <a rel="nofollow" className="rsbtn_play" accessKey="L" title="Kuuntele" href={"//app-eu.readspeaker.com/cgi-bin/rsent?customerid=8419&amp;lang=fi_fi&amp;readclass=readspeakerarea&amp;url="+encodeURIComponent(window.location.href)}>
                   <span className="rsbtn_left rsimg rspart"><span className="rsbtn_text"><span>Kuuntele</span></span></span>
                   <span className="rsbtn_right rsimg rsplay rspart"></span>
                 </a>
@@ -142,7 +142,7 @@ class PostPage extends React.Component<Props, State> {
                   </div>
                 </Collapse>
               </Hidden>
-              <div className={ `${classes.contentArea} readSpeakerArea` }>
+              <div className={ `${classes.contentArea} readspeakerarea` }>
                 { this.renderContent() }
               </div>
               <RightSideBar rightSideBarContent={ rightSidebarContent }/>
