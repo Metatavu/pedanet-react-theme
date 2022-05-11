@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WithStyles, withStyles, Link, Container, Hidden, IconButton, Collapse, TextField, Typography } from "@material-ui/core";
+import { WithStyles, withStyles, Link, Container, Hidden, IconButton, Collapse, TextField, Typography, Popper, Card, Paper } from "@material-ui/core";
 import bar from "../resources/img/bar.png";
 import mikkeliLogo from "../resources/img/mikkeliLogo.png";
 import headerImage from "../resources/img/headerImage.png";
@@ -261,6 +261,7 @@ class BasicLayout extends React.Component<Props, State> {
         renderGroup={ this.renderGroup }
         renderInput={ params => <TextField {...params} label={ strings.search } variant="outlined"/> }
         renderOption={ this.renderOption }
+        ListboxProps={{ style: {  maxHeight: "1000px" }}}
       />
     );
   }
@@ -273,7 +274,7 @@ class BasicLayout extends React.Component<Props, State> {
   private renderGroup = (params: any) => {
     return (
       <>
-      <Typography style={{ marginLeft: "10px", fontSize: "1.25rem", fontWeight: "bold" }}>{ params.group }</Typography>
+      <Typography style={{ marginLeft: "10px", fontSize: "1.5rem", fontWeight: "bold" }}>{ params.group }</Typography>
       <Container style={{ overflow: "hidden", paddingLeft: 0 }}>
         { params.children }
       </Container>
@@ -287,10 +288,10 @@ class BasicLayout extends React.Component<Props, State> {
    * @param option option to render
    */
   private renderOption = (option: SearchOption) => {
-    const title = option.title.length > 56 ? option.title.substring(0, 56) + "..." : option.title;
-    const icon = option.type === strings.news ? <CommentOutlined fontSize="inherit"/> : <DescriptionOutlined fontSize="inherit"/>;
+    const title = option.title.length > 50 ? option.title.substring(0, 50) + "..." : option.title;
+    const icon = option.type === strings.news ? <CommentOutlined fontSize="medium"/> : <DescriptionOutlined fontSize="medium"/>;
     return (
-      <Link style={{ fontSize: "1.25rem", fontWeight: "normal", whiteSpace: "nowrap", display: "flex", alignItems: "center" }} color="inherit" href={ option.url }>{ icon }{ title }</Link>
+      <Link style={{ fontSize: "1.5rem", fontWeight: "normal", whiteSpace: "nowrap", display: "flex", alignItems: "center" }} color="inherit" href={ option.url }>{ icon }{ title }</Link>
     );
   }
 

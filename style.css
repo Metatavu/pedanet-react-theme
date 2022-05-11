@@ -104,3 +104,7 @@ header img {
 td:first-child {
   padding-right: 15px;
 }
+
+.MuiAutocomplete-paper {
+  max-height: 1000px;
+}
