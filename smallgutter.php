@@ -2,6 +2,7 @@
 <html>
   <head>
     <?php require get_template_directory() . '/inc/template-head-generic.php'; ?>
+    <script src="//cdn1.readspeaker.com/script/8419/webReader/webReader.js?pids=wr" type="text/javascript"></script>
   </head>
   <body class="template-smallgutter">
     <?php require get_template_directory() . '/inc/template-loader.php'; ?>

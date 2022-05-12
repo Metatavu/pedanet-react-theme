@@ -15,8 +15,10 @@
         $oppiminenDomain = get_option('theme_oppiminen_domain');
         $resultPlaceholderImage = get_option('theme_result_placeholder_image');
 
-        echo "<script name='bundle_script' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
-    ?>
+        $readSpeakerId = get_option('theme_read_speaker_id');
+
+        echo "<script name='bundle_script' data-read-speaker-id='$readSpeakerId' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
+   ?>
     
   </body>
 </html>

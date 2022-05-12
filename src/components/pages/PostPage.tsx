@@ -93,6 +93,9 @@ class PostPage extends React.Component<Props, State> {
     const { treeMenuTitle, showMobileMenu } = this.state;
     const rightSidebarContent = this.renderSideBarContent();
 
+    const currentScript = document.scripts["bundle_script"];
+    const readSpeakerId = currentScript.getAttribute("data-read-speaker-id");
+
     return (
       <BasicLayout
         lang={ lang }
@@ -109,11 +112,17 @@ class PostPage extends React.Component<Props, State> {
                 </Link>
                 { this.state.breadcrumb && this.renderBreadcrumb() }
               </Breadcrumbs>
+              <div id="readspeaker_button1" className="rs_skip rsbtn rs_preserve">
+                <a rel="nofollow" className="rsbtn_play" accessKey="L" title="Kuuntele" href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readclass=readspeakerarea&amp;url=${encodeURIComponent(window.location.href)}`}>
+                  <span className="rsbtn_left rsimg rspart"><span className="rsbtn_text"><span>Kuuntele</span></span></span>
+                  <span className="rsbtn_right rsimg rsplay rspart"></span>
+                </a>
+              </div>
             </div>
             <div className={ classes.columns }>
               {/* Left side bar */}
               <Hidden smDown>
-                <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                <div className={ `${classes.leftsidebar} ${classes.noPrint}` } role="navigation" aria-label="nav wrapper">
                   <Typography className={ classes.treeMenuTitle }>
                     { treeMenuTitle || this.setTitleSource() }
                   </Typography>
@@ -122,7 +131,7 @@ class PostPage extends React.Component<Props, State> {
               </Hidden>
               {/* Mobile menu toggle */}
               <Hidden mdUp>
-                <Button endIcon={ <MenuIcon /> } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
+                <Button endIcon={ <MenuIcon /> } className={ classes.noPrint } color="primary" variant="outlined" onClick={ this.onMobileMenuClick }>
                   <div>
                     { treeMenuTitle || this.setTitleSource() }
                   </div>
@@ -131,12 +140,12 @@ class PostPage extends React.Component<Props, State> {
               {/* Mobile menu */}
               <Hidden mdUp>
                 <Collapse in={ showMobileMenu }>
-                  <div className={ classes.leftsidebar } role="navigation" aria-label="nav wrapper">
+                  <div className={ `${classes.leftsidebar} ${classes.noPrint}` } role="navigation" aria-label="nav wrapper">
                     <TreeView lang={ lang } slug={ slug } />
                   </div>
                 </Collapse>
               </Hidden>
-              <div className={ classes.contentArea }>
+              <div className={ `${classes.contentArea} readspeakerarea` }>
                 { this.renderContent() }
               </div>
               <RightSideBar rightSideBarContent={ rightSidebarContent }/>
