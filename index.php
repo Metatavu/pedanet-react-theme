@@ -1,7 +1,6 @@
 <html lang="fi">
   <head>
     <?php require get_template_directory() . '/inc/template-head-generic.php'; ?>
-    <script src="//cdn1.readspeaker.com/script/8419/webReader/webReader.js?pids=wr" type="text/javascript"></script>
   </head>
   <body>
     <?php if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || preg_match('~Trident/7.0(; Touch)?; rv:11.0~',$_SERVER['HTTP_USER_AGENT']) === 0) { ?>
@@ -16,8 +15,9 @@
         $oppiminenDomain = get_option('theme_oppiminen_domain');
         $resultPlaceholderImage = get_option('theme_result_placeholder_image');
 
-        echo "<script name='bundle_script' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
-     
+        $readSpeakerId = get_option('theme_read_speaker_id');
+
+        echo "<script name='bundle_script' data-read-speaker-id='$readSpeakerId' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
     ?>
     <?php } else { ?>
       <?php require get_template_directory() . '/inc/template-deprecation-warning.php' ?>

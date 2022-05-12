@@ -2,7 +2,6 @@
 <html>
   <head>
     <?php require get_template_directory() . '/inc/template-head-generic.php'; ?>
-    <script src="//cdn1.readspeaker.com/script/8419/webReader/webReader.js?pids=wr" type="text/javascript"></script>
   </head>
   <body class="template-dangerous">
     <?php require get_template_directory() . '/inc/template-loader.php'; ?>
@@ -15,8 +14,9 @@
         $mikkeliDomain = get_option('theme_mikkeli_domain');
         $oppiminenDomain = get_option('theme_oppiminen_domain');
         $resultPlaceholderImage = get_option('theme_result_placeholder_image');
+        $readSpeakerId = get_option('theme_read_speaker_id');
 
-        echo "<script name='bundle_script' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
+        echo "<script name='bundle_script' data-read-speaker-id='$readSpeakerId' data-result-placeholder-image='$resultPlaceholderImage' data-mikkeli-domain='$mikkeliDomain' data-oppiminen-domain='$oppiminenDomain' data-elastic-url='$url' data-elastic-key='$key' type='text/javascript' src='$script_name'></script>";
     ?>
   </body>
 </html>

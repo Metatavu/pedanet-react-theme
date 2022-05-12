@@ -186,6 +186,12 @@
       echo "<input style='width: 600px;' type='url' name='theme_result_placeholder_image' value='$resultPlaceholderImage'/>";
     }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
     register_setting( 'pedanet-theme-elastic-options', 'theme_result_placeholder_image');
+
+    add_settings_field('theme_read_speaker_id', "Read speaker id", function () {
+      $readSpeakerId = get_option('theme_read_speaker_id');
+      echo "<input style='width: 600px;' type='text' name='theme_read_speaker_id' value='$readSpeakerId'/>";
+    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
+    register_setting( 'pedanet-theme-elastic-options', 'theme_read_speaker_id');
   });
 
   add_action('after_setup_theme', function () {
