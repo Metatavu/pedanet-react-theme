@@ -104,7 +104,7 @@ class PostPage extends React.Component<Props, State> {
         title={ this.setTitleSource() || <CircularProgress /> }
       >
         <div className={ classes.wrapper }>
-          <div id="readthis" className={ classes.pageContent }>
+          <div className={ classes.pageContent }>
             <div className={ classes.breadcrumb }>
               <Breadcrumbs separator=">" aria-label="breadcrumb">
                 <Link color="inherit" href="/">
@@ -113,7 +113,7 @@ class PostPage extends React.Component<Props, State> {
                 { this.state.breadcrumb && this.renderBreadcrumb() }
               </Breadcrumbs>
               <div id="readspeaker_button1" className="rs_skip rsbtn rs_preserve">
-                <a rel="nofollow" className="rsbtn_play" accessKey="L" title="Kuuntele" href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readid=readthis&amp;url=${encodeURIComponent(window.location.href)}`}>
+                <a rel="nofollow" className="rsbtn_play" accessKey="L" title="Kuuntele" href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readclass=readthis&amp;url=${encodeURIComponent(window.location.href)}`}>
                   <span className="rsbtn_left rsimg rspart"><span className="rsbtn_text"><span>Kuuntele</span></span></span>
                   <span className="rsbtn_right rsimg rsplay rspart"></span>
                 </a>
@@ -145,7 +145,7 @@ class PostPage extends React.Component<Props, State> {
                   </div>
                 </Collapse>
               </Hidden>
-              <div className={ `${classes.contentArea}` }>
+              <div className={ `${classes.contentArea} readthis` }>
                 { this.renderContent() }
               </div>
               <RightSideBar rightSideBarContent={ rightSidebarContent }/>
