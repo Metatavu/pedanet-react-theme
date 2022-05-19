@@ -2,12 +2,11 @@ import { createStyles } from "@material-ui/core";
 import theme from "./theme";
 
 export default createStyles({
-
   root: {
     display: "grid",
     height: "100vh",
     gridTemplateColumns: "1fr",
-    gridTemplateRows: "auto auto 1fr",
+    gridTemplateRows: "auto auto 1fr"
   },
   logoBar: {
     display: "flex",
@@ -139,5 +138,11 @@ export default createStyles({
     ["@media print"]: {
       display: "none"
     }
+  },
+  popperDisablePortal: {
+    marginTop: "44.75px"
+  }, 
+  paper: {
+    maxHeight: "1000px"
   }
 });
