@@ -7,7 +7,7 @@ export default createStyles({
     paddingTop: "10px",
     paddingLeft: "150px",
     paddingRight: "150px",
-    marginTop: "25px",
+    marginTop: 25,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
