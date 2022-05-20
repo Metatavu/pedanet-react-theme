@@ -37,7 +37,7 @@ export default createStyles({
     alignItems: "stretch",
     justifyContent: "center",
     textAlign: "center",
-    height: "100%",
+    height: "85%",
     [theme.breakpoints.down("sm")]: {
       flexWrap: "wrap",
     }
