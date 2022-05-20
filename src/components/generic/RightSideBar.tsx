@@ -42,7 +42,7 @@ class RightSideBar extends React.Component<Props, State> {
   public render() {
     const { classes } = this.props;
     return (
-      <div className={ `${classes.root} readspeakerarea` }>
+      <div className={ `${classes.root} readthis` }>
         { this.props.rightSideBarContent }
       </div>
     );
