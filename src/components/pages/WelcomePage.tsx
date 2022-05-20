@@ -114,7 +114,7 @@ class WelcomePage extends React.Component<Props, State> {
   }
 
   /**
-   * Renders the front end text section
+   * Renders the front page text section
    * 
    * @param posts posts
    */
