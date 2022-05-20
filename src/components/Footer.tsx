@@ -5,10 +5,16 @@ import styles from "../styles/footer";
 import { DomElement } from "domhandler";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 
+/**
+ * Component props
+ */
 interface Props extends WithStyles<typeof styles> {
   lang: string;
 }
 
+/**
+ * Component state
+ */
 interface State {
   columns?: React.ReactElement<any>[];
 }
