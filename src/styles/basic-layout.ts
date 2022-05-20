@@ -140,7 +140,7 @@ export default createStyles({
     }
   },
   popperDisablePortal: {
-    marginTop: "44.75px"
+    marginTop: 44.75
   }, 
   paper: {
     maxHeight: 1000
