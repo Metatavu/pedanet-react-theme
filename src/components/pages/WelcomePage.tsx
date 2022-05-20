@@ -27,7 +27,7 @@ interface State {
   siteMenuVisible: boolean;
   siteSearchVisible: boolean;
   columns?: React.ReactElement<any>[];
-  textSection: React.ReactElement[]
+  textSection: React.ReactElement[];
 }
 
 /**
