@@ -14,6 +14,7 @@ import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
 import CommentOutlined from "@material-ui/icons/CommentOutlined";
 
 import strings from "../localization/strings";
+import classNames from "classnames";
 
 
 /**
@@ -248,21 +249,39 @@ class BasicLayout extends React.Component<Props, State> {
    * Renders the search bar
    */
   private renderSearchbar = () => {
+    const { classes } = this.props;
     return (
-      <Autocomplete
-        id="site-wide-search"
-        value={ this.state.search }
-        size="small"
-        style={{ alignSelf: "flex-start", marginLeft: "20px", minWidth: "400px", marginBottom: "10px" }}
-        options={ this.state.options }
-        getOptionLabel={ option => option.title }
-        groupBy={ option => option.type }
-        onInputChange={ this.onSearchChange } 
-        renderGroup={ this.renderGroup }
-        renderInput={ params => <TextField {...params} label={ strings.search } variant="outlined"/> }
-        renderOption={ this.renderOption }
-        ListboxProps={{ style: {  maxHeight: "1000px" }}}
-      />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          width: 400,
+          marginLeft: 20,
+          marginBottom: 10
+        }}
+      >
+        <Autocomplete
+          id="site-wide-search"
+          value={ this.state.search }
+          size="small"
+          style={{ alignSelf: "flex-start", width: "400px" }}
+          options={ this.state.options }
+          getOptionLabel={ option => option.title }
+          groupBy={ option => option.type }
+          onInputChange={ this.onSearchChange } 
+          renderGroup={ this.renderGroup }
+          renderInput={ params => <TextField { ...params } label={ strings.search } variant="outlined"/> }
+          renderOption={ this.renderOption }
+          ListboxProps={{ style: {  maxHeight: "1000px" }}}
+          disablePortal={ true }
+          classes={{
+            popperDisablePortal: classes.popperDisablePortal,
+            paper: classes.paper
+          }}
+        />
+      </div>
+
     );
   }
 

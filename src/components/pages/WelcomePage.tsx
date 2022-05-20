@@ -93,7 +93,7 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang } frontPage>
-        <Container fixed>
+        <Container style={{ marginBottom: 50 }} fixed>
           <div
             className={ classes.columnSection }
             role="heading"

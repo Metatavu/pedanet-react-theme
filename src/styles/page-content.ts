@@ -46,6 +46,7 @@ export default createStyles({
       paddingBottom: "3rem"
     },
     display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "space-between"
   },
