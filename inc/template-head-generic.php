@@ -10,6 +10,6 @@
 <title>Mikkeli - Oppiminen</title>
 <script>
   window.THEME_PATH = "<?php bloginfo('template_url');?>";
-  window.rsConf = {general: {usePost: true}}
+  window.rsConf = { general: { usePost: true } }
 </script>
 <script src="//cdn1.readspeaker.com/script/<?php echo get_option('theme_read_speaker_id'); ?>/webReader/webReader.js?pids=wr" type="text/javascript"></script>
