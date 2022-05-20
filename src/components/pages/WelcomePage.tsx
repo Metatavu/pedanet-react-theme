@@ -27,7 +27,7 @@ interface State {
   siteMenuVisible: boolean;
   siteSearchVisible: boolean;
   columns?: React.ReactElement<any>[];
-  textSection: React.ReactElement[]
+  textSection: React.ReactElement[];
 }
 
 /**
@@ -120,7 +120,7 @@ class WelcomePage extends React.Component<Props, State> {
    */
   private renderTextSection = (posts: Post[]) => {
     if(!posts.length || !posts[0].content || !posts[0].content.rendered) {
-      return [<p></p>]
+      return [ <p></p> ];
     }
 
     return ReactHtmlParser(posts[0].content.rendered);
