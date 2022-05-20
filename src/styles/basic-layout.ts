@@ -143,6 +143,6 @@ export default createStyles({
     marginTop: "44.75px"
   }, 
   paper: {
-    maxHeight: "1000px"
+    maxHeight: 1000
   }
 });
