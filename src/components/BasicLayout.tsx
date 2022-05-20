@@ -251,7 +251,16 @@ class BasicLayout extends React.Component<Props, State> {
   private renderSearchbar = () => {
     const { classes } = this.props;
     return (
-      <div style={{display: 'flex', flexDirection: "column", alignItems: "flex-end", width: "400px", marginLeft: "20px", marginBottom: "10px"}}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          width: 400,
+          marginLeft: 20,
+          marginBottom: 10
+        }}
+      >
         <Autocomplete
           id="site-wide-search"
           value={ this.state.search }
