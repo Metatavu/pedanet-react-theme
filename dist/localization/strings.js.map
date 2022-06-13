@@ -1,1 +1,0 @@
-{"version":3,"file":"strings.js","sourceRoot":"","sources":["../../src/localization/strings.ts"],"names":[],"mappings":"AAAA,OAAO,gBAA6C,MAAM,mBAAmB,CAAC;AA0B9E,IAAM,OAAO,GAAa,IAAI,gBAAgB,CAAC;IAC7C,EAAE,EAAE,OAAO,CAAC,WAAW,CAAC;IACxB,EAAE,EAAE,OAAO,CAAC,WAAW,CAAC;CACzB,CAAC,CAAC;AAEH,eAAe,OAAO,CAAC"}
