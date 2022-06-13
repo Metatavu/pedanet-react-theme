@@ -23,8 +23,7 @@
     "urijs": "^1.19.1"
   },
   "scripts": {
-    "build-client": "./node_modules/@openapitools/openapi-generator-cli/bin/openapi-generator generate -i swagger.yaml -o ./src/generated/client -c generator-config.json -g typescript-fetch",
-    "build": "tsc && webpack"
+    "build-client": "./node_modules/@openapitools/openapi-generator-cli/bin/openapi-generator generate -i swagger.yaml -o ./src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
