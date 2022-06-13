@@ -20,7 +20,7 @@ export interface IStrings extends LocalizedStringsMethods {
   page: string,
   news: string,
   files: string,
-  oppiminen: string,
+  mikkeli: string,
   pages: string
 }
 

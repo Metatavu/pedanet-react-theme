@@ -233,15 +233,15 @@ class BasicLayout extends React.Component<Props, State> {
       return;
     }
 
-    const pages = await (await fetch(url + "/search.json", this.buildSearchRequestParams(value, key, "page" , mikkeliDomain))).json();
     const news = await (await fetch(url + "/search.json", this.buildSearchRequestParams(value, key, "post" , mikkeliDomain))).json();
-    const oppiminenPages = await (await fetch(url + "/search.json", this.buildSearchRequestParams(value, key, "page" , oppiminenDomain))).json();
+    const pages = await (await fetch(url + "/search.json", this.buildSearchRequestParams(value, key, "page" , oppiminenDomain))).json();
+    const mikkeliPages = await (await fetch(url + "/search.json", this.buildSearchRequestParams(value, key, "page" , mikkeliDomain))).json();
 
     const pageOptions = pages.results.map((result: any) => ({ title: result.title.raw, type: strings.pages, url: result.url.raw }));
     const newsOptions = news.results.map((result: any) => ({ title: result.title.raw, type: strings.news, url: result.url.raw }));
-    const oppiminenOptions = oppiminenPages.results.map((result: any) => ({ title: result.title.raw, type: strings.oppiminen, url: result.url.raw }));
+    const mikkeliOptions = mikkeliPages.results.map((result: any) => ({ title: result.title.raw, type: strings.mikkeli, url: result.url.raw }));
 
-    const options = pageOptions.concat(newsOptions).concat(oppiminenOptions);
+    const options = pageOptions.concat(newsOptions).concat(mikkeliOptions);
     this.setState({ options });
   }
 

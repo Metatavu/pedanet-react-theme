@@ -32,6 +32,11 @@ export default createStyles({
     display: "flex",
     flexDirection: "column"
   },
+  frontPageText: {
+    [theme.breakpoints.up("sm")]: {
+      margin: "10px",
+    }
+  },
   columnSection: {
     display: "flex",
     alignItems: "stretch",

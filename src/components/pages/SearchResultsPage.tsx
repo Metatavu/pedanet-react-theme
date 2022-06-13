@@ -93,7 +93,7 @@ interface SearchResult {
                 <Button onClick={() => this.changeResultType("page") }>{ strings.pages }</Button>
                 <Button onClick={() => this.changeResultType("post") }>{ strings.news }</Button>
                 <Button onClick={() => this.changeResultType("attachment") }>{ strings.files }</Button>
-                <Button onClick={() => this.changeResultType("oppiminen") }>{ strings.oppiminen }</Button>
+                <Button onClick={() => this.changeResultType("mikkeli") }>{ strings.mikkeli }</Button>
               </ButtonGroup>
               { this.state.loading ? this.renderLoader() : this.state.results.map(this.renderResult) }
               { this.renderPageNavigation() }
@@ -239,8 +239,8 @@ interface SearchResult {
       filters: {
         "all": [
           { "all": [
-            { "base_url": (selectedResultType === "oppiminen" ? oppiminenDomain : mikkeliDomain) }, 
-            { "type" : selectedResultType === "oppiminen" ? "page" : selectedResultType }
+            { "base_url": (selectedResultType === "page" ? oppiminenDomain : mikkeliDomain) }, 
+            { "type" : selectedResultType === "mikkeli" ? "page" : selectedResultType }
           ]}
         ]
       }

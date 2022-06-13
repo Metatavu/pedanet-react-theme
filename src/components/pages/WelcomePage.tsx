@@ -98,7 +98,7 @@ class WelcomePage extends React.Component<Props, State> {
     return (
       <BasicLayout lang={ lang } frontPage>
         <Container style={{ marginBottom: 50 }} fixed>
-          <div>
+          <div className={ classes.frontPageText }>
             { this.state.textSection }
           </div>
           <div
