@@ -58,17 +58,17 @@ class Footer extends React.Component<Props, State> {
           <Grid
             container
             justifyContent="space-around"
-            style= {{ backgroundColor: "#234c8e" }}
+            style= {{ backgroundColor: "#234c8e", marginTop: "50px" }}
           >
-          <Grid
-            className={ classes.footerContainer }
-            container
-            lg={ 8 }
-            md={ 12 }
-            sm={ 12 }
-          >
-            { this.renderColumns() }  
-          </Grid>
+            <Grid
+              className={ classes.footerContainer }
+              container
+              lg={ 8 }
+              md={ 12 }
+              sm={ 12 }
+            >
+              { this.renderColumns() }  
+            </Grid>
           </Grid>
         
         <img style={{ height: "8px", width: "100%" }} src="https://mikkeli.fi/gfx/layout/mikkeli-banner-border.png"/>
