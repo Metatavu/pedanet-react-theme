@@ -21,7 +21,8 @@ export default createStyles({
       flexWrap: "wrap"
     },
     "& a": {
-      color: "white"
+      color: "white",
+      textDecoration: "none"
     },
     "& a: hover": {
       color: "white"
