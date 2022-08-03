@@ -137,13 +137,13 @@
    * Settings
    */
   add_action('admin_menu', function () {
-    $title = __('Elastic settings', 'pedanet-react-theme');
-    add_theme_page($title, $title, 'edit_theme_options', 'pedanet-theme-elastic-options', function () {
+    $title = __('Additional theme settings', 'pedanet-react-theme');
+    add_theme_page($title, $title, 'edit_theme_options', 'pedanet-theme-options', function () {
       echo '<div class="wrap">';
       echo "<h1>$title</h1>";
       echo '<form method="post" action="options.php">';
-      settings_fields("pedanet-theme-elastic-options");
-      do_settings_sections("pedanet-theme-elastic-options");
+      settings_fields("pedanet-theme-options");
+      do_settings_sections("pedanet-theme-options");
       submit_button();
       echo '</form>';
       echo '</div>';
@@ -152,46 +152,52 @@
 
   add_action('admin_init', function () {
     $elasticUrl = __('Elastic url', 'pedanet-react-theme');
-    add_settings_section('pedanet-theme-elastic-options', null, null, 'pedanet-theme-elastic-options');
+    add_settings_section('pedanet-theme-options', null, null, 'pedanet-theme-options');
     add_settings_field('theme_elastic_url', $elasticUrl, function () {
       $url = get_option('theme_elastic_url');
       echo "<input style='width: 600px;' type='url' name='theme_elastic_url' value='$url'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_elastic_url');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_elastic_url');
 
     $elasticKey = __('Elastic key', 'pedanet-react-theme');
     add_settings_field('theme_elastic_key', $elasticKey, function () {
       $key = get_option('theme_elastic_key');
       echo "<input style='width: 600px;' type='text' name='theme_elastic_key' value='$key'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_elastic_key');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_elastic_key');
 
     $mikkeliDomainTitle = __('Mikkeli domain', 'pedanet-react-theme');
     add_settings_field('theme_mikkeli_domain', $mikkeliDomainTitle, function () {
       $mikkeliDomain = get_option('theme_mikkeli_domain');
       echo "<input style='width: 600px;' type='url' name='theme_mikkeli_domain' value='$mikkeliDomain'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_mikkeli_domain');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_mikkeli_domain');
 
     $oppiminenDomainTitle = __('Oppiminen domain', 'pedanet-react-theme');
     add_settings_field('theme_oppiminen_domain', $oppiminenDomainTitle, function () {
       $oppiminenDomain = get_option('theme_oppiminen_domain');
       echo "<input style='width: 600px;' type='url' name='theme_oppiminen_domain' value='$oppiminenDomain'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_oppiminen_domain');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_oppiminen_domain');
 
     $resultPlaceholderImageTitle = __('Result image placeholder url', 'pedanet-react-theme');
     add_settings_field('theme_result_placeholder_image', $resultPlaceholderImageTitle, function () {
       $resultPlaceholderImage = get_option('theme_result_placeholder_image');
       echo "<input style='width: 600px;' type='url' name='theme_result_placeholder_image' value='$resultPlaceholderImage'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_result_placeholder_image');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_result_placeholder_image');
 
     add_settings_field('theme_read_speaker_id', "Read speaker id", function () {
       $readSpeakerId = get_option('theme_read_speaker_id');
       echo "<input style='width: 600px;' type='text' name='theme_read_speaker_id' value='$readSpeakerId'/>";
-    }, 'pedanet-theme-elastic-options', 'pedanet-theme-elastic-options');
-    register_setting( 'pedanet-theme-elastic-options', 'theme_read_speaker_id');
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'theme_read_speaker_id');
+
+    add_settings_field('google_analytics_measurement_id', "Google Analytics Measurement ID", function () {
+      $googleAnalyticsMeasurementId = get_option('google_analytics_measurement_id');
+      echo "<input style='width: 600px;' type='text' name='google_analytics_measurement_id' value='$googleAnalyticsMeasurementId'/>";
+    }, 'pedanet-theme-options', 'pedanet-theme-options');
+    register_setting( 'pedanet-theme-options', 'google_analytics_measurement_id');
   });
 
   add_action('after_setup_theme', function () {
