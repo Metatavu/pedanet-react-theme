@@ -260,7 +260,6 @@ class BasicLayout extends React.Component<Props, State> {
         }}
       >
         <Autocomplete
-          aria-labelledby={ strings.search }
           id="site-wide-search"
           value={ this.state.search }
           size="small"
@@ -270,7 +269,7 @@ class BasicLayout extends React.Component<Props, State> {
           groupBy={ option => option.type }
           onInputChange={ this.onSearchChange } 
           renderGroup={ this.renderGroup }
-          renderInput={ params => <TextField { ...params } label={ strings.search } variant="outlined"/> }
+          renderInput={ params => <TextField { ...params } label={ strings.search }  aria-labelledby={ strings.search } variant="outlined"/> }
           renderOption={ this.renderOption }
           ListboxProps={{ style: {  maxHeight: "1000px" }}}
           disablePortal={ true }

@@ -86,6 +86,7 @@ interface SearchResult {
               onChange={ event => this.setState({ query: event.target.value }) } 
               value={ this.state.query }  
               variant="outlined" 
+              label={ strings.search }
               aria-labelledby={ strings.search }
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
