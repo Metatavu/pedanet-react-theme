@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Container, Link, TextField, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Container, Link, TextField } from "@material-ui/core";
 import React from "react";
 import strings from "../../localization/strings";
 import BasicLayout from "../BasicLayout";
@@ -85,7 +85,7 @@ interface SearchResult {
               style={{ width: "100%", marginBottom: "10px" }}
               onChange={ event => this.setState({ query: event.target.value }) } 
               value={ this.state.query }  
-              variant="outlined" 
+              variant="outlined"
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
             <div style={{ marginTop: "40px" }}>
@@ -193,7 +193,7 @@ interface SearchResult {
         display: "flex",
         flexDirection: "row"
       }}>
-        { result.placeholderImage ? <img style={{ alignSelf: "center" }} src={ result.imageUrl } width={ 120 } height={ 60 }/> : <img src={ result.imageUrl } width={ 120 } height={ 120 }/> }
+        { result.placeholderImage ? <img alt={ strings.searchResultImage } style={{ alignSelf: "center" }} src={ result.imageUrl } width={ 120 } height={ 60 }/> : <img src={ result.imageUrl } width={ 120 } height={ 120 }/> }
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
           <p>{ result.date } - <a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>

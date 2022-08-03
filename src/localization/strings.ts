@@ -21,7 +21,8 @@ export interface IStrings extends LocalizedStringsMethods {
   news: string,
   files: string,
   mikkeli: string,
-  pages: string
+  pages: string,
+  searchResultImage: string
 }
 
 const strings: IStrings = new LocalizedStrings({
