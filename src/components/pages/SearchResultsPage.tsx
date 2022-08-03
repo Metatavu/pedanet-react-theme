@@ -85,9 +85,7 @@ interface SearchResult {
               style={{ width: "100%", marginBottom: "10px" }}
               onChange={ event => this.setState({ query: event.target.value }) } 
               value={ this.state.query }  
-              variant="outlined" 
-              label={ strings.search }
-              aria-labelledby={ strings.search }
+              variant="outlined"
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
             <div style={{ marginTop: "40px" }}>
