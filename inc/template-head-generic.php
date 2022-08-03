@@ -1,3 +1,11 @@
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo get_option('google_analytics_measurement_id'); ?>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '<?php echo get_option('google_analytics_measurement_id'); ?>');
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-language" content="<?php echo get_locale();?>">
 <meta property="og:locale" content="<?php echo get_locale();?>" />

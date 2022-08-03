@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-05-05 13:42+0300\n"
-"PO-Revision-Date: 2022-05-05 13:45+0300\n"
+"POT-Creation-Date: 2022-08-03 08:44+0300\n"
+"PO-Revision-Date: 2022-08-03 08:45+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -10,10 +10,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: dist/bundle.js:1 node_modules/terser/dist/bundle.min.js:1
+msgid ":"
+msgstr ""
+
+#: dist/bundle.js:1 node_modules/terser/dist/bundle.min.js:1
+msgid "}"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "entries"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "values"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "keys"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "Wrong index!"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "Wrong offset!"
+msgstr ""
+
+#: dist/bundle.js:9
+msgid "Wrong length!"
+msgstr ""
 
 #: functions.php:18
 msgid "Main Navigation"
@@ -88,8 +120,8 @@ msgid "Yhteystiedot - sivupaneeli"
 msgstr ""
 
 #: functions.php:140
-msgid "Elastic settings"
-msgstr "Elasticsearch asetukset"
+msgid "Additional theme settings"
+msgstr "Teeman lisäasetukset"
 
 #: functions.php:154
 msgid "Elastic url"
@@ -331,10 +363,6 @@ msgid ")"
 msgstr ""
 
 #: node_modules/terser/dist/bundle.min.js:1
-msgid ":"
-msgstr ""
-
-#: node_modules/terser/dist/bundle.min.js:1
 msgid ";"
 msgstr ""
 
@@ -344,10 +372,6 @@ msgstr ""
 
 #: node_modules/terser/dist/bundle.min.js:1
 msgid "]"
-msgstr ""
-
-#: node_modules/terser/dist/bundle.min.js:1
-msgid "}"
 msgstr ""
 
 #: node_modules/terser/dist/bundle.min.js:1
@@ -417,3 +441,6 @@ msgstr ""
 #: sptv/components/service_location_service_channel/phone-numbers.php:20
 msgid "Chargeable"
 msgstr ""
+
+#~ msgid "Elastic settings"
+#~ msgstr "Elasticsearch asetukset"
