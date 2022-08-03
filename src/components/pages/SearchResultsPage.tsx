@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Container, Link, TextField, Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Container, Link, TextField } from "@material-ui/core";
 import React from "react";
 import strings from "../../localization/strings";
 import BasicLayout from "../BasicLayout";

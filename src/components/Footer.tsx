@@ -71,7 +71,7 @@ class Footer extends React.Component<Props, State> {
             </Grid>
           </Grid>
         
-        <img style={{ height: "8px", width: "100%" }} src="https://mikkeli.fi/gfx/layout/mikkeli-banner-border.png"/>
+        <img alt="Banner" style={{ height: "8px", width: "100%" }} src="https://mikkeli.fi/gfx/layout/mikkeli-banner-border.png"/>
       </div>
     );
   }

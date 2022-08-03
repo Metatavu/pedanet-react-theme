@@ -14,8 +14,6 @@ import DescriptionOutlined from "@material-ui/icons/DescriptionOutlined";
 import CommentOutlined from "@material-ui/icons/CommentOutlined";
 
 import strings from "../localization/strings";
-import classNames from "classnames";
-
 
 /**
  * Interface representing component properties
@@ -262,6 +260,7 @@ class BasicLayout extends React.Component<Props, State> {
         }}
       >
         <Autocomplete
+          aria-labelledby={ strings.search }
           id="site-wide-search"
           value={ this.state.search }
           size="small"
