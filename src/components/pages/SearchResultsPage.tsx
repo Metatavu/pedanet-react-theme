@@ -84,7 +84,8 @@ interface SearchResult {
               size="small"
               style={{ width: "100%", marginBottom: "10px" }}
               onChange={ event => this.setState({ query: event.target.value }) } 
-              value={ this.state.query }  
+              value={ this.state.query }
+              label={ strings.search }
               variant="outlined"
               InputProps={{ "aria-label": strings.search }}
             />
