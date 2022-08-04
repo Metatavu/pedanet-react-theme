@@ -100,7 +100,7 @@ class WelcomePage extends React.Component<Props, State> {
 
     return (
       <BasicLayout lang={ lang } frontPage>
-        <Container style={{ marginBottom: 50 }} fixed>
+        <Container fixed>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
             <div
               id="readspeaker_button1"
