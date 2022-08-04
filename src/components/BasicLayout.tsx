@@ -271,7 +271,7 @@ class BasicLayout extends React.Component<Props, State> {
           groupBy={ option => option.type }
           onInputChange={ this.onSearchChange } 
           renderGroup={ this.renderGroup }
-          renderInput={ params => <TextField { ...params } label={ strings.search } inputProps={{ "aria-labelledby": "site-wide-search-label" }} variant="outlined"/> }
+          renderInput={ params => <TextField { ...params } InputProps={{ "aria-labelledby": "site-wide-search-label" }} aria-labelledby="site-wide-search-label" label={ strings.search } inputProps={{ "aria-labelledby": "site-wide-search-label" }} variant="outlined"/> }
           renderOption={ this.renderOption }
           ListboxProps={{ style: {  maxHeight: "1000px" }}}
           disablePortal={ true }
