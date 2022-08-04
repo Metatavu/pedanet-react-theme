@@ -25,7 +25,7 @@ export default createStyles({
       backgroundColor: "#FFD400!important"
     },
     ".aamurusko": {
-      backgroundColor: "#d56610!important"
+      backgroundColor: "#be5a0e!important"
     }
   },
   content: {

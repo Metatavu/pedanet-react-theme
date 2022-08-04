@@ -86,7 +86,7 @@ interface SearchResult {
               onChange={ event => this.setState({ query: event.target.value }) } 
               value={ this.state.query }  
               variant="outlined"
-              aria-label={ strings.search }
+              InputProps={{ "aria-label": strings.search }}
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
             <div style={{ marginTop: "40px" }}>
