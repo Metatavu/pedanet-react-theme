@@ -8,7 +8,7 @@ import pedanetTheme from "../styles/theme";
 import * as qs from "query-string";
 import strings from "../localization/strings";
 import SearchResultsPage from "./pages/SearchResultsPage";
-import CookieConsent, { Cookies } from "react-cookie-consent";
+import CookieConsent from "react-cookie-consent";
 
 /**
  * Interface representing component properties
@@ -47,7 +47,7 @@ class App extends React.Component<Props, State> {
           <div className="App">
             <CookieConsent location="center" overlay={ true } buttonText="Ok">{ strings.cookieAccept }</CookieConsent>
             <h1 style={{ display: "none" }}>Mikkeli Oppiminen</h1>
-            <h1 style={{ display: "none" }}>Ilo kasvaa ja oppia</h1>
+            <h2 style={{ display: "none" }}>Ilo kasvaa ja oppia</h2>
             <Switch>
               <Route
                 path="/"

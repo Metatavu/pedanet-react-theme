@@ -68,6 +68,14 @@ interface SearchResult {
    * Component did mount life-cycle handler
    */
   public componentDidMount = async () => {
+    const component = this;
+    
+    window.addEventListener("keydown", function (event: any) {
+      if (event.key === "Enter" && event.target.id === "search-results-search") {
+        component.onSearch();
+      }
+    });
+
     this.setState({ query: this.props.query });
     await this.searchItems(this.props.query, 1, "page");
   }
