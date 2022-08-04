@@ -58,7 +58,7 @@ class Footer extends React.Component<Props, State> {
           <Grid
             container
             justifyContent="space-around"
-            style= {{ backgroundColor: "#234c8e", marginTop: "50px" }}
+            style= {{ backgroundColor: "#234c8e", marginTop: "20px" }}
           >
             <Grid
               className={ classes.footerContainer }

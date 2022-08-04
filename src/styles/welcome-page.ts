@@ -42,7 +42,6 @@ export default createStyles({
     alignItems: "stretch",
     justifyContent: "center",
     textAlign: "center",
-    height: "85%",
     [theme.breakpoints.down("sm")]: {
       flexWrap: "wrap",
     }
@@ -51,6 +50,7 @@ export default createStyles({
     margin: "10px 0",
     width: "100%",
     padding: 10,
+    paddingBottom: 40,
     textTransform: "none",
     color: "#fff",
     minHeight: 250,
@@ -89,7 +89,8 @@ export default createStyles({
     },
     [theme.breakpoints.up("md")]: {
       padding: 20,
-      width: 250
+      width: 250,
+      paddingBottom: 40
     },
     [theme.breakpoints.up("lg")]: {
       width: 300

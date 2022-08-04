@@ -44,7 +44,8 @@ class App extends React.Component<Props, State> {
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
-            <h1 style={{ display: "none" }}>Mikkeli Pedanet</h1>
+            <h1 style={{ display: "none" }}>Mikkeli Oppiminen</h1>
+            <h1 style={{ display: "none" }}>Ilo kasvaa ja oppia</h1>
             <Switch>
               <Route
                 path="/"
