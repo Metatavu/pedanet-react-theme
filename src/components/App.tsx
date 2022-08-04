@@ -44,6 +44,7 @@ class App extends React.Component<Props, State> {
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
+            <h1 style={{ display: "none" }}>Mikkeli Pedanet</h1>
             <Switch>
               <Route
                 path="/"

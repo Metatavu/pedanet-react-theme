@@ -13,10 +13,10 @@ export default createStyles({
       backgroundColor: "#D2D92A!important"
     },
     ".ruoho": {
-      backgroundColor: "#5CA740!important"
+      backgroundColor: "#478131!important"
     },
     ".marjapuuro": {
-      backgroundColor: "#D84C6F!important"
+      backgroundColor: "#d12e57!important"
     },
     ".orvokki": {
       backgroundColor: "#A61680!important"
@@ -25,7 +25,7 @@ export default createStyles({
       backgroundColor: "#FFD400!important"
     },
     ".aamurusko": {
-      backgroundColor: "#EF7D25!important"
+      backgroundColor: "#be5a0e!important"
     }
   },
   content: {
