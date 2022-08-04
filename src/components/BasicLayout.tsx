@@ -215,10 +215,10 @@ class BasicLayout extends React.Component<Props, State> {
   /**
    * Reacts to changing search text
    * 
-   * @param _ event
-   * @param value search text
+   * @param e event
    */
-  private onSearchChange = async (_: React.ChangeEvent<{}>, value: string) => {
+  private onSearchChange = async (e: React.FormEvent<HTMLInputElement>) => {
+    const value  = e.currentTarget.value;
     this.setState({ search: { type: "", title: value, url: "" } });
     const currentScript = document.scripts["bundle_script"];
     if (!currentScript) {
@@ -269,9 +269,8 @@ class BasicLayout extends React.Component<Props, State> {
           options={ this.state.options }
           getOptionLabel={ option => option.title }
           groupBy={ option => option.type }
-          onInputChange={ this.onSearchChange } 
           renderGroup={ this.renderGroup }
-          renderInput={ params => <TextField { ...params } inputProps={{ "aria-label": strings.search , "placeholder":  strings.search }} variant="outlined"/> }
+          renderInput={ params => <TextField { ...params } inputProps={{ onChange: this.onSearchChange, "aria-label": strings.search , "placeholder":  strings.search }} variant="outlined"/> }
           renderOption={ this.renderOption }
           ListboxProps={{ style: {  maxHeight: "1000px" }}}
           disablePortal={ true }
