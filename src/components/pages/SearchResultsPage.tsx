@@ -87,7 +87,7 @@ interface SearchResult {
               value={ this.state.query }
               label={ strings.search }
               variant="outlined"
-              InputProps={{ "aria-label": strings.search }}
+              inputProps={{ "aria-label": strings.search }}
             />
             <Button onClick={ this.onSearch } size="large" color="primary" variant="contained">{ strings.search }</Button>
             <div style={{ marginTop: "40px" }}>
