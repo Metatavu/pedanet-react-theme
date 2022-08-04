@@ -8,7 +8,7 @@ import pedanetTheme from "../styles/theme";
 import * as qs from "query-string";
 import strings from "../localization/strings";
 import SearchResultsPage from "./pages/SearchResultsPage";
-import { CookieBanner } from '@keepist/react-gdpr-cookie-banner';
+import CookieConsent, { Cookies } from "react-cookie-consent";
 
 /**
  * Interface representing component properties
@@ -45,7 +45,7 @@ class App extends React.Component<Props, State> {
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
-            <CookieBanner message={ strings.cookieAccept } />
+            <CookieConsent location="center" overlay={ true } buttonText="Ok">{ strings.cookieAccept }</CookieConsent>
             <h1 style={{ display: "none" }}>Mikkeli Oppiminen</h1>
             <h1 style={{ display: "none" }}>Ilo kasvaa ja oppia</h1>
             <Switch>
