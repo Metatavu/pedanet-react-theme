@@ -141,10 +141,5 @@ export default createStyles({
   }, 
   paper: {
     maxHeight: 1000
-  },
-  topBar: {
-    [theme.breakpoints.up("md")]: {
-      maxWidth: "fit-content"
-    }
   }
 });

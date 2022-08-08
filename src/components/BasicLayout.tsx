@@ -137,7 +137,7 @@ class BasicLayout extends React.Component<Props, State> {
             style={{ backgroundImage: `url( ${ bar } )` }}
           />
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Container className={ classes.topBar } maxWidth={ false }>
+            <div>
               <div className={ classes.logoSection }>
                 <Hidden mdUp implementation="js">
                   <IconButton size="medium" onClick={ this.onMenuClick }>
@@ -161,8 +161,15 @@ class BasicLayout extends React.Component<Props, State> {
                   { this.renderMenu() }
                 </div>
               </Hidden>
-            </Container>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignSelf: "center", marginBottom: "90px" }}>
+            </div>
+            <div style={{ 
+              display: "flex", 
+              flexDirection: "row", 
+              justifyContent: "flex-end", 
+              alignSelf: "center", 
+              marginBottom: "90px", 
+              marginLeft: "20px" 
+            }}>
               <div
                 id="readspeaker_button1"
                 className="rs_skip rsbtn rs_preserve"
