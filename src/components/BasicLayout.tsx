@@ -125,6 +125,9 @@ class BasicLayout extends React.Component<Props, State> {
       location.href = `/haku?search=${this.state.search.title}`;
     }
 
+    const currentScript = document.scripts["bundle_script"];
+    const readSpeakerId = currentScript.getAttribute("data-read-speaker-id");
+
     return (
       <div className={ classes.root }>
         <div className={ classes.noPrint } role="navigation" aria-label="top nav">
@@ -133,31 +136,55 @@ class BasicLayout extends React.Component<Props, State> {
             aria-label="top bar"
             style={{ backgroundImage: `url( ${ bar } )` }}
           />
-          <Container className={ classes.topBar } maxWidth={ false }>
-            <div className={ classes.logoSection }>
-              <Hidden mdUp implementation="js">
-                <IconButton size="medium" onClick={ this.onMenuClick }>
-                  <MenuIcon color="primary" />
-                </IconButton>
-              </Hidden>
-              <a href="/">
-                <img
-                  className={ classes.logo }
-                  src={ mikkeliLogo }
-                  alt="mikkeli logo"
-                />
-              </a>
-              <Hidden smDown implementation="js">
-                { this.renderSearchbar() }
-              </Hidden>
-            </div>
-            {/* Desktop menu, hidden from mobile devices */}
-            <Hidden smDown implementation="js">
-              <div className={ classes.topNavDesktop }>
-                { this.renderMenu() }
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Container className={ classes.topBar } maxWidth={ false }>
+              <div className={ classes.logoSection }>
+                <Hidden mdUp implementation="js">
+                  <IconButton size="medium" onClick={ this.onMenuClick }>
+                    <MenuIcon color="primary" />
+                  </IconButton>
+                </Hidden>
+                <a href="/">
+                  <img
+                    className={ classes.logo }
+                    src={ mikkeliLogo }
+                    alt="mikkeli logo"
+                  />
+                </a>
+                <Hidden smDown implementation="js">
+                  { this.renderSearchbar() }
+                </Hidden>
               </div>
-            </Hidden>
-          </Container>
+              {/* Desktop menu, hidden from mobile devices */}
+              <Hidden smDown implementation="js">
+                <div className={ classes.topNavDesktop }>
+                  { this.renderMenu() }
+                </div>
+              </Hidden>
+            </Container>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignSelf: "center", marginBottom: "90px" }}>
+              <div
+                id="readspeaker_button1"
+                className="rs_skip rsbtn rs_preserve"
+                style={{ maxWidth: "fit-content" }}
+              >
+                <a
+                  rel="nofollow" 
+                  className="rsbtn_play" 
+                  accessKey="L" 
+                  title="Kuuntele" 
+                  href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readclass=readthis&amp;url=${encodeURIComponent(window.location.href)}`}
+                >
+                  <span className="rsbtn_left rsimg rspart">
+                    <span className="rsbtn_text">
+                      <span>Kuuntele</span>
+                    </span>
+                  </span>
+                  <span className="rsbtn_right rsimg rsplay rspart"></span>
+                </a>
+              </div>
+            </div>
+          </div>
           {/* Mobile menu */}
           <div className={ classes.topNavMobile }>
             <Collapse in={ showMenu }>
