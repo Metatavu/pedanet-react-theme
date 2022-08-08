@@ -133,7 +133,7 @@ class BasicLayout extends React.Component<Props, State> {
             aria-label="top bar"
             style={{ backgroundImage: `url( ${ bar } )` }}
           />
-          <Container maxWidth="lg">
+          <Container className={ classes.topBar } maxWidth={ false }>
             <div className={ classes.logoSection }>
               <Hidden mdUp implementation="js">
                 <IconButton size="medium" onClick={ this.onMenuClick }>
