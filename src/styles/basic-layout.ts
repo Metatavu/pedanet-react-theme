@@ -143,7 +143,8 @@ export default createStyles({
     maxHeight: 1000
   },
   readSpeaker: {
-    alignSelf: "center", 
+    alignSelf: "center",
+    width: "180px",
     marginLeft: "20px" ,
     [theme.breakpoints.up("lg")]: {
       marginBottom: "90px"
