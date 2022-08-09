@@ -94,36 +94,9 @@ class WelcomePage extends React.Component<Props, State> {
    */
   public render() {
     const { lang, classes } = this.props;
-
-    const currentScript = document.scripts["bundle_script"];
-    const readSpeakerId = currentScript.getAttribute("data-read-speaker-id");
-
     return (
       <BasicLayout lang={ lang } frontPage>
         <Container fixed>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
-            <div
-              id="readspeaker_button1"
-              className="rs_skip rsbtn rs_preserve"
-              style={{ maxWidth: "fit-content" }}
-            >
-              <a 
-                rel="nofollow" 
-                className="rsbtn_play" 
-                accessKey="L" 
-                title="Kuuntele" 
-                href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readclass=readthis&amp;url=${encodeURIComponent(window.location.href)}`}
-              >
-                <span className="rsbtn_left rsimg rspart">
-                  <span className="rsbtn_text">
-                    <span>Kuuntele</span>
-                  </span>
-                </span>
-                <span className="rsbtn_right rsimg rsplay rspart"></span>
-              </a>
-            </div>
-          </div>
-
           <div className={ `${classes.frontPageText} readthis` }>
             { this.state.textSection }
           </div>

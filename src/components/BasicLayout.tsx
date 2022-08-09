@@ -133,36 +133,42 @@ class BasicLayout extends React.Component<Props, State> {
             aria-label="top bar"
             style={{ backgroundImage: `url( ${ bar } )` }}
           />
-          <Container maxWidth="lg">
-            <div className={ classes.logoSection }>
-              <Hidden mdUp implementation="js">
-                <IconButton size="medium" onClick={ this.onMenuClick }>
-                  <MenuIcon color="primary" />
-                </IconButton>
-              </Hidden>
-              <a href="/">
-                <img
-                  className={ classes.logo }
-                  src={ mikkeliLogo }
-                  alt="mikkeli logo"
-                />
-              </a>
+          <div className={ classes.topNavDesktopContainer }>
+            <div>
+              <div className={ classes.logoSection }>
+                <Hidden mdUp implementation="js">
+                  <IconButton style={{ marginLeft: "10" }} size="medium" onClick={ this.onMenuClick }>
+                    <MenuIcon color="primary" />
+                  </IconButton>
+                </Hidden>
+                <a href="/">
+                  <img
+                    className={ classes.logo }
+                    src={ mikkeliLogo }
+                    alt="mikkeli logo"
+                  />
+                </a>
+                <Hidden smDown implementation="js">
+                  { this.renderSearchbar() }
+                </Hidden>
+              </div>
+              {/* Desktop menu, hidden from mobile devices */}
               <Hidden smDown implementation="js">
-                { this.renderSearchbar() }
+                <div className={ classes.topNavDesktop }>
+                  { this.renderMenu() }
+                </div>
               </Hidden>
             </div>
-            {/* Desktop menu, hidden from mobile devices */}
-            <Hidden smDown implementation="js">
-              <div className={ classes.topNavDesktop }>
-                { this.renderMenu() }
-              </div>
+            <Hidden mdDown implementation="js">
+              { this.renderReadSpeaker() }
             </Hidden>
-          </Container>
+          </div>
           {/* Mobile menu */}
           <div className={ classes.topNavMobile }>
             <Collapse in={ showMenu }>
               { this.renderMenu() }
             </Collapse>
+            { this.renderReadSpeaker() }
             { this.renderSearchbar() }
           </div>
         </div>
@@ -174,6 +180,34 @@ class BasicLayout extends React.Component<Props, State> {
         { this.props.children }
         <Footer lang={ this.props.lang }/>
       </div>
+    );
+  }
+
+  private renderReadSpeaker = () => {
+    const currentScript = document.scripts["bundle_script"];
+    const readSpeakerId = currentScript.getAttribute("data-read-speaker-id");
+    const { classes } = this.props;
+
+    return (
+        <div
+          id="readspeaker_button1"
+          className={`rs_skip rsbtn rs_preserve ${classes.readSpeaker}`}
+        >
+          <a
+            rel="nofollow" 
+            className="rsbtn_play" 
+            accessKey="L" 
+            title="Kuuntele" 
+            href={`//app-eu.readspeaker.com/cgi-bin/rsent?customerid=${readSpeakerId}&amp;lang=fi_fi&amp;readclass=readthis&amp;url=${encodeURIComponent(window.location.href)}`}
+          >
+            <span className="rsbtn_left rsimg rspart">
+              <span className="rsbtn_text">
+                <span>Kuuntele</span>
+              </span>
+            </span>
+            <span className="rsbtn_right rsimg rsplay rspart"></span>
+          </a>
+        </div>       
     );
   }
 
@@ -252,20 +286,13 @@ class BasicLayout extends React.Component<Props, State> {
     const { classes } = this.props;
     return (
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          width: 400,
-          marginLeft: 20,
-          marginBottom: 10
-        }}
+        className={ classes.searchBarContainer }
       >
         <Autocomplete
           id="site-wide-search"
           value={ this.state.search }
           size="small"
-          style={{ alignSelf: "flex-start", width: "400px" }}
+          className={ classes.searchBarAutocomplete }
           options={ this.state.options }
           getOptionLabel={ option => option.title }
           groupBy={ option => option.type }
@@ -286,6 +313,12 @@ class BasicLayout extends React.Component<Props, State> {
             paper: classes.paper
           }}
         />
+        <Hidden lgUp implementation="js">
+          <Hidden smDown implementation="js">
+              { this.renderReadSpeaker() }
+          </Hidden>
+        </Hidden>
+
       </div>
 
     );
