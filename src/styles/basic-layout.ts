@@ -98,12 +98,12 @@ export default createStyles({
     marginLeft: "55%"
   },
   logo: {
-    width: 140,
+    width: 300,
     [theme.breakpoints.up("sm")]: {
-      width: 180,
+      width: 400,
     },
     [theme.breakpoints.up("md")]: {
-      width: 200,
+      width: 500,
     },
     [theme.breakpoints.up("lg")]: {
       marginLeft: 30,
