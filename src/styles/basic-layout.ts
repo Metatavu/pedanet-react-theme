@@ -141,5 +141,46 @@ export default createStyles({
   }, 
   paper: {
     maxHeight: 1000
+  },
+  readSpeaker: {
+    alignSelf: "center", 
+    marginLeft: "20px" ,
+    [theme.breakpoints.up("lg")]: {
+      marginBottom: "90px"
+    },
+    maxWidth: "fit-content"
+  },
+  searchBarContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    width: 400,
+    marginLeft: 20,
+    marginBottom: 10,
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "flex-end"
+    }
+  },
+  searchBarAutocomplete: {
+    alignSelf: "flex-start", 
+    width: "400px",
+    [theme.breakpoints.down("md")]: {
+      width: "200px"
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "400px"
+    }
+  },
+  topNavDesktopContainer: {
+    display: "flex", 
+    justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "flex-start"
+    }
   }
 });
