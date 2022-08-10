@@ -1,6 +1,6 @@
 @media print {
-  #adminmenumain, #wpadminbar, #wpfooter, .print-user-info-btn, #screen-meta-links, .page-title-action, .search-box, .tablenav.top, .subsubsub,.actions.bulkactions, .alignleft.actions {
-    display: none;
+  .notice, .si-toggle-container ,#adminmenumain, #wpadminbar, #wpfooter, .print-user-info-btn, #screen-meta-links, .page-title-action, .search-box, .tablenav.top, .subsubsub,.actions.bulkactions, .alignleft.actions {
+    display: none !important;
   }
   #wpcontent {
     margin-left: 0;
