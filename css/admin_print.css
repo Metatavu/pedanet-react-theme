@@ -1,6 +1,6 @@
 @media print {
-  .notice, .si-toggle-container ,#adminmenumain, #wpadminbar, #wpfooter, .print-user-info-btn, #screen-meta-links, .page-title-action, .search-box, .tablenav.top, .subsubsub,.actions.bulkactions, .alignleft.actions {
-    display: none !important;
+  #adminmenumain, #wpadminbar, #wpfooter, .print-user-info-btn, #screen-meta-links, .page-title-action, .search-box, .tablenav.top, .tablenav.bottom, .subsubsub,.actions.bulkactions, .alignleft.actions, #user-expass, .user-expass, #pp_exceptions, .pp_exceptions, .check-column, .avatar, .si-toggle-container {
+    display: none!important;
   }
   #wpcontent {
     margin-left: 0;
