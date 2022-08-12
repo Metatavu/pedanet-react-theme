@@ -198,8 +198,8 @@ interface SearchResult {
    */
   private renderResult = (result: SearchResult) => {
     const indexOfSplitUrl = result.url.substring(0, result.url.length - 1).lastIndexOf("/");
-    const firstPartUrl = result.url.substring(0, indexOfSplitUrl).replace(result.baseUrl + "/", "");
-    const secondPartUrl = result.url.substring(indexOfSplitUrl);
+    const firstPartUrl = result.url.substring(0, indexOfSplitUrl + 1).replace(result.baseUrl + "/", "");
+    const secondPartUrl = result.url.substring(indexOfSplitUrl + 1);
     return (
       <div style={{
         borderBottom: "1px solid #aaa",
