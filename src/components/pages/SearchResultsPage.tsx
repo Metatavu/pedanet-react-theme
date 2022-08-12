@@ -212,7 +212,7 @@ interface SearchResult {
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
           <p><a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>
-          <p>{ firstPartUrl }<strong>{ secondPartUrl }</strong></p>
+          <p>...{ firstPartUrl }<strong>{ secondPartUrl }</strong></p>
         </div>
       </div>
     );
