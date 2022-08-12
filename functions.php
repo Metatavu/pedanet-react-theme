@@ -211,7 +211,7 @@
     if ( 'users' == $screen->id ) { ?>
       <div class="print-user-info-btn">
         <button onclick="window.print();return false;">Tulosta tiedot</button>
-      </div>';
+      </div>
     <?php }
   }
 
