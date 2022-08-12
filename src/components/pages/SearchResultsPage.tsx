@@ -196,6 +196,9 @@ interface SearchResult {
    * @param result a result to render
    */
   private renderResult = (result: SearchResult) => {
+    const indexOfSplitUrl = result.url.substring(0, -1).lastIndexOf("/");
+    const firstPartUrl = result.url.substring(0, indexOfSplitUrl);
+    const secondPartUrl = result.url.substring(indexOfSplitUrl);
     return (
       <div style={{
         borderBottom: "1px solid #aaa",
@@ -206,8 +209,9 @@ interface SearchResult {
       }}>
         { result.placeholderImage ? <img alt={ strings.searchResultImage } style={{ alignSelf: "center" }} src={ result.imageUrl } width={ 120 } height={ 60 }/> : <img src={ result.imageUrl } width={ 120 } height={ 120 }/> }
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
-          <p>{ result.date } - <a href={ result.url }> { result.title } </a></p>
+          <p><a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>
+          <p>{ firstPartUrl }<strong>secondPartUrl</strong></p>
         </div>
       </div>
     );
