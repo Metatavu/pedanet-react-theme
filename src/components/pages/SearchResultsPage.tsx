@@ -39,6 +39,7 @@ interface SearchResult {
   date: string;
   url: string;
   placeholderImage: boolean;
+  baseUrl: string;
 }
 
 /**
@@ -102,9 +103,9 @@ interface SearchResult {
             <div style={{ marginTop: "40px" }}>
               <ButtonGroup variant="text" style={{ marginBottom: "20px" }}>
                 <Button onClick={() => this.changeResultType("page") }>{ strings.pages }</Button>
-                <Button onClick={() => this.changeResultType("post") }>{ strings.news }</Button>
                 <Button onClick={() => this.changeResultType("attachment") }>{ strings.files }</Button>
                 <Button onClick={() => this.changeResultType("mikkeli") }>{ strings.mikkeli }</Button>
+                <Button onClick={() => this.changeResultType("post") }>{ strings.news }</Button>
               </ButtonGroup>
               { this.state.loading ? this.renderLoader() : this.state.results.map(this.renderResult) }
               { this.renderPageNavigation() }
@@ -196,6 +197,9 @@ interface SearchResult {
    * @param result a result to render
    */
   private renderResult = (result: SearchResult) => {
+    const indexOfSplitUrl = result.url.substring(0, result.url.length - 1).lastIndexOf("/");
+    const firstPartUrl = result.url.substring(0, indexOfSplitUrl).replace(result.baseUrl + "/", "");
+    const secondPartUrl = result.url.substring(indexOfSplitUrl);
     return (
       <div style={{
         borderBottom: "1px solid #aaa",
@@ -206,8 +210,9 @@ interface SearchResult {
       }}>
         { result.placeholderImage ? <img alt={ strings.searchResultImage } style={{ alignSelf: "center" }} src={ result.imageUrl } width={ 120 } height={ 60 }/> : <img src={ result.imageUrl } width={ 120 } height={ 120 }/> }
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
-          <p>{ result.date } - <a href={ result.url }> { result.title } </a></p>
+          <p><a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>
+          <p>...{ firstPartUrl }<strong>{ secondPartUrl }</strong></p>
         </div>
       </div>
     );
@@ -274,7 +279,8 @@ interface SearchResult {
     imageUrl: `${result.featured_media_url_thumbnail.raw || placeholderImageUrl}`,
     summary: result.excerpt.raw,
     date: this.formatDate(result.date.raw),
-    placeholderImage: !result.featured_media_url_thumbnail.raw
+    placeholderImage: !result.featured_media_url_thumbnail.raw,
+    baseUrl: result.base_url.raw
   }); 
 
   /**
