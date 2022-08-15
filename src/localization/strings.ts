@@ -23,7 +23,8 @@ export interface IStrings extends LocalizedStringsMethods {
   mikkeli: string,
   pages: string,
   searchResultImage: string,
-  cookieAccept: string
+  cookieAccept: string,
+  readMorePrivacy: string
 }
 
 const strings: IStrings = new LocalizedStrings({

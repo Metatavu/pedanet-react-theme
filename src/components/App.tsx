@@ -45,7 +45,11 @@ class App extends React.Component<Props, State> {
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
-            <CookieConsent location="center" overlay={ true } buttonText="Ok">{ strings.cookieAccept }</CookieConsent>
+            <CookieConsent location="center" overlay={ true } buttonText="Ok">{ `${strings.cookieAccept} ` }
+              <a style={{ color: "#3986ca" }} href="https://www.mikkeli.fi/sisalto/tietoja-mikkelista/tietopalvelu-ja-tietosuoja">
+                { strings.readMorePrivacy }
+              </a>
+            </CookieConsent>
             <h1 style={{ display: "none" }}>Mikkeli Oppiminen</h1>
             <h2 style={{ display: "none" }}>Ilo kasvaa ja oppia</h2>
             <Switch>
