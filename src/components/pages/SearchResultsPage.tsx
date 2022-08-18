@@ -6,6 +6,7 @@ import { History } from "history";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { SearchResultType } from "../../types";
 
 /**
  * Component props
@@ -191,15 +192,49 @@ interface SearchResult {
     }
   }
 
+  private getResultUrlPathArray = (resultUrl: string, baseUrl: string) => {
+    if (this.state.selectedResultType !== "attachment") {
+      const pathArray = resultUrl.replace(baseUrl+"/", "").substring(0, resultUrl.length -1).split("/");
+      return pathArray.slice(0, -1);
+    } else {
+      return resultUrl.replace(baseUrl+"/", "").split("/");
+    }
+  }
+
+  /**
+   * Returns search result url parts
+   * 
+   * @param pathArray path array
+   */
+  private resultUrlParts = (resultUrl: string, baseUrl: string) => {
+    const isFile = this.state.selectedResultType === "attachment";
+    const shortenedPathArray = this.getResultUrlPathArray(resultUrl, baseUrl);
+    if (shortenedPathArray.length === 1) {
+      return [ "", isFile ? shortenedPathArray[0] : shortenedPathArray[0] + "/" ];
+    } else if (shortenedPathArray.length === 2) {
+      const secondPart = shortenedPathArray[shortenedPathArray.length - 1];
+      const firstPart = shortenedPathArray[shortenedPathArray.length - 2];
+
+      return [ firstPart+"/", isFile ? secondPart : secondPart + "/" ];
+    } else if (shortenedPathArray.length > 2) {
+      const secondPart = shortenedPathArray[shortenedPathArray.length - 1];
+      const first2Part = shortenedPathArray[shortenedPathArray.length - 2];
+      const first1Part = shortenedPathArray[shortenedPathArray.length - 3];
+
+      return [ first1Part + "/" + first2Part + "/", isFile ? secondPart : secondPart + "/" ];
+    }
+
+    return [ "", "" ];
+  }
+
   /**
    * Renders a single search result
    * 
    * @param result a result to render
    */
   private renderResult = (result: SearchResult) => {
-    const indexOfSplitUrl = result.url.substring(0, result.url.length - 1).lastIndexOf("/");
-    const firstPartUrl = result.url.substring(0, indexOfSplitUrl + 1).replace(result.baseUrl + "/", "");
-    const secondPartUrl = result.url.substring(indexOfSplitUrl + 1);
+    const [ firstPart, secondPart ] = this.resultUrlParts(result.url, result.baseUrl);
+
     return (
       <div style={{
         borderBottom: "1px solid #aaa",
@@ -212,7 +247,7 @@ interface SearchResult {
         <div style={{ flexDirection: "column", display: "flex", marginLeft: "15px" }}>
           <p><a href={ result.url }> { result.title } </a></p>
           <p>{ result.summary }</p>
-          <p>...{ firstPartUrl }<strong>{ secondPartUrl }</strong></p>
+          <p>...{ firstPart }<strong>{ secondPart }</strong></p>
         </div>
       </div>
     );
