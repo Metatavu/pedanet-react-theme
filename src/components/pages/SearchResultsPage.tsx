@@ -192,6 +192,12 @@ interface SearchResult {
     }
   }
 
+  /**
+   * Returns an array of URL path parts. This array is used to render search result URL.
+   * 
+   * @param resultUrl search result url
+   * @param baseUrl search result base url
+   */
   private getResultUrlPathArray = (resultUrl: string, baseUrl: string) => {
     if (this.state.selectedResultType !== "attachment") {
       const pathArray = resultUrl.replace(baseUrl+"/", "").substring(0, resultUrl.length -1).split("/");
@@ -204,7 +210,8 @@ interface SearchResult {
   /**
    * Returns search result url parts
    * 
-   * @param pathArray path array
+   * @param resultUrl search result url
+   * @param baseUrl search result base url
    */
   private resultUrlParts = (resultUrl: string, baseUrl: string) => {
     const isFile = this.state.selectedResultType === "attachment";
