@@ -208,7 +208,7 @@ interface SearchResult {
   }
 
   /**
-   * Returns search result url parts
+   * Returns search result url parts. First part will be used for regular text, second part will be bolded.
    * 
    * @param resultUrl search result url
    * @param baseUrl search result base url
