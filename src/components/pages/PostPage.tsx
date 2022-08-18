@@ -15,6 +15,7 @@ import RightSideBar from "../generic/RightSideBar";
 import PtvAccessibilityAccordion from "../generic/ptv-accessibility-accordion";
 
 import MenuIcon from "@material-ui/icons/Menu";
+import { PtvAccessibilitySentence, PtvEntranceData } from "../../types";
 /**
  * Interface representing component properties
  */

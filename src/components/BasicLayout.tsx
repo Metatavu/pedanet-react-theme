@@ -15,6 +15,7 @@ import CommentOutlined from "@material-ui/icons/CommentOutlined";
 
 import strings from "../localization/strings";
 import classNames from "classnames";
+import { SearchResultType } from "../types";
 
 
 /**

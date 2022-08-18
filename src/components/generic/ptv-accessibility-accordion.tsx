@@ -5,6 +5,7 @@ import styles from "../../styles/ptv-accessibility-accordion";
 import strings from "../../localization/strings";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { PtvAccessibilitySentence, PtvLanguage, PtvLocalizedValue } from "../../types";
 
 /**
  * Component props
