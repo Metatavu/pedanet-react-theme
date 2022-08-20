@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-08-03 08:44+0300\n"
-"PO-Revision-Date: 2022-08-03 08:45+0300\n"
+"PO-Revision-Date: 2022-08-20 07:50+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -125,11 +125,11 @@ msgstr "Teeman lisäasetukset"
 
 #: functions.php:154
 msgid "Elastic url"
-msgstr "URL-osoite"
+msgstr "Elastic hakukoneen osoite"
 
 #: functions.php:162
 msgid "Elastic key"
-msgstr "Avain"
+msgstr "Elastic-avain"
 
 #: functions.php:169
 msgid "Mikkeli domain"
