@@ -2,7 +2,6 @@ import { createStyles } from "@material-ui/core";
 import theme from "./theme";
 
 export default createStyles({
-
   root: {
     display: "grid",
     height: "100vh",
@@ -76,15 +75,12 @@ export default createStyles({
     }
   },
   logoSection: {
-    marginTop: theme.spacing(5),
     minHeight: 85,
-    [theme.breakpoints.down("md")]: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
-    }
+    display: "flex",
+    marginBottom: theme.spacing(2),
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: theme.spacing(2)
   },
   topNavDesktop: {
     textAlign: "center",
@@ -102,12 +98,12 @@ export default createStyles({
     marginLeft: "55%"
   },
   logo: {
-    width: 140,
+    width: 300,
     [theme.breakpoints.up("sm")]: {
-      width: 180,
+      width: 400,
     },
     [theme.breakpoints.up("md")]: {
-      width: 200,
+      width: 500,
     },
     [theme.breakpoints.up("lg")]: {
       marginLeft: 30,
@@ -135,4 +131,57 @@ export default createStyles({
       maxWidth: "40%"
     }
   },
+  noPrint: {
+    ["@media print"]: {
+      display: "none"
+    }
+  },
+  popperDisablePortal: {
+    marginTop: 44.75
+  }, 
+  paper: {
+    maxHeight: 1000
+  },
+  readSpeaker: {
+    alignSelf: "center",
+    width: "180px",
+    marginLeft: "20px" ,
+    [theme.breakpoints.up("lg")]: {
+      marginBottom: "90px"
+    },
+    maxWidth: "fit-content"
+  },
+  searchBarContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    width: 400,
+    marginLeft: 20,
+    marginBottom: 10,
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "flex-end"
+    }
+  },
+  searchBarAutocomplete: {
+    alignSelf: "flex-start", 
+    width: "400px",
+    [theme.breakpoints.down("md")]: {
+      width: "200px"
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "400px"
+    }
+  },
+  topNavDesktopContainer: {
+    display: "flex", 
+    justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "flex-start"
+    }
+  }
 });

@@ -10,5 +10,17 @@
   "searchSite": "Search from the site",
   "somethingWentWrong": "Something went wrong. Contact site administrator.",
   "whoops": "Whoops!",
-  "accessibility": "Accessibility"
+  "accessibility": "Accessibility",
+  "search": "Search",
+  "searchPageTitle": "Search",  
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "page": "Page",
+  "files": "Files",
+  "news": "News (mikkeli.fi)",
+  "mikkeli": "Mikkeli.fi",
+  "pages": "Pages",
+  "searchResultImage": "Search result image",
+  "cookieAccept": "By continuing to use this site, you are allowing the use of cookies.",
+  "readMorePrivacy": "Read more about privacy."
 }

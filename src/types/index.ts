@@ -1,12 +1,12 @@
 /**
  * Type describing Ptv language
  */
-type PtvLanguage = "fi" | "sv" | "en";
+export type PtvLanguage = "fi" | "sv" | "en";
 
 /**
  * Interface describing Ptv service location entrance data
  */
-interface PtvEntranceData {
+export interface PtvEntranceData {
   accessibilitySentences?: PtvAccessibilitySentence[];
   coordinates: PtvEntranceCoordinates;
 }
@@ -14,7 +14,7 @@ interface PtvEntranceData {
 /**
  * Interface describing Ptv service location entrance coordinates
  */
-interface PtvEntranceCoordinates {
+export interface PtvEntranceCoordinates {
   latitude: string;
   longitude: string;
 }
@@ -22,7 +22,7 @@ interface PtvEntranceCoordinates {
 /**
  * Interface describing Ptv accessibility sentence
  */
-interface PtvAccessibilitySentence {
+export interface PtvAccessibilitySentence {
   sentenceGroup?: PtvLocalizedValue[];
   sentences?: PtvLocalizedAccessibilitySentence[];
 }
@@ -30,14 +30,16 @@ interface PtvAccessibilitySentence {
 /**
  * Interface describing Ptv localized accessibility sentence
  */
-interface PtvLocalizedAccessibilitySentence {
+export interface PtvLocalizedAccessibilitySentence {
   sentence: PtvLocalizedValue[];
 }
 
 /**
  * Interface describing Ptv localized value
  */
-interface PtvLocalizedValue {
+export interface PtvLocalizedValue {
   value: string;
   language: PtvLanguage;
 }
+
+export type SearchResultType = "page" | "post" | "attachment" | "mikkeli";

@@ -44,7 +44,11 @@ export default createStyles({
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
       paddingBottom: "3rem"
-    }
+    },
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   columns: {
     display: "flex",
@@ -100,5 +104,10 @@ export default createStyles({
     fontSize: 15,
     fontWeight: "bold",
     color: "#54575a"
+  },
+  noPrint: {
+    ["@media print"]: {
+      display: "none"
+    }
   }
 });

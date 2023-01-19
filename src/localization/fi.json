@@ -10,5 +10,17 @@
   "searchSite": "Hae sivustolta",
   "somethingWentWrong": "Jokin meni pieleen. Ota yhteyttä sivuston ylläpitoon.",
   "whoops": "Hups!",
-  "accessibility": "Esteettömyystiedot"
+  "accessibility": "Esteettömyystiedot",
+  "search": "Hae",
+  "searchPageTitle": "Haku",
+  "previousPage": "Edellinen sivu",
+  "nextPage": "Seuraava sivu",
+  "page": "Sivu",
+  "files": "Tiedostot",
+  "news": "Uutiset (mikkeli.fi)",
+  "mikkeli": "Mikkeli.fi",
+  "pages": "Sivut",
+  "searchResultImage": "Hakutuloksen kuva",
+  "cookieAccept": "Jatkamalla sivuston käyttöä, hyväksyt evästeiden käytön.",
+  "readMorePrivacy": "Lue lisää tietosuojasta."
 }

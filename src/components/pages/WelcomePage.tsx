@@ -27,6 +27,7 @@ interface State {
   siteMenuVisible: boolean;
   siteSearchVisible: boolean;
   columns?: React.ReactElement<any>[];
+  textSection: React.ReactElement[];
 }
 
 /**
@@ -46,7 +47,8 @@ class WelcomePage extends React.Component<Props, State> {
       loading: false,
       scrollPosition: 0,
       siteMenuVisible: false,
-      siteSearchVisible: false
+      siteSearchVisible: false,
+      textSection: []
     };
   }
 
@@ -61,17 +63,19 @@ class WelcomePage extends React.Component<Props, State> {
 
     const api = ApiUtils.getApi();
 
-    const [ posts, frontPageColumnPost ] = await Promise.all(
+    const [ posts, frontPageColumnPost, frontPageTextPost ] = await Promise.all(
       [
         api.getWpV2Posts({lang: [ this.props.lang ]}),
-        api.getWpV2Posts({lang: [ this.props.lang ], slug: [ "etusivun-kolumnit" ]})
+        api.getWpV2Posts({lang: [ this.props.lang ], slug: [ "etusivun-kolumnit" ]}),
+        api.getWpV2Posts({lang: [ this.props.lang ], slug: [ "etusivun-teksti" ]})
       ]
     );
 
     this.setState({
       posts: posts,
       loading: false,
-      frontPageColumnPost: frontPageColumnPost.length > 0 ? frontPageColumnPost[0] : undefined
+      frontPageColumnPost: frontPageColumnPost.length > 0 ? frontPageColumnPost[0] : undefined,
+      textSection: this.renderTextSection(frontPageTextPost)
     });
 
     this.getColumnsContent();
@@ -90,12 +94,15 @@ class WelcomePage extends React.Component<Props, State> {
    */
   public render() {
     const { lang, classes } = this.props;
-
     return (
       <BasicLayout lang={ lang } frontPage>
         <Container fixed>
+          <div className={ `${classes.frontPageText} readthis` }>
+            { this.state.textSection }
+          </div>
+
           <div
-            className={ classes.columnSection }
+            className={ `${classes.columnSection} readthis` }
             role="heading"
             aria-level={ 1 }
           >
@@ -104,6 +111,19 @@ class WelcomePage extends React.Component<Props, State> {
         </Container>
       </BasicLayout>
     );
+  }
+
+  /**
+   * Renders the front page text section
+   * 
+   * @param posts posts
+   */
+  private renderTextSection = (posts: Post[]) => {
+    if(!posts.length || !posts[0].content || !posts[0].content.rendered) {
+      return [ <p></p> ];
+    }
+
+    return ReactHtmlParser(posts[0].content.rendered);
   }
 
   /**

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import WelcomePage from "./pages/WelcomePage";
 import PostPage from "./pages/PostPage";
 import { CssBaseline, responsiveFontSizes } from "@material-ui/core";
@@ -7,6 +7,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import pedanetTheme from "../styles/theme";
 import * as qs from "query-string";
 import strings from "../localization/strings";
+import SearchResultsPage from "./pages/SearchResultsPage";
+import CookieConsent from "react-cookie-consent";
 
 /**
  * Interface representing component properties
@@ -37,31 +39,51 @@ class App extends React.Component<Props, State> {
     const queryParams = qs.parse(location.search);
     const language = (queryParams.lang || "fi") as string;
     strings.setLanguage(language);
-
+    
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
           <div className="App">
-            <Route
-              path="/"
-              exact={ true }
-              render={ (props) => (
-                <WelcomePage
-                  lang={language}
-                />
-              )}
-            />
-            <Route
-              path="/:slug"
-              render={ (props) => (
-                <PostPage
-                  lang={ language }
-                  slug={ this.pathToSlug(props.location.pathname) }
-                  mainPageSlug={ this.pathToTitle(props.location.pathname) }
-                />
-              )}
-            />
+            <CookieConsent location="center" overlay={ true } buttonText="Ok">{ `${strings.cookieAccept} ` }
+              <a style={{ color: "#3986ca" }} href="https://www.mikkeli.fi/sisalto/tietoja-mikkelista/tietopalvelu-ja-tietosuoja">
+                { strings.readMorePrivacy }
+              </a>
+            </CookieConsent>
+            <h1 style={{ display: "none" }}>Mikkeli Oppiminen</h1>
+            <h2 style={{ display: "none" }}>Ilo kasvaa ja oppia</h2>
+            <Switch>
+              <Route
+                path="/"
+                exact={ true }
+                render={ (props) => (
+                  <WelcomePage
+                    lang={language}
+                  />
+                )}
+              />
+              <Route
+                path="/haku"
+                exact={ true }
+                render={ (props) => (
+                  <SearchResultsPage
+                    history={ props.history }
+                    lang={ language }
+                    query={ queryParams.search as string || "" }
+                  />
+                )}
+              />
+              <Route
+                path="/:slug"
+                render={ (props) => (
+                  <PostPage
+                    lang={ language }
+                    slug={ this.pathToSlug(props.location.pathname) }
+                    mainPageSlug={ this.pathToTitle(props.location.pathname) }
+                  />
+                )}
+              />
+            </Switch>
           </div>
         </BrowserRouter>
       </ThemeProvider>
