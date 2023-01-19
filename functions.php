@@ -134,6 +134,25 @@
   });
 
   /**
+   * Filter for overriding events calendar view labels
+   */
+  add_filter('tec_events_views_v2_view_label', function ($label) {
+    if ($label == "Day") {
+      return "Päivä";
+    }
+
+    if ($label == "Month") {
+      return "Kuukausi";
+    }
+
+    if ($label == "List") {
+      return "Lista";
+    }
+
+    return $label;
+  });
+
+  /**
    * Settings
    */
   add_action('admin_menu', function () {
