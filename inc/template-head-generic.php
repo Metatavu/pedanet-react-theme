@@ -13,3 +13,4 @@
   window.rsConf = { general: { usePost: true } }
 </script>
 <script src="//cdn1.readspeaker.com/script/<?php echo get_option('theme_read_speaker_id'); ?>/webReader/webReader.js?pids=wr" type="text/javascript"></script>
+<?php wp_head(); ?>
