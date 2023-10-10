@@ -21,9 +21,9 @@
 
       echo "<div class=\"ptv-addresses\">";
       echo "<p>";
-      echo getLocalizedValue($streetAddress["street"], $data->language) . " " . $streetAddress["streetNumber"];
+      echo oppiminenGetLocalizedValue($streetAddress["street"], $data->language) . " " . $streetAddress["streetNumber"];
       echo "<br/>";
-      echo $streetAddress["postalCode"] . " " . getLocalizedValue($streetAddress["postOffice"], $data->language);
+      echo $streetAddress["postalCode"] . " " . oppiminenGetLocalizedValue($streetAddress["postOffice"], $data->language);
 
       if ($mapUrl) {
         echo "<br/>";

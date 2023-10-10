@@ -3,7 +3,7 @@
   
   echo "<div class=\"ptv-description\">";
   echo "<p>";
-  echo nl2p(getLocalizedValue($data->serviceChannel["serviceChannelDescriptions"], $data->language, "Description"));
+  echo oppiminenNl2p(oppiminenGetLocalizedValue($data->serviceChannel["serviceChannelDescriptions"], $data->language, "Description"));
   echo "</p>";
   echo "</div>";
 ?>

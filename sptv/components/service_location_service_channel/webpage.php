@@ -9,7 +9,7 @@
     return;
   }
 
-  $webPage = getLocalizedItem($webPages, $data->language);
+  $webPage = oppiminenGetLocalizedItem($webPages, $data->language);
   if ($webPage) {
     $url = $webPage["url"];
     $text = $webPage["value"];
