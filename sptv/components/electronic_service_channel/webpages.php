@@ -7,8 +7,8 @@
     return;
   }
 
-  $webPage = getLocalizedUrl($webPages, $data->language);
-  $name = getLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
+  $webPage = oppiminenGetLocalizedUrl($webPages, $data->language);
+  $name = oppiminenGetLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
 
   if ($webPage) {
     $url = $webPage["url"];

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fi">
   <head>
     <?php require get_template_directory() . '/inc/template-head-generic.php'; ?>

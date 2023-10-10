@@ -3,7 +3,7 @@
   
   echo "<div class=\"ptv-name\">";
   echo "<h3>";
-  echo getLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
+  echo oppiminenGetLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
   echo "</h3>";
   echo "</div>";
 ?>
