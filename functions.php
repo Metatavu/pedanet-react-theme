@@ -242,4 +242,28 @@
     wp_enqueue_style( 'custom_wp_admin_css' );
   }
   add_action( 'admin_enqueue_scripts', 'mikkeli_enqueue_custom_admin_style' );
+
+    /**
+   * Google Analytics added to the footer
+   */
+  function add_google_analytics_code() {
+    $googleAnalyticsMeasurementId = get_option('google_analytics_measurement_id');
+    if ($googleAnalyticsMeasurementId) {
+        ?>
+        <!-- Google Analytics Tracking Code -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_html($googleAnalyticsMeasurementId); ?>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '<?php echo esc_html($googleAnalyticsMeasurementId); ?>');
+        </script>
+        <!-- End Google Analytics Tracking Code -->
+        <?php
+    }
+}
+add_action('wp_footer', 'add_google_analytics_code');
+
 ?>
