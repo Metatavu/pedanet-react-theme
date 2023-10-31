@@ -8,7 +8,7 @@
    * @param string $type filter results by type. optional
    * @return object localized object or null
    */
-  function getLocalizedItem($values, $language, $type = null) {
+  function oppiminenGetLocalizedItem($values, $language, $type = null) {
     if (!$values) {
       return null;
     }
@@ -31,7 +31,7 @@
    * @param string $language preferred language
    * @param string $type filter results by type. optional
    */
-  function getLocalizedUrl($values, $language) {
+  function oppiminenGetLocalizedUrl($values, $language) {
     if (!$values) {
       return null;
     }
@@ -57,8 +57,8 @@
    * @param string $language preferred language
    * @param string $type filter results by type. optional
    */
-  function getLocalizedValue($values, $language, $type = null) {
-    $item = getLocalizedItem($values, $language, $type);
+  function oppiminenGetLocalizedValue($values, $language, $type = null) {
+    $item = oppiminenGetLocalizedItem($values, $language, $type);
     return $item ? $item["value"] : "";
   }
 
@@ -68,7 +68,7 @@
    * @param $dayName day name
    * @return localized day name
    */
-  function getLocalizedDayName($dayName) {
+  function oppiminenGetLocalizedDayName($dayName) {
     switch ($dayName) {
       case "Monday":
         return __("Monday", "sptv");
@@ -95,7 +95,7 @@
    * @param $dayName day name
    * @return abbreviated day name
    */
-  function getAbbreviatedDayName($dayName) {
+  function oppiminenGetAbbreviatedDayName($dayName) {
     switch ($dayName) {
       case "Monday":
         return "ma";
@@ -122,7 +122,7 @@
    * @param string $text text
    * @return string text as html
    */
-  function nl2p($text) {
+  function oppiminenNl2p($text) {
     if (!$text) {
       return "";
     }
@@ -138,25 +138,27 @@
    * @param object $serviceHours service hours
    * @return string formatted service hours
    */
-  function formatServiceHours($serviceHours) {
+  function oppiminenFormatServiceHours($serviceHours) {
     $result = '';
 
-    foreach ($serviceHours as $serviceHour) {
-      if ($serviceHour["serviceHourType"] == "DaysOfTheWeek") {
-        $additionalInformation = getLocalizedValue($serviceHour["additionalInformation"], $data->language);
-        $openingHours = $serviceHour["openingHour"];
-        $result .= "<h3>Aukioloajat</h3>";
-        
-        $result .= "<div class='opening-hours'>";
-        if (!$serviceHour["isClosed"] && count($openingHours) == 0) {
-          $result .= "<p>" . __("Open 24 hours.", "sptv") . "</p>";
-        } else {
-          $result .= "<table><tbody>";
-          $result .= formatOpeningHours($openingHours);
-          $result .= "</tbody></table>";
-        }
-        $result .= "</div>";
+    if(is_array($result)){
+      foreach ($serviceHours as $serviceHour) {
+        if ($serviceHour["serviceHourType"] == "DaysOfTheWeek") {
+          $additionalInformation = oppiminenGetLocalizedValue($serviceHour["additionalInformation"], $data->language);
+          $openingHours = $serviceHour["openingHour"];
+          $result .= "<h3>Aukioloajat</h3>";
+          
+          $result .= "<div class='opening-hours'>";
+          if (!$serviceHour["isClosed"] && count($openingHours) == 0) {
+            $result .= "<p>" . __("Open 24 hours.", "sptv") . "</p>";
+          } else {
+            $result .= "<table><tbody>";
+            $result .= oppiminenFormatOpeningHours($openingHours);
+            $result .= "</tbody></table>";
+          }
+          $result .= "</div>";
 
+        }
       }
     }
 
@@ -169,13 +171,13 @@
    * @param object $openingHour openingHour
    * @return string formatted object
    */
-  function formatOpeningHour($openingHour) {
-    $days = isset($openingHour['dayFrom']) ? getAbbreviatedDayName($openingHour['dayFrom']) : '';
+  function oppiminenFormatOpeningHour($openingHour) {
+    $days = isset($openingHour['dayFrom']) ? oppiminenGetAbbreviatedDayName($openingHour['dayFrom']) : '';
     $from = "";
     $to = "";
 
     if (isset($openingHour['dayTo']) && $openingHour['dayTo'] != "") {
-      $days .= ' - ' . getAbbreviatedDayName($openingHour['dayTo']);
+      $days .= ' - ' . oppiminenGetAbbreviatedDayName($openingHour['dayTo']);
     }
 
     if (isset($openingHour['from'])) {
@@ -205,10 +207,10 @@
    * @param object[] $openingHours openingHours
    * @return string formatted string
    */
-  function formatOpeningHours($openingHours) {
-    $openingHours = simplifyOpeningHours($openingHours);
+  function oppiminenFormatOpeningHours($openingHours) {
+    $openingHours = oppiminenSimplifyOpeningHours($openingHours);
     return join("", array_map(function ($openingHour) {
-      return formatOpeningHour($openingHour);
+      return oppiminenFormatOpeningHour($openingHour);
     }, $openingHours));
   }
 
@@ -218,7 +220,7 @@
    * @param object[] $openingHours opening hours array
    * @return object[] simplified opening hours
    */
-  function simplifyOpeningHours($openingHours) {
+  function oppiminenSimplifyOpeningHours($openingHours) {
     $simplified = array();
 
     for ($i = 0; $i < count($openingHours); $i++) {

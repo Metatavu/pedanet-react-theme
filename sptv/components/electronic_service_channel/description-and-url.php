@@ -7,9 +7,9 @@
     return;
   }
 
-  $webPage = getLocalizedUrl($webPages, $data->language);
-  $name = getLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
-  $description = nl2p(getLocalizedValue($data->serviceChannel["serviceChannelDescriptions"], $data->language, "Description"));
+  $webPage = oppiminenGetLocalizedUrl($webPages, $data->language);
+  $name = oppiminenGetLocalizedValue($data->serviceChannel["serviceChannelNames"], $data->language, "Name");
+  $description = oppiminenNl2p(oppiminenGetLocalizedValue($data->serviceChannel["serviceChannelDescriptions"], $data->language, "Description"));
 
   if ($webPage) {
     $url = $webPage["url"];
