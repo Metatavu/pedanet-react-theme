@@ -23,5 +23,7 @@
     <?php } else { ?>
       <?php require get_template_directory() . '/inc/template-deprecation-warning.php' ?>
     <?php } ?>
+    <?php
+    do_action('GA_custom_hook'); ?>
   </body>
 </html>
