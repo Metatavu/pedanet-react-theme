@@ -243,7 +243,9 @@
   }
   add_action( 'admin_enqueue_scripts', 'mikkeli_enqueue_custom_admin_style' );
 
-  // Add Google Analytics tracking code to custom action hook
+/**
+ * Add Google Analytics tracking code to custom action hook
+ */
 function add_google_analytics_code_to_custom_location() {
     $googleAnalyticsMeasurementId = get_option('google_analytics_measurement_id');
     
@@ -264,7 +266,6 @@ function add_google_analytics_code_to_custom_location() {
     }
 }
 
-// Replace 'your_custom_hook' with the actual name of your custom hook
 add_action('GA_custom_hook', 'add_google_analytics_code_to_custom_location');
 
 ?>
