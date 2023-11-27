@@ -243,11 +243,12 @@
   }
   add_action( 'admin_enqueue_scripts', 'mikkeli_enqueue_custom_admin_style' );
 
-    /**
-   * Google Analytics added to the footer
-   */
-  function add_google_analytics_code() {
+/**
+ * Add Google Analytics tracking code to custom action hook
+ */
+function add_google_analytics_code_to_custom_location() {
     $googleAnalyticsMeasurementId = get_option('google_analytics_measurement_id');
+    
     if ($googleAnalyticsMeasurementId) {
         ?>
         <!-- Google Analytics Tracking Code -->
@@ -264,6 +265,7 @@
         <?php
     }
 }
-add_action('wp_footer', 'add_google_analytics_code');
+
+add_action('GA_custom_hook', 'add_google_analytics_code_to_custom_location');
 
 ?>
