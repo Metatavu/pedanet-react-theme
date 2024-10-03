@@ -44,7 +44,7 @@ const App: React.FC<Props> = () => {
         <div className="App">
           <CookieConsent location="center" overlay={true} buttonText="Ok">
             {`${strings.cookieAccept} `}
-            <a style={{ color: "#3986ca" }} href="https://www.mikkeli.fi/sisalto/tietoja-mikkelista/tietopalvelu-ja-tietosuoja">
+            <a style={{ color: "#8ac8ff"}} href="https://www.mikkeli.fi/sisalto/tietoja-mikkelista/tietopalvelu-ja-tietosuoja">
               {strings.readMorePrivacy}
             </a>
           </CookieConsent>

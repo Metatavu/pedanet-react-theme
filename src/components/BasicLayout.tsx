@@ -81,7 +81,7 @@ class BasicLayout extends React.Component<Props, State> {
   public componentDidMount = async () => {
     const component = this;
     window.addEventListener("keydown", function (event: any) {
-      if (event.key === "Enter" && event.target.id === "site-wide-search") {
+      if (event.key === "Enter" && (event.target.id === "site-wide-search1" || event.target.id === "site-wide-search2")) {
         component.setState({ redirectToSearch: true });
       }
     });
@@ -136,12 +136,12 @@ class BasicLayout extends React.Component<Props, State> {
           />
           <div className={ classes.topNavDesktopContainer }>
             <div>
-              <div className={ classes.logoSection }>
+              <div className={ classes.logoSection }>               
                 <Hidden mdUp implementation="js">
                   <IconButton style={{ marginLeft: "10" }} size="medium" onClick={ this.onMenuClick }>
                     <MenuIcon color="primary" />
                   </IconButton>
-                </Hidden>
+                </Hidden>       
                 <a href="/">
                   <img
                     className={ classes.logo }
@@ -150,7 +150,7 @@ class BasicLayout extends React.Component<Props, State> {
                   />
                 </a>
                 <Hidden smDown implementation="js">
-                  { this.renderSearchbar() }
+                  { this.renderSearchbar("site-wide-search1") }
                 </Hidden>
               </div>
               {/* Desktop menu, hidden from mobile devices */}
@@ -161,7 +161,7 @@ class BasicLayout extends React.Component<Props, State> {
               </Hidden>
             </div>
             <Hidden mdDown implementation="js">
-              { this.renderReadSpeaker() }
+              { this.renderReadSpeaker("readspeaker_button2") }
             </Hidden>
           </div>
           {/* Mobile menu */}
@@ -169,8 +169,8 @@ class BasicLayout extends React.Component<Props, State> {
             <Collapse in={ showMenu }>
               { this.renderMenu() }
             </Collapse>
-            { this.renderReadSpeaker() }
-            { this.renderSearchbar() }
+            { this.renderReadSpeaker("readspeaker_button3") }
+            { this.renderSearchbar("site-wide-search2") }
           </div>
         </div>
         <div
@@ -184,14 +184,14 @@ class BasicLayout extends React.Component<Props, State> {
     );
   }
 
-  private renderReadSpeaker = () => {
+  private renderReadSpeaker = (id: string) => {
     const currentScript = document.scripts["bundle_script"];
     const readSpeakerId = currentScript.getAttribute("data-read-speaker-id");
     const { classes } = this.props;
 
     return (
         <div
-          id="readspeaker_button1"
+          id={id}
           className={`rs_skip rsbtn rs_preserve ${classes.readSpeaker}`}
         >
           <a
@@ -283,31 +283,37 @@ class BasicLayout extends React.Component<Props, State> {
   /**
    * Renders the search bar
    */
-  private renderSearchbar = () => {
+  private renderSearchbar = (id: string) => {
     const { classes } = this.props;
+    const listBoxId = `${id}-listbox`;
     return (
       <div
         className={ classes.searchBarContainer }
       >
         <Autocomplete
-          id="site-wide-search"
+          id={id}
           value={ this.state.search }
           size="small"
           className={ classes.searchBarAutocomplete }
           options={ this.state.options }
           getOptionLabel={ option => option.title }
+          aria-label={strings.search}
+          aria-haspopup="listbox"
+          aria-autocomplete="both"
+          aria-activedescendant={id}
+          aria-controls={listBoxId}
           groupBy={ option => option.type }
           onInputChange={ this.onSearchChange } 
           renderGroup={ this.renderGroup }
           renderInput={ params => 
             <TextField 
               { ...params } 
-              inputProps={{ ...params.inputProps, "aria-label": strings.search , "placeholder":  strings.search }} 
+              inputProps={{ ...params.inputProps, "placeholder":  strings.search }} 
               variant="outlined"
             /> 
           }
           renderOption={ this.renderOption }
-          ListboxProps={{ style: {  maxHeight: "1000px" }}}
+          ListboxProps={{id:listBoxId, style: {  maxHeight: "1000px" }}}
           disablePortal={ true }
           classes={{
             popperDisablePortal: classes.popperDisablePortal,
@@ -316,10 +322,9 @@ class BasicLayout extends React.Component<Props, State> {
         />
         <Hidden lgUp implementation="js">
           <Hidden smDown implementation="js">
-              { this.renderReadSpeaker() }
+              { this.renderReadSpeaker("readspeaker_button1") }
           </Hidden>
         </Hidden>
-
       </div>
 
     );
